@@ -8,6 +8,7 @@
 <title>
 ระบบตรวจสอบผลการเรียน
 </title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <!-- Supabase Library -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1517,6 +1518,10 @@ document
 
 
 loadStudents();
+const SUPABASE_URL = 'https://yhbuatktsavohtyzarr.supabase.co';
+const SUPABASE_ANON_KEY = 'นำ_anon_public_key_ของคุณมาวางตรงนี้';
+
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 
 }</script>
