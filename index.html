@@ -334,7 +334,220 @@ select{
 
 
 </body>
+<!-- ==========================================
+     ATTENDANCE REPORT
+========================================== -->
 
+<div id="attendanceReportSection" style="display:none;">
+
+    <h1>📊 รายงานการเข้าเรียน</h1>
+
+    <!-- สรุปภาพรวม -->
+
+    <div
+        style="
+            display:grid;
+            grid-template-columns:
+                repeat(auto-fit,minmax(180px,1fr));
+            gap:15px;
+            margin-bottom:20px;
+        "
+    >
+
+        <div class="card">
+
+            <h3>👨‍🎓 นักเรียนทั้งหมด</h3>
+
+            <h1 id="reportTotalStudents">
+                0
+            </h1>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>✅ มาเรียน</h3>
+
+            <h1 id="reportPresent">
+                0
+            </h1>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>⏰ สาย</h3>
+
+            <h1 id="reportLate">
+                0
+            </h1>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>❌ ขาด</h3>
+
+            <h1 id="reportAbsent">
+                0
+            </h1>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>📝 ลา</h3>
+
+            <h1 id="reportLeave">
+                0
+            </h1>
+
+        </div>
+
+    </div>
+
+
+    <!-- เลือกวันที่ -->
+
+    <div class="card">
+
+        <h3>
+            🔎 ดูรายงานตามวันที่
+        </h3>
+
+
+        <input
+            type="date"
+            id="reportDate"
+            style="
+                padding:10px;
+                width:100%;
+                max-width:300px;
+                margin:10px 0;
+            "
+        >
+
+
+        <button
+            class="btn"
+            onclick="loadAttendanceReport()"
+        >
+            ดูรายงาน
+        </button>
+
+    </div>
+
+
+    <br>
+
+
+    <!-- ตารางรายงาน -->
+
+    <div class="card">
+
+        <h3>
+            📋 รายละเอียดการเข้าเรียน
+        </h3>
+
+
+        <div style="overflow-x:auto;">
+
+            <table
+                width="100%"
+                border="1"
+                cellpadding="10"
+                cellspacing="0"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            ลำดับ
+                        </th>
+
+                        <th>
+                            รหัสนักเรียน
+                        </th>
+
+                        <th>
+                            ชื่อ-นามสกุล
+                        </th>
+
+                        <th>
+                            ห้อง
+                        </th>
+
+                        <th>
+                            เวลา
+                        </th>
+
+                        <th>
+                            สถานะ
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="attendanceReportTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <br>
+
+
+    <!-- ประวัติรายบุคคล -->
+
+    <div class="card">
+
+        <h3>
+            👤 สถิติการเข้าเรียนรายบุคคล
+        </h3>
+
+
+        <select
+            id="reportStudentSelect"
+            onchange="loadStudentAttendanceHistory()"
+            style="
+                width:100%;
+                padding:12px;
+                margin-top:10px;
+            "
+        >
+
+            <option value="">
+                -- เลือกนักเรียน --
+            </option>
+
+        </select>
+
+
+        <div
+            id="studentAttendanceSummary"
+            style="
+                margin-top:20px;
+            "
+        >
+
+        </div>
+
+    </div>
+
+</div>
 
 
 <!-- =========================
