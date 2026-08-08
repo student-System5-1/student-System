@@ -508,7 +508,102 @@ STUDENT MANAGEMENT
 ========================= -->
 
 
-<div id="studentSection" style="display:none;">
+</div><!-- =========================
+ATTENDANCE SYSTEM
+========================= -->
+
+<div id="attendanceSection" style="display:none;">
+
+    <h1>📋 เช็กชื่อเข้าเรียน</h1>
+
+    <div class="card">
+
+        <h3>บันทึกการเข้าเรียน</h3>
+
+        <div style="margin-top:15px;">
+
+            <label>
+                วันที่
+            </label>
+
+            <input
+                type="date"
+                id="attendanceDate"
+                style="
+                    width:100%;
+                    padding:12px;
+                    margin-top:8px;
+                    margin-bottom:15px;
+                "
+            >
+
+        </div>
+
+        <button
+            class="btn"
+            onclick="loadAttendanceStudents()">
+
+            โหลดรายชื่อนักเรียน
+
+        </button>
+
+    </div>
+
+    <br>
+
+    <div class="card">
+
+        <h3>รายชื่อนักเรียน</h3>
+
+        <div style="overflow-x:auto;">
+
+            <table
+                width="100%"
+                border="1"
+                cellpadding="10"
+                cellspacing="0">
+
+                <thead>
+
+                    <tr>
+
+                        <th>ลำดับ</th>
+
+                        <th>รหัสนักเรียน</th>
+
+                        <th>ชื่อ-นามสกุล</th>
+
+                        <th>ห้อง</th>
+
+                        <th>เวลาเข้าเรียน</th>
+
+                        <th>สถานะ</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody id="attendanceTable">
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <br>
+
+        <button
+            class="btn"
+            onclick="saveAttendance()">
+
+            💾 บันทึกการเข้าเรียน
+
+        </button>
+
+    </div>
+
+</div>
 
 
 <h1>
