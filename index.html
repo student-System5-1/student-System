@@ -2434,5 +2434,730 @@ function showAttendanceReport() {
 
     loadReportStudentList();
 
+}// ==========================================
+// LOAD ATTENDANCE REPORT
+// ==========================================
+
+async function loadAttendanceReport() {
+
+    if (!supabaseClient) {
+
+        alert(
+            "ยังไม่ได้เชื่อมต่อ Supabase"
+        );
+
+        return;
+
+    }
+
+
+    const date =
+        document.getElementById(
+            "reportDate"
+        ).value;
+
+
+    if (!date) {
+
+        alert(
+            "กรุณาเลือกวันที่"
+        );
+
+        return;
+
+    }
+
+
+    // ======================================
+    // ดึงนักเรียนทั้งหมด
+    // ======================================
+
+    const {
+        data: students,
+        error: studentError
+    } = await supabaseClient
+
+        .from("students")
+
+        .select("*")
+
+        .order(
+            "student_id",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (studentError) {
+
+        console.error(studentError);
+
+        alert(
+            "ไม่สามารถโหลดข้อมูลนักเรียนได้\n" +
+            studentError.message
+        );
+
+        return;
+
+    }
+
+
+    // ======================================
+    // ดึงข้อมูลการเข้าเรียน
+    // ======================================
+
+    const {
+        data: attendance,
+        error: attendanceError
+    } = await supabaseClient
+
+        .from("attendance")
+
+        .select("*")
+
+        .eq(
+            "date",
+            date
+        );
+
+
+    if (attendanceError) {
+
+        console.error(attendanceError);
+
+        alert(
+            "ไม่สามารถโหลดข้อมูลการเข้าเรียนได้\n" +
+            attendanceError.message
+        );
+
+        return;
+
+    }
+
+
+    // ======================================
+    // เตรียมข้อมูล
+    // ======================================
+
+    const attendanceMap = {};
+
+
+    (attendance || []).forEach(record => {
+
+        attendanceMap[
+            record.student_id
+        ] = record;
+
+    });
+
+
+    // ======================================
+    // ตัวแปรสรุป
+    // ======================================
+
+    let present = 0;
+
+    let late = 0;
+
+    let absent = 0;
+
+    let leave = 0;
+
+
+    // ======================================
+    // ตาราง
+    // ======================================
+
+    const table =
+        document.getElementById(
+            "attendanceReportTable"
+        );
+
+
+    table.innerHTML = "";
+
+
+    if (!students || students.length === 0) {
+
+        table.innerHTML = `
+
+            <tr>
+
+                <td
+                    colspan="6"
+                    style="
+                        text-align:center;
+                    "
+                >
+
+                    ยังไม่มีข้อมูลนักเรียน
+
+                </td>
+
+            </tr>
+
+        `;
+
+    }
+
+
+    students.forEach(
+        (student, index) => {
+
+            const record =
+                attendanceMap[
+                    student.student_id
+                ];
+
+
+            let status =
+                record
+                    ? record.status
+                    : "ยังไม่เช็ก";
+
+
+            let time =
+                record &&
+                record.check_in_time
+                    ? record.check_in_time
+                    : "-";
+
+
+            // นับจำนวน
+
+            if (status === "มา") {
+
+                present++;
+
+            }
+
+            else if (status === "สาย") {
+
+                late++;
+
+            }
+
+            else if (status === "ขาด") {
+
+                absent++;
+
+            }
+
+            else if (status === "ลา") {
+
+                leave++;
+
+            }
+
+
+            let statusText = status;
+
+
+            if (status === "มา") {
+
+                statusText =
+                    "🟢 มา";
+
+            }
+
+            else if (status === "สาย") {
+
+                statusText =
+                    "🟡 สาย";
+
+            }
+
+            else if (status === "ขาด") {
+
+                statusText =
+                    "🔴 ขาด";
+
+            }
+
+            else if (status === "ลา") {
+
+                statusText =
+                    "🔵 ลา";
+
+            }
+
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>
+                        ${index + 1}
+                    </td>
+
+                    <td>
+                        ${student.student_id}
+                    </td>
+
+                    <td>
+                        ${student.fullname}
+                    </td>
+
+                    <td>
+                        ${student.class || "-"}
+                    </td>
+
+                    <td>
+                        ${time}
+                    </td>
+
+                    <td>
+                        ${statusText}
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+    );
+
+
+    // ======================================
+    // แสดงสรุป
+    // ======================================
+
+    document.getElementById(
+        "reportTotalStudents"
+    ).innerHTML =
+        students
+            ? students.length
+            : 0;
+
+
+    document.getElementById(
+        "reportPresent"
+    ).innerHTML =
+        present;
+
+
+    document.getElementById(
+        "reportLate"
+    ).innerHTML =
+        late;
+
+
+    document.getElementById(
+        "reportAbsent"
+    ).innerHTML =
+        absent;
+
+
+    document.getElementById(
+        "reportLeave"
+    ).innerHTML =
+        leave;
+
+}// ==========================================
+// LOAD STUDENT LIST FOR REPORT
+// ==========================================
+
+async function loadReportStudentList() {
+
+    const select =
+        document.getElementById(
+            "reportStudentSelect"
+        );
+
+
+    if (!select) {
+
+        return;
+
+    }
+
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("students")
+
+        .select(
+            "student_id,fullname,class"
+        )
+
+        .order(
+            "student_id",
+            {
+                ascending: true
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        return;
+
+    }
+
+
+    select.innerHTML = `
+
+        <option value="">
+            -- เลือกนักเรียน --
+        </option>
+
+    `;
+
+
+    (data || []).forEach(student => {
+
+        select.innerHTML += `
+
+            <option
+                value="${student.student_id}"
+            >
+
+                ${student.student_id}
+                -
+                ${student.fullname}
+
+            </option>
+
+        `;
+
+    });
+
+}// ==========================================
+// STUDENT ATTENDANCE HISTORY
+// ==========================================
+
+async function loadStudentAttendanceHistory() {
+
+    const studentId =
+        document.getElementById(
+            "reportStudentSelect"
+        ).value;
+
+
+    const container =
+        document.getElementById(
+            "studentAttendanceSummary"
+        );
+
+
+    if (!studentId) {
+
+        container.innerHTML = "";
+
+        return;
+
+    }
+
+
+    // ======================================
+    // ดึงข้อมูลนักเรียน
+    // ======================================
+
+    const {
+        data: student
+    } = await supabaseClient
+
+        .from("students")
+
+        .select("*")
+
+        .eq(
+            "student_id",
+            studentId
+        )
+
+        .single();
+
+
+    // ======================================
+    // ดึงประวัติ
+    // ======================================
+
+    const {
+        data: records,
+        error
+    } = await supabaseClient
+
+        .from("attendance")
+
+        .select("*")
+
+        .eq(
+            "student_id",
+            studentId
+        )
+
+        .order(
+            "date",
+            {
+                ascending: false
+            }
+        );
+
+
+    if (error) {
+
+        console.error(error);
+
+        container.innerHTML = `
+
+            <p>
+                ไม่สามารถโหลดข้อมูลได้
+            </p>
+
+        `;
+
+        return;
+
+    }
+
+
+    let present = 0;
+
+    let late = 0;
+
+    let absent = 0;
+
+    let leave = 0;
+
+
+    (records || []).forEach(record => {
+
+        if (record.status === "มา") {
+
+            present++;
+
+        }
+
+        else if (record.status === "สาย") {
+
+            late++;
+
+        }
+
+        else if (record.status === "ขาด") {
+
+            absent++;
+
+        }
+
+        else if (record.status === "ลา") {
+
+            leave++;
+
+        }
+
+    });
+
+
+    const total =
+        present +
+        late +
+        absent +
+        leave;
+
+
+    // ======================================
+    // คำนวณเปอร์เซ็นต์
+    // ======================================
+
+    let attendancePercent = 0;
+
+
+    if (total > 0) {
+
+        attendancePercent =
+            (
+                (present + late)
+                /
+                total
+            ) * 100;
+
+    }
+
+
+    attendancePercent =
+        attendancePercent.toFixed(2);
+
+
+    // ======================================
+    // แสดงผล
+    // ======================================
+
+    container.innerHTML = `
+
+        <div
+            style="
+                padding:15px;
+                border-radius:10px;
+                background:#f5f5f5;
+            "
+        >
+
+            <h3>
+                👤
+                ${student
+                    ? student.fullname
+                    : studentId}
+            </h3>
+
+
+            <p>
+                รหัสนักเรียน:
+                <b>
+                    ${studentId}
+                </b>
+            </p>
+
+
+            <p>
+                ห้อง:
+                <b>
+                    ${
+                        student
+                        ? (
+                            student.class || "-"
+                        )
+                        : "-"
+                    }
+                </b>
+            </p>
+
+
+            <hr>
+
+
+            <p>
+                🟢 มาเรียน:
+                <b>${present}</b>
+                ครั้ง
+            </p>
+
+
+            <p>
+                🟡 สาย:
+                <b>${late}</b>
+                ครั้ง
+            </p>
+
+
+            <p>
+                🔴 ขาด:
+                <b>${absent}</b>
+                ครั้ง
+            </p>
+
+
+            <p>
+                🔵 ลา:
+                <b>${leave}</b>
+                ครั้ง
+            </p>
+
+
+            <p>
+                📅 วันที่มีข้อมูล:
+                <b>${total}</b>
+                วัน
+            </p>
+
+
+            <p>
+                📈 เปอร์เซ็นต์การเข้าเรียน:
+                <b>
+                    ${attendancePercent}%
+                </b>
+            </p>
+
+        </div>
+
+
+        <br>
+
+
+        <h3>
+            📋 ประวัติการเข้าเรียน
+        </h3>
+
+
+        <div
+            style="
+                overflow-x:auto;
+            "
+        >
+
+            <table
+                width="100%"
+                border="1"
+                cellpadding="8"
+                cellspacing="0"
+            >
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            วันที่
+                        </th>
+
+                        <th>
+                            เวลา
+                        </th>
+
+                        <th>
+                            สถานะ
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    ${
+                        (records || [])
+                        .map(record => `
+
+                            <tr>
+
+                                <td>
+                                    ${record.date}
+                                </td>
+
+                                <td>
+                                    ${
+                                        record.check_in_time
+                                        || "-"
+                                    }
+                                </td>
+
+                                <td>
+                                    ${
+                                        record.status
+                                    }
+                                </td>
+
+                            </tr>
+
+                        `)
+                        .join("")
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    `;
+
 }
 }</script>
