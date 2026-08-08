@@ -694,7 +694,7 @@ Student System
 </li>
 
 
-<li>
+<li onclick="showAttendanceReport()">
 📊 รายงาน
 </li>
 
@@ -2365,6 +2365,74 @@ alert(
 );
 
 
+
+}
+// ==========================================
+// SHOW ATTENDANCE REPORT
+// ==========================================
+
+function showAttendanceReport() {
+
+    // ซ่อนหน้าอื่น
+
+    const studentSection =
+        document.getElementById(
+            "studentSection"
+        );
+
+    const attendanceSection =
+        document.getElementById(
+            "attendanceSection"
+        );
+
+    const reportSection =
+        document.getElementById(
+            "attendanceReportSection"
+        );
+
+
+    if (studentSection) {
+
+        studentSection.style.display =
+            "none";
+
+    }
+
+
+    if (attendanceSection) {
+
+        attendanceSection.style.display =
+            "none";
+
+    }
+
+
+    if (reportSection) {
+
+        reportSection.style.display =
+            "block";
+
+    }
+
+
+    // ตั้งวันที่ปัจจุบัน
+
+    const today =
+        new Date()
+        .toISOString()
+        .split("T")[0];
+
+
+    document.getElementById(
+        "reportDate"
+    ).value = today;
+
+
+    // โหลดข้อมูล
+
+    loadAttendanceReport();
+
+    loadReportStudentList();
 
 }
 }</script>
