@@ -557,91 +557,198 @@ LOGIN
 
 <section id="loginPage">
 
+    <div class="login-wrapper">
 
-<div class="login-box">
+        <!-- =========================
+             HEADER / SCHOOL
+        ========================== -->
 
+        <div class="school-header">
 
-<h1>
-ระบบจัดการผลการเรียน
-</h1>
+            <div class="school-top">
 
+                <div class="school-logo">
+                    <img
+                        src="assets/logo.png"
+                        alt="โลโก้โรงเรียน"
+                        onerror="this.style.display='none'"
+                    >
+                </div>
 
-<p>
-สำหรับครูและนักเรียน
-</p>
+                <div class="school-title">
 
+                    <h1>
+                        Student<span>PR</span>
+                    </h1>
 
+                    <h2>
+                        ระบบสารสนเทศผลการเรียนสำหรับนักเรียน
+                    </h2>
 
-<div class="input-group">
+                    <p>
+                        โรงเรียนท่าใหม่ “พูลสวัสดิ์ราษฎร์นุกูล”
+                    </p>
 
-<label>
-ประเภทผู้ใช้งาน
-</label>
+                </div>
 
-
-<select id="role">
-
-<option value="student">
-นักเรียน
-</option>
-
-<option value="teacher">
-ครู
-</option>
-
-
-</select>
-
-
-</div>
+            </div>
 
 
+            <!-- หน่วยงาน -->
 
-<div class="input-group">
+            <div class="department-box">
 
-<label>
-Email
-</label>
+                <div class="department-icon">
+                    🏫
+                </div>
 
-<input 
-id="email"
-type="email"
-placeholder="กรอก Email">
+                <div>
 
-</div>
+                    <small>
+                        ฝ่ายบริหารงานวิชาการ
+                    </small>
 
+                    <strong>
+                        งานทะเบียน-วัดผล
+                    </strong>
 
+                </div>
 
-<div class="input-group">
+            </div>
 
-<label>
-Password
-</label>
-
-<input
-id="password"
-type="password"
-placeholder="กรอกรหัสผ่าน">
+        </div>
 
 
-</div>
+        <!-- =========================
+             LOGIN CARD
+        ========================== -->
+
+        <div class="login-card">
+
+            <div class="login-heading">
+
+                <div class="login-icon">
+                    👥
+                </div>
+
+                <div>
+
+                    <div class="login-small">
+                        LOGIN
+                    </div>
+
+                    <h2>
+                        เข้าสู่ระบบนักเรียน
+                    </h2>
+
+                </div>
+
+            </div>
 
 
+            <!-- เลขประจำตัว -->
 
-<button
-class="btn"
-onclick="login()">
+            <div class="form-group">
 
-เข้าสู่ระบบ
+                <label>
+                    เลขประจำตัวนักเรียน
+                </label>
 
-</button>
+                <div class="input-box">
+
+                    <span class="input-icon">
+                        👤
+                    </span>
+
+                    <input
+                        id="email"
+                        type="text"
+                        placeholder="กรอกเลขประจำตัวนักเรียน"
+                    >
+
+                </div>
+
+            </div>
 
 
-<p id="loginMessage"></p>
+            <!-- Password -->
+
+            <div class="form-group">
+
+                <label>
+                    รหัสผ่าน
+                </label>
+
+                <div class="input-box">
+
+                    <span class="input-icon">
+                        🔐
+                    </span>
+
+                    <input
+                        id="password"
+                        type="password"
+                        placeholder="กรอกรหัสผ่าน"
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        onclick="togglePassword()"
+                    >
+                        👁️
+                    </button>
+
+                </div>
+
+            </div>
 
 
-</div>
+            <!-- ซ่อน Role ไว้ -->
 
+            <select
+                id="role"
+                style="display:none;"
+            >
+
+                <option value="student">
+                    นักเรียน
+                </option>
+
+                <option value="teacher">
+                    ครู
+                </option>
+
+            </select>
+
+
+            <!-- Login Button -->
+
+            <button
+                class="login-button"
+                onclick="login()"
+            >
+
+                <span>
+                    ➜
+                </span>
+
+                เข้าสู่ระบบ
+
+            </button>
+
+
+            <!-- Login Message -->
+
+            <p
+                id="loginMessage"
+                class="login-message"
+            ></p>
+
+
+        </div>
+
+    </div>
 
 </section>
 
