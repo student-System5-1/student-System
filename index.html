@@ -54,18 +54,286 @@ body{
 ===================== */
 
 
+/* =====================================
+   STUDENTPR LOGIN STYLE
+===================================== */
+
 #loginPage{
-
     min-height:100vh;
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
+    padding:20px;
+    background:linear-gradient(135deg,#d9a7f7,#b8b9f0,#8dd9ee);
 }
 
+.login-wrapper{
+    width:100%;
+    max-width:680px;
+}
+
+/* ส่วนหัว */
+
+.school-header{
+    background:linear-gradient(135deg,#1769e0,#2497e8,#4cc8e9);
+    color:white;
+    padding:30px;
+    border-radius:35px;
+    margin-bottom:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
+}
+
+.school-top{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.school-logo{
+    width:110px;
+    height:110px;
+    min-width:110px;
+    background:white;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+}
+
+.school-logo img{
+    width:90%;
+    height:90%;
+    object-fit:contain;
+}
+
+.school-title h1{
+    font-size:45px;
+    margin:0;
+    font-weight:900;
+}
+
+.school-title h1 span{
+    color:#ff4fc3;
+}
+
+.school-title h2{
+    font-size:19px;
+    margin:5px 0;
+}
+
+.school-title p{
+    font-size:16px;
+    margin:0;
+    font-weight:bold;
+}
+
+/* งานทะเบียน */
+
+.department-box{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-top:25px;
+    padding:18px;
+    border-radius:22px;
+    background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.3);
+}
+
+.department-icon{
+    width:60px;
+    height:60px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:18px;
+    background:rgba(255,255,255,.15);
+    font-size:30px;
+}
+
+.department-box small{
+    display:block;
+    font-size:15px;
+}
+
+.department-box strong{
+    display:block;
+    font-size:23px;
+}
+
+/* กล่อง Login */
+
+.login-card{
+    background:linear-gradient(145deg,#f8eaff,#eee5f8);
+    padding:35px;
+    border-radius:35px;
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
+}
+
+.login-heading{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    margin-bottom:30px;
+}
+
+.login-icon{
+    width:65px;
+    height:65px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:20px;
+    background:#e2e5ff;
+    font-size:30px;
+}
+
+.login-small{
+    color:#5964dc;
+    font-size:17px;
+    font-weight:bold;
+}
+
+.login-heading h2{
+    margin:3px 0 0;
+    color:#162c55;
+    font-size:30px;
+}
+
+/* ช่องกรอก */
+
+.form-group{
+    margin-bottom:20px;
+}
+
+.form-group label{
+    display:block;
+    margin-bottom:8px;
+    font-size:18px;
+    font-weight:bold;
+    color:#274263;
+}
+
+.input-box{
+    display:flex;
+    align-items:center;
+    min-height:68px;
+    padding:0 15px;
+    border-radius:22px;
+    background:#edf2fc;
+    border:1px solid #bdcce3;
+}
+
+.input-icon{
+    width:40px;
+    font-size:24px;
+    text-align:center;
+}
+
+.input-box input{
+    flex:1;
+    border:0;
+    outline:0;
+    background:transparent;
+    font-size:17px;
+    padding:10px;
+}
+
+.password-toggle{
+    border:0;
+    background:transparent;
+    font-size:20px;
+    cursor:pointer;
+}
+
+/* ปุ่มเข้าสู่ระบบ */
+
+.login-button{
+    width:100%;
+    min-height:68px;
+    border:0;
+    border-radius:22px;
+    background:linear-gradient(100deg,#2468ed,#4e9be9);
+    color:white;
+    font-size:21px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 8px 20px rgba(36,104,237,.25);
+}
+
+.login-button:hover{
+    transform:translateY(-2px);
+}
+
+.login-message{
+    text-align:center;
+    margin-top:15px;
+    color:#d32f2f;
+}
+
+/* มือถือ */
+
+@media(max-width:600px){
+
+    #loginPage{
+        padding:15px 10px;
+        align-items:flex-start;
+    }
+
+    .school-header{
+        padding:20px;
+        border-radius:28px;
+    }
+
+    .school-top{
+        gap:12px;
+    }
+
+    .school-logo{
+        width:80px;
+        height:80px;
+        min-width:80px;
+    }
+
+    .school-title h1{
+        font-size:30px;
+    }
+
+    .school-title h2{
+        font-size:13px;
+    }
+
+    .school-title p{
+        font-size:11px;
+    }
+
+    .department-box{
+        padding:14px;
+    }
+
+    .department-box strong{
+        font-size:18px;
+    }
+
+    .login-card{
+        padding:25px 18px;
+        border-radius:28px;
+    }
+
+    .login-heading h2{
+        font-size:24px;
+    }
+
+    .input-box{
+        min-height:62px;
+    }
+
+    .login-button{
+        min-height:62px;
+        font-size:19px;
+    }
+}
 
 .login-box{
 
