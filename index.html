@@ -2228,71 +2228,162 @@ status:"มา"
 
 // บันทึกการเข้าเรียน
 
+// =====================================
+// บันทึกการเข้าเรียน
+// =====================================
 
-async function saveAttendance(){
+async function saveAttendance() {
 
+    // ---------------------------------
+    // รับวันที่
+    // ---------------------------------
 
-
-const date =
-
-document.getElementById(
-"attendanceDate"
-).value;
-
-
-
-for(let student of attendanceData){
-
-
-
-let status =
-
-document.getElementById(
-
-"status_"+student.id
-
-).value;
+    const date =
+        document.getElementById(
+            "attendanceDate"
+        ).value;
 
 
+    // ---------------------------------
+    // ตรวจสอบวันที่
+    // ---------------------------------
 
-await supabaseClient
+    if (!date) {
 
-.from("attendance")
+        alert(
+            "กรุณาเลือกวันที่ก่อนบันทึก"
+        );
 
-.insert([{
+        return;
 
-
-student_id:
-
-student.id,
-
-
-date:
-
-date,
+    }
 
 
-status:
+    // ---------------------------------
+    // ตรวจสอบ Supabase
+    // ---------------------------------
 
-status
+    if (!supabaseClient) {
 
+        alert(
+            "ยังไม่ได้เชื่อมต่อ Supabase"
+        );
 
+        return;
 
-}]);
-
-
-
-}
-
-
-
-alert(
-"บันทึกการเข้าเรียนเรียบร้อย"
-);
+    }
 
 
+    // ---------------------------------
+    // ตรวจสอบว่ามีนักเรียนหรือไม่
+    // ---------------------------------
 
-}
+    if (
+        !attendanceData ||
+        attendanceData.length === 0
+    ) {
+
+        alert(
+            "กรุณาโหลดรายชื่อนักเรียนก่อน"
+        );
+
+        return;
+
+    }
+
+
+    // ---------------------------------
+    // วนบันทึกนักเรียนทีละคน
+    // ---------------------------------
+
+    for (
+        let student of attendanceData
+    ) {
+
+
+        // -----------------------------
+        // ดึงสถานะ
+        // -----------------------------
+
+        const status =
+            document.getElementById(
+                "status_" + student.id
+            ).value;
+
+
+        // -----------------------------
+        // ดึงเวลาเข้าเรียน
+        // -----------------------------
+
+        const time =
+            document.getElementById(
+                "time_" + student.id
+            ).value;
+
+
+        // -----------------------------
+        // บันทึกลง Supabase
+        // -----------------------------
+
+        const {
+            error
+        } = await supabaseClient
+
+            .from("attendance")
+
+            .insert([{
+
+                student_id:
+                    student.id,
+
+                date:
+                    date,
+
+                check_in_time:
+                    time || null,
+
+                status:
+                    status
+
+            }]);
+
+
+        // -----------------------------
+        // ตรวจสอบข้อผิดพลาด
+        // -----------------------------
+
+        if (error) {
+
+            console.error(error);
+
+            alert(
+                "บันทึกข้อมูลไม่สำเร็จ\n\n" +
+                error.message
+            );
+
+            return;
+
+        }
+
+    }
+
+
+    // ---------------------------------
+    // แจ้งเตือนเมื่อบันทึกสำเร็จ
+    // ---------------------------------
+
+    alert(
+        "✅ บันทึกการเข้าเรียนเรียบร้อยแล้ว"
+    );
+
+
+    // ---------------------------------
+    // อัปเดต Dashboard
+    // ---------------------------------
+
+    loadDashboard();
+
+} 
 // ==========================================
 // SHOW ATTENDANCE REPORT
 // ==========================================
