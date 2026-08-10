@@ -2129,7 +2129,67 @@ document.getElementById(
 
 
 
-table.innerHTML="";
+table.innerHTML += `
+
+<tr>
+
+    <td>
+        ${student.student_id}
+    </td>
+
+    <td>
+        ${student.fullname}
+    </td>
+
+    <td>
+        ${student.class || "-"}
+    </td>
+
+    <td>
+
+        <input
+            type="time"
+            id="time_${student.student_id}"
+            style="
+                padding:8px;
+                width:130px;
+            "
+        >
+
+    </td>
+
+    <td>
+
+        <select
+            id="status_${student.student_id}"
+            style="
+                padding:8px;
+            "
+        >
+
+            <option value="มา">
+                มา
+            </option>
+
+            <option value="สาย">
+                สาย
+            </option>
+
+            <option value="ขาด">
+                ขาด
+            </option>
+
+            <option value="ลา">
+                ลา
+            </option>
+
+        </select>
+
+    </td>
+
+</tr>
+
+`;
 
 
 
