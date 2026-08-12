@@ -10,15 +10,7 @@ content="width=device-width, initial-scale=1.0">
 
 <title>Student System5/1</title>
 
-<!-- ==============================
-     SUPABASE
-================================ -->
-
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- ==============================
-     CHART
-================================ -->
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -32,28 +24,17 @@ content="width=device-width, initial-scale=1.0">
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:
-    Tahoma,
-    Arial,
-    sans-serif;
+    font-family:Tahoma,Arial,sans-serif;
 }
 
 body{
-
     background:#f1f5f9;
-
     color:#1e293b;
-
     min-height:100vh;
-
 }
 
-button,
-input,
-select{
-
+button,input,select,textarea{
     font-family:inherit;
-
 }
 
 /* =========================================================
@@ -61,17 +42,11 @@ select{
 ========================================================= */
 
 #loginPage{
-
     min-height:100vh;
-
     display:flex;
-
     justify-content:center;
-
     align-items:center;
-
     padding:20px;
-
     background:
     linear-gradient(
         135deg,
@@ -79,23 +54,14 @@ select{
         #b8b9f0,
         #8dd9ee
     );
-
 }
 
 .login-wrapper{
-
     width:100%;
-
     max-width:680px;
-
 }
 
-/* =========================================================
-   SCHOOL HEADER
-========================================================= */
-
 .school-header{
-
     background:
     linear-gradient(
         135deg,
@@ -103,389 +69,211 @@ select{
         #2497e8,
         #4cc8e9
     );
-
     color:white;
-
     padding:30px;
-
     border-radius:35px;
-
     margin-bottom:25px;
-
-    box-shadow:
-    0 10px 30px
-    rgba(0,0,0,.15);
-
+    box-shadow:0 10px 30px rgba(0,0,0,.15);
 }
 
 .school-top{
-
     display:flex;
-
     align-items:center;
-
     gap:20px;
-
 }
 
 .school-logo{
-
     width:110px;
-
     height:110px;
-
     min-width:110px;
-
     background:white;
-
     border-radius:50%;
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     overflow:hidden;
-
 }
 
 .school-logo img{
-
     width:90%;
-
     height:90%;
-
     object-fit:contain;
-
 }
 
 .school-title h1{
-
     font-size:42px;
-
     font-weight:900;
-
 }
 
 .school-title h1 span{
-
     color:#ff4fc3;
-
 }
 
 .school-title h2{
-
     font-size:18px;
-
     margin-top:5px;
-
 }
 
 .school-title p{
-
     font-size:15px;
-
     margin-top:5px;
-
     font-weight:bold;
-
 }
 
-/* =========================================================
-   DEPARTMENT
-========================================================= */
-
 .department-box{
-
     display:flex;
-
     align-items:center;
-
     gap:15px;
-
     margin-top:25px;
-
     padding:18px;
-
     border-radius:22px;
-
-    background:
-    rgba(255,255,255,.13);
-
-    border:
-    1px solid
-    rgba(255,255,255,.3);
-
+    background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.3);
 }
 
 .department-icon{
-
     width:60px;
-
     height:60px;
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     border-radius:18px;
-
-    background:
-    rgba(255,255,255,.15);
-
+    background:rgba(255,255,255,.15);
     font-size:30px;
-
 }
 
 .department-box small{
-
     display:block;
-
     font-size:14px;
-
 }
 
 .department-box strong{
-
     display:block;
-
     font-size:22px;
-
 }
 
-/* =========================================================
-   LOGIN CARD
-========================================================= */
-
 .login-card{
-
     background:
     linear-gradient(
         145deg,
         #f8eaff,
         #eee5f8
     );
-
     padding:35px;
-
     border-radius:35px;
-
-    box-shadow:
-    0 10px 30px
-    rgba(0,0,0,.12);
-
+    box-shadow:0 10px 30px rgba(0,0,0,.12);
 }
 
 .login-heading{
-
     display:flex;
-
     align-items:center;
-
     gap:15px;
-
     margin-bottom:30px;
-
 }
 
 .login-icon{
-
     width:65px;
-
     height:65px;
-
     display:flex;
-
     align-items:center;
-
     justify-content:center;
-
     border-radius:20px;
-
     background:#e2e5ff;
-
     font-size:30px;
-
 }
 
 .login-small{
-
     color:#5964dc;
-
     font-size:16px;
-
     font-weight:bold;
-
 }
 
 .login-heading h2{
-
     color:#162c55;
-
     font-size:28px;
-
 }
 
-/* =========================================================
-   INPUT
-========================================================= */
-
 .form-group{
-
     margin-bottom:20px;
-
 }
 
 .form-group label{
-
     display:block;
-
     margin-bottom:8px;
-
     font-size:17px;
-
     font-weight:bold;
-
     color:#274263;
-
 }
 
 .input-box{
-
     display:flex;
-
     align-items:center;
-
     min-height:64px;
-
     padding:0 15px;
-
     border-radius:20px;
-
     background:#edf2fc;
-
-    border:
-    1px solid
-    #bdcce3;
-
+    border:1px solid #bdcce3;
 }
 
 .input-icon{
-
     width:40px;
-
     font-size:23px;
-
     text-align:center;
-
 }
 
 .input-box input{
-
     flex:1;
-
     border:0;
-
     outline:0;
-
     background:transparent;
-
     font-size:17px;
-
     padding:10px;
-
 }
 
 .password-toggle{
-
     border:0;
-
     background:transparent;
-
     font-size:20px;
-
     cursor:pointer;
-
 }
-
-/* =========================================================
-   ROLE
-========================================================= */
 
 .role-select{
-
     width:100%;
-
     padding:14px;
-
     border-radius:15px;
-
-    border:
-    1px solid
-    #bdcce3;
-
+    border:1px solid #bdcce3;
     background:white;
-
     margin-bottom:20px;
-
     font-size:16px;
-
 }
 
-/* =========================================================
-   LOGIN BUTTON
-========================================================= */
-
 .login-button{
-
     width:100%;
-
     min-height:64px;
-
     border:0;
-
     border-radius:20px;
-
     background:
     linear-gradient(
         100deg,
         #2468ed,
         #4e9be9
     );
-
     color:white;
-
     font-size:20px;
-
     font-weight:bold;
-
     cursor:pointer;
-
-    box-shadow:
-    0 8px 20px
-    rgba(36,104,237,.25);
-
+    box-shadow:0 8px 20px rgba(36,104,237,.25);
 }
 
 .login-button:hover{
-
     transform:translateY(-2px);
-
 }
 
 .login-message{
-
     text-align:center;
-
     margin-top:15px;
-
     color:#d32f2f;
-
     min-height:24px;
-
 }
 
 /* =========================================================
@@ -493,9 +281,7 @@ select{
 ========================================================= */
 
 #systemPage{
-
     display:none;
-
 }
 
 /* =========================================================
@@ -503,79 +289,49 @@ select{
 ========================================================= */
 
 .sidebar{
-
     position:fixed;
-
     left:0;
-
     top:0;
-
     width:250px;
-
     height:100vh;
-
     background:
     linear-gradient(
         180deg,
         #1565c0,
         #0d47a1
     );
-
     color:white;
-
     padding:20px;
-
     overflow-y:auto;
-
 }
 
 .sidebar-title{
-
     text-align:center;
-
     margin-bottom:8px;
-
     font-size:24px;
-
 }
 
 .sidebar-subtitle{
-
     text-align:center;
-
     font-size:13px;
-
     opacity:.8;
-
     margin-bottom:25px;
-
 }
 
 .menu{
-
     list-style:none;
-
 }
 
 .menu li{
-
     padding:14px;
-
     cursor:pointer;
-
     border-radius:10px;
-
     margin-bottom:6px;
-
     transition:.2s;
-
 }
 
 .menu li:hover{
-
-    background:
-    rgba(255,255,255,.15);
-
+    background:rgba(255,255,255,.15);
 }
 
 /* =========================================================
@@ -583,19 +339,13 @@ select{
 ========================================================= */
 
 .content{
-
     margin-left:250px;
-
     padding:30px;
-
     min-height:100vh;
-
 }
 
 .page-title{
-
     margin-bottom:20px;
-
 }
 
 /* =========================================================
@@ -603,47 +353,30 @@ select{
 ========================================================= */
 
 .cards{
-
     display:grid;
-
     grid-template-columns:
     repeat(
         auto-fit,
         minmax(190px,1fr)
     );
-
     gap:20px;
-
 }
 
 .card{
-
     background:white;
-
     padding:20px;
-
     border-radius:15px;
-
-    box-shadow:
-    0 5px 15px
-    rgba(0,0,0,.08);
-
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
 }
 
 .card h3{
-
     color:#1565c0;
-
     margin-bottom:10px;
-
 }
 
 .card-number{
-
     font-size:34px;
-
     font-weight:bold;
-
 }
 
 /* =========================================================
@@ -651,51 +384,41 @@ select{
 ========================================================= */
 
 .btn{
-
     border:0;
-
     padding:11px 18px;
-
     border-radius:9px;
-
     background:#1565c0;
-
     color:white;
-
     cursor:pointer;
-
     font-size:15px;
-
 }
 
 .btn:hover{
-
     background:#0d47a1;
-
 }
 
 .btn-danger{
-
     background:#dc2626;
-
 }
 
 .btn-danger:hover{
-
     background:#991b1b;
-
 }
 
 .btn-success{
-
     background:#16a34a;
-
 }
 
 .btn-warning{
-
     background:#d97706;
+}
 
+.btn-info{
+    background:#0284c7;
+}
+
+.btn-secondary{
+    background:#64748b;
 }
 
 /* =========================================================
@@ -703,46 +426,29 @@ select{
 ========================================================= */
 
 .table-wrapper{
-
     width:100%;
-
     overflow-x:auto;
-
 }
 
 table{
-
     width:100%;
-
     border-collapse:collapse;
-
     min-width:650px;
-
 }
 
-th,
-td{
-
+th,td{
     padding:11px;
-
     border:1px solid #ddd;
-
     text-align:left;
-
 }
 
 th{
-
     background:#e8f1ff;
-
     color:#164e87;
-
 }
 
 tr:nth-child(even){
-
     background:#fafafa;
-
 }
 
 /* =========================================================
@@ -750,39 +456,30 @@ tr:nth-child(even){
 ========================================================= */
 
 .form-grid{
-
     display:grid;
-
     grid-template-columns:
     repeat(
         auto-fit,
         minmax(180px,1fr)
     );
-
     gap:12px;
-
 }
 
 .form-control{
-
     width:100%;
-
     padding:12px;
-
-    border:
-    1px solid
-    #cbd5e1;
-
+    border:1px solid #cbd5e1;
     border-radius:9px;
-
     outline:none;
-
 }
 
 .form-control:focus{
-
     border-color:#1565c0;
+}
 
+textarea.form-control{
+    min-height:110px;
+    resize:vertical;
 }
 
 /* =========================================================
@@ -790,57 +487,56 @@ tr:nth-child(even){
 ========================================================= */
 
 .badge{
-
     display:inline-block;
-
     padding:5px 10px;
-
     border-radius:20px;
-
     font-size:13px;
-
     font-weight:bold;
-
 }
 
 .badge-zero{
-
     background:#fee2e2;
-
     color:#991b1b;
-
 }
 
 .badge-r{
-
     background:#fef3c7;
-
     color:#92400e;
-
 }
 
 .badge-ms{
-
     background:#dbeafe;
-
     color:#1e40af;
-
 }
 
 .badge-mp{
-
     background:#ede9fe;
-
     color:#5b21b6;
-
 }
 
 .badge-ok{
-
     background:#dcfce7;
-
     color:#166534;
+}
 
+.badge-pending{
+    background:#fee2e2;
+    color:#991b1b;
+}
+
+.badge-submitted{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.badge-late{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.badge-notchecked{
+    background:#e2e8f0;
+    color:#475569;
 }
 
 /* =========================================================
@@ -848,13 +544,9 @@ tr:nth-child(even){
 ========================================================= */
 
 .status-select{
-
     padding:8px;
-
     border-radius:8px;
-
     border:1px solid #ccc;
-
 }
 
 /* =========================================================
@@ -862,59 +554,93 @@ tr:nth-child(even){
 ========================================================= */
 
 .page-section{
-
     display:none;
-
 }
 
 .page-section.active{
-
     display:block;
-
 }
 
 /* =========================================================
-   STUDENT PROFILE
+   PROFILE
 ========================================================= */
 
 .profile-box{
-
     display:grid;
-
     grid-template-columns:
     repeat(
         auto-fit,
         minmax(180px,1fr)
     );
-
     gap:15px;
-
 }
 
 .profile-item{
-
     background:#f8fafc;
-
     padding:15px;
-
     border-radius:12px;
-
 }
 
 .profile-item small{
-
     color:#64748b;
-
 }
 
 .profile-item strong{
-
     display:block;
-
     margin-top:5px;
-
     font-size:18px;
+}
 
+/* =========================================================
+   ASSIGNMENT
+========================================================= */
+
+.assignment-grid{
+    display:grid;
+    grid-template-columns:
+    repeat(
+        auto-fit,
+        minmax(250px,1fr)
+    );
+    gap:20px;
+}
+
+.assignment-card{
+    background:white;
+    padding:20px;
+    border-radius:16px;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
+    border-left:5px solid #1565c0;
+}
+
+.assignment-card h3{
+    color:#164e87;
+    margin-bottom:10px;
+}
+
+.assignment-subject{
+    color:#64748b;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.assignment-description{
+    color:#475569;
+    line-height:1.6;
+    margin:12px 0;
+}
+
+.assignment-due{
+    padding:10px;
+    background:#f8fafc;
+    border-radius:9px;
+    margin-bottom:12px;
+}
+
+.assignment-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
 }
 
 /* =========================================================
@@ -922,13 +648,9 @@ tr:nth-child(even){
 ========================================================= */
 
 .empty{
-
     text-align:center;
-
     padding:30px;
-
     color:#64748b;
-
 }
 
 /* =========================================================
@@ -938,67 +660,44 @@ tr:nth-child(even){
 @media(max-width:800px){
 
     .sidebar{
-
         position:relative;
-
         width:100%;
-
         height:auto;
-
     }
 
     .content{
-
         margin-left:0;
-
         padding:15px;
-
     }
 
     .school-top{
-
         gap:12px;
-
     }
 
     .school-header{
-
         padding:20px;
-
     }
 
     .school-logo{
-
         width:80px;
-
         height:80px;
-
         min-width:80px;
-
     }
 
     .school-title h1{
-
         font-size:29px;
-
     }
 
     .school-title h2{
-
         font-size:12px;
-
     }
 
     .school-title p{
-
         font-size:10px;
-
     }
 
     .login-card{
-
         padding:25px 18px;
-
     }
 
 }
@@ -1009,7 +708,6 @@ tr:nth-child(even){
 
 <body>
 
-
 <!-- ========================================================
      LOGIN PAGE
 ========================================================= -->
@@ -1017,7 +715,6 @@ tr:nth-child(even){
 <section id="loginPage">
 
 <div class="login-wrapper">
-
 
 <div class="school-header">
 
@@ -1051,7 +748,6 @@ Student<span> System5/1</span>
 
 </div>
 
-
 <div class="department-box">
 
 <div class="department-icon">
@@ -1073,7 +769,6 @@ Student<span> System5/1</span>
 </div>
 
 </div>
-
 
 <div class="login-card">
 
@@ -1097,7 +792,6 @@ LOGIN
 
 </div>
 
-
 <div class="form-group">
 
 <label>
@@ -1119,7 +813,6 @@ placeholder="อีเมลหรือบัญชีผู้ใช้"
 </div>
 
 </div>
-
 
 <div class="form-group">
 
@@ -1151,7 +844,6 @@ onclick="togglePassword()"
 
 </div>
 
-
 <label>
 ประเภทผู้ใช้งาน
 </label>
@@ -1171,7 +863,6 @@ class="role-select"
 
 </select>
 
-
 <button
 class="login-button"
 onclick="login()"
@@ -1181,12 +872,10 @@ onclick="login()"
 
 </button>
 
-
 <p
 id="loginMessage"
 class="login-message"
 ></p>
-
 
 </div>
 
@@ -1194,17 +883,11 @@ class="login-message"
 
 </section>
 
-
 <!-- ========================================================
      SYSTEM PAGE
 ========================================================= -->
 
 <section id="systemPage">
-
-
-<!-- ========================================================
-     SIDEBAR
-========================================================= -->
 
 <div class="sidebar">
 
@@ -1219,6 +902,7 @@ class="sidebar-subtitle"
 กำลังโหลด...
 </p>
 
+<!-- TEACHER MENU -->
 
 <ul
 id="teacherMenu"
@@ -1242,6 +926,10 @@ style="display:none;"
 ⚠️ 0 / ร / มส. / มผ.
 </li>
 
+<li onclick="showSection('teacherAssignments')">
+📚 งานที่มอบหมาย
+</li>
+
 <li onclick="showSection('teacherReport')">
 📊 รายงาน
 </li>
@@ -1252,6 +940,7 @@ style="display:none;"
 
 </ul>
 
+<!-- STUDENT MENU -->
 
 <ul
 id="studentMenu"
@@ -1275,6 +964,10 @@ style="display:none;"
 ⚠️ สถานะ 0 / ร / มส. / มผ.
 </li>
 
+<li onclick="showSection('studentAssignments')">
+📚 งานของฉัน
+</li>
+
 <li onclick="logout()">
 🚪 ออกจากระบบ
 </li>
@@ -1283,13 +976,7 @@ style="display:none;"
 
 </div>
 
-
-<!-- ========================================================
-     CONTENT
-========================================================= -->
-
 <div class="content">
-
 
 <!-- ========================================================
      TEACHER DASHBOARD
@@ -1321,7 +1008,6 @@ class="card-number"
 
 </div>
 
-
 <div class="card">
 
 <h3>
@@ -1337,7 +1023,6 @@ class="card-number"
 
 </div>
 
-
 <div class="card">
 
 <h3>
@@ -1352,7 +1037,6 @@ class="card-number"
 </div>
 
 </div>
-
 
 <div class="card">
 
@@ -1371,9 +1055,24 @@ class="card-number"
 
 </div>
 
-
 <br>
 
+<div class="card">
+
+<h3>
+📚 งานที่ยังไม่ส่ง
+</h3>
+
+<div
+id="teacherPendingAssignments"
+class="card-number"
+>
+0
+</div>
+
+</div>
+
+<br>
 
 <div class="card">
 
@@ -1387,7 +1086,6 @@ class="card-number"
 
 </div>
 
-
 <!-- ========================================================
      TEACHER STUDENTS
 ========================================================= -->
@@ -1400,7 +1098,6 @@ class="page-section"
 <h1 class="page-title">
 👨‍🎓 จัดการข้อมูลนักเรียน
 </h1>
-
 
 <div class="card">
 
@@ -1451,9 +1148,7 @@ onclick="addStudent()"
 
 </div>
 
-
 <br>
-
 
 <div class="card">
 
@@ -1480,37 +1175,18 @@ oninput="filterStudents()"
 
 <tr>
 
-<th>
-ลำดับ
-</th>
-
-<th>
-รหัส
-</th>
-
-<th>
-ชื่อ
-</th>
-
-<th>
-ห้อง
-</th>
-
-<th>
-GPA
-</th>
-
-<th>
-จัดการ
-</th>
+<th>ลำดับ</th>
+<th>รหัส</th>
+<th>ชื่อ</th>
+<th>ห้อง</th>
+<th>GPA</th>
+<th>จัดการ</th>
 
 </tr>
 
 </thead>
 
-<tbody
-id="studentTable"
->
+<tbody id="studentTable">
 </tbody>
 
 </table>
@@ -1520,7 +1196,6 @@ id="studentTable"
 </div>
 
 </div>
-
 
 <!-- ========================================================
      TEACHER ATTENDANCE
@@ -1534,7 +1209,6 @@ class="page-section"
 <h1 class="page-title">
 📋 เช็กชื่อเข้าเรียน
 </h1>
-
 
 <div class="card">
 
@@ -1561,9 +1235,7 @@ onclick="loadAttendanceStudents()"
 
 </div>
 
-
 <br>
-
 
 <div class="card">
 
@@ -1581,37 +1253,18 @@ onclick="loadAttendanceStudents()"
 
 <tr>
 
-<th>
-ลำดับ
-</th>
-
-<th>
-รหัส
-</th>
-
-<th>
-ชื่อ
-</th>
-
-<th>
-ห้อง
-</th>
-
-<th>
-เวลา
-</th>
-
-<th>
-สถานะ
-</th>
+<th>ลำดับ</th>
+<th>รหัส</th>
+<th>ชื่อ</th>
+<th>ห้อง</th>
+<th>เวลา</th>
+<th>สถานะ</th>
 
 </tr>
 
 </thead>
 
-<tbody
-id="attendanceTable"
->
+<tbody id="attendanceTable">
 </tbody>
 
 </table>
@@ -1631,7 +1284,6 @@ onclick="saveAttendance()"
 
 </div>
 
-
 <!-- ========================================================
      TEACHER STATUS
 ========================================================= -->
@@ -1644,7 +1296,6 @@ class="page-section"
 <h1 class="page-title">
 ⚠️ ตรวจสอบ 0 / ร / มส. / มผ.
 </h1>
-
 
 <div class="card">
 
@@ -1663,9 +1314,7 @@ oninput="filterStatusStudents()"
 
 </div>
 
-
 <br>
-
 
 <div class="card">
 
@@ -1677,45 +1326,20 @@ oninput="filterStatusStudents()"
 
 <tr>
 
-<th>
-ลำดับ
-</th>
-
-<th>
-รหัส
-</th>
-
-<th>
-ชื่อ
-</th>
-
-<th>
-ห้อง
-</th>
-
-<th>
-วิชา
-</th>
-
-<th>
-คะแนน
-</th>
-
-<th>
-สถานะ
-</th>
-
-<th>
-บันทึก
-</th>
+<th>ลำดับ</th>
+<th>รหัส</th>
+<th>ชื่อ</th>
+<th>ห้อง</th>
+<th>วิชา</th>
+<th>คะแนน</th>
+<th>สถานะ</th>
+<th>บันทึก</th>
 
 </tr>
 
 </thead>
 
-<tbody
-id="statusTable"
->
+<tbody id="statusTable">
 </tbody>
 
 </table>
@@ -1726,6 +1350,143 @@ id="statusTable"
 
 </div>
 
+<!-- ========================================================
+     TEACHER ASSIGNMENTS
+========================================================= -->
+
+<div
+id="teacherAssignments"
+class="page-section"
+>
+
+<h1 class="page-title">
+📚 ระบบงานที่มอบหมาย
+</h1>
+
+<div class="card">
+
+<h3>
+➕ สร้างงานใหม่
+</h3>
+
+<br>
+
+<div class="form-grid">
+
+<input
+id="assignmentSubject"
+class="form-control"
+placeholder="📚 ชื่อวิชา"
+>
+
+<input
+id="assignmentTitle"
+class="form-control"
+placeholder="📝 ชื่องาน"
+>
+
+<input
+id="assignmentDueDate"
+class="form-control"
+type="date"
+>
+
+</div>
+
+<br>
+
+<textarea
+id="assignmentDescription"
+class="form-control"
+placeholder="รายละเอียดงาน เช่น ให้นักเรียนทำแบบฝึกหัดหน้า 25-30"
+></textarea>
+
+<br>
+
+<button
+class="btn btn-success"
+onclick="createAssignment()"
+>
+➕ สร้างงาน
+</button>
+
+</div>
+
+<br>
+
+<div class="card">
+
+<h3>
+📋 งานทั้งหมด
+</h3>
+
+<br>
+
+<div
+id="teacherAssignmentsList"
+class="assignment-grid"
+>
+</div>
+
+</div>
+
+<br>
+
+<div class="card">
+
+<h3>
+👨‍🎓 ตรวจสอบการส่งงาน
+</h3>
+
+<br>
+
+<select
+id="assignmentCheckSelect"
+class="form-control"
+onchange="loadSubmissionReport()"
+>
+
+<option value="">
+-- เลือกงาน --
+</option>
+
+</select>
+
+<br>
+
+<div
+class="table-wrapper"
+>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>ลำดับ</th>
+<th>รหัส</th>
+<th>ชื่อ</th>
+<th>ห้อง</th>
+<th>สถานะ</th>
+<th>เวลาส่ง</th>
+
+</tr>
+
+</thead>
+
+<tbody
+id="submissionReportTable"
+>
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
 
 <!-- ========================================================
      TEACHER REPORT
@@ -1739,7 +1500,6 @@ class="page-section"
 <h1 class="page-title">
 📊 รายงาน
 </h1>
-
 
 <div class="card">
 
@@ -1766,9 +1526,7 @@ onclick="loadAttendanceReport()"
 
 </div>
 
-
 <br>
-
 
 <div class="cards">
 
@@ -1787,7 +1545,6 @@ class="card-number"
 
 </div>
 
-
 <div class="card">
 
 <h3>
@@ -1802,7 +1559,6 @@ class="card-number"
 </div>
 
 </div>
-
 
 <div class="card">
 
@@ -1819,7 +1575,6 @@ class="card-number"
 
 </div>
 
-
 <div class="card">
 
 <h3>
@@ -1834,7 +1589,6 @@ class="card-number"
 </div>
 
 </div>
-
 
 <div class="card">
 
@@ -1853,9 +1607,7 @@ class="card-number"
 
 </div>
 
-
 <br>
-
 
 <div class="card">
 
@@ -1873,37 +1625,18 @@ class="card-number"
 
 <tr>
 
-<th>
-ลำดับ
-</th>
-
-<th>
-รหัส
-</th>
-
-<th>
-ชื่อ
-</th>
-
-<th>
-ห้อง
-</th>
-
-<th>
-เวลา
-</th>
-
-<th>
-สถานะ
-</th>
+<th>ลำดับ</th>
+<th>รหัส</th>
+<th>ชื่อ</th>
+<th>ห้อง</th>
+<th>เวลา</th>
+<th>สถานะ</th>
 
 </tr>
 
 </thead>
 
-<tbody
-id="attendanceReportTable"
->
+<tbody id="attendanceReportTable">
 </tbody>
 
 </table>
@@ -1913,7 +1646,6 @@ id="attendanceReportTable"
 </div>
 
 </div>
-
 
 <!-- ========================================================
      STUDENT DASHBOARD
@@ -1927,7 +1659,6 @@ class="page-section"
 <h1 class="page-title">
 🏠 หน้าหลักนักเรียน
 </h1>
-
 
 <div class="card">
 
@@ -1945,9 +1676,7 @@ class="profile-box"
 
 </div>
 
-
 <br>
-
 
 <div class="cards">
 
@@ -1966,7 +1695,6 @@ class="card-number"
 
 </div>
 
-
 <div class="card">
 
 <h3>
@@ -1981,7 +1709,6 @@ class="card-number"
 </div>
 
 </div>
-
 
 <div class="card">
 
@@ -1998,7 +1725,6 @@ class="card-number"
 
 </div>
 
-
 <div class="card">
 
 <h3>
@@ -2013,7 +1739,6 @@ class="card-number"
 </div>
 
 </div>
-
 
 <div class="card">
 
@@ -2034,7 +1759,6 @@ class="card-number"
 
 </div>
 
-
 <!-- ========================================================
      STUDENT GRADES
 ========================================================= -->
@@ -2048,7 +1772,6 @@ class="page-section"
 📚 ผลการเรียน
 </h1>
 
-
 <div class="card">
 
 <div class="table-wrapper">
@@ -2059,33 +1782,17 @@ class="page-section"
 
 <tr>
 
-<th>
-ลำดับ
-</th>
-
-<th>
-วิชา
-</th>
-
-<th>
-คะแนน
-</th>
-
-<th>
-เกรด
-</th>
-
-<th>
-สถานะ
-</th>
+<th>ลำดับ</th>
+<th>วิชา</th>
+<th>คะแนน</th>
+<th>เกรด</th>
+<th>สถานะ</th>
 
 </tr>
 
 </thead>
 
-<tbody
-id="myGradesTable"
->
+<tbody id="myGradesTable">
 </tbody>
 
 </table>
@@ -2095,7 +1802,6 @@ id="myGradesTable"
 </div>
 
 </div>
-
 
 <!-- ========================================================
      STUDENT ATTENDANCE
@@ -2110,14 +1816,11 @@ class="page-section"
 📋 ประวัติการเข้าเรียน
 </h1>
 
-
 <div class="cards">
 
 <div class="card">
 
-<h3>
-🟢 มา
-</h3>
+<h3>🟢 มา</h3>
 
 <div
 id="myPresent"
@@ -2128,12 +1831,9 @@ class="card-number"
 
 </div>
 
-
 <div class="card">
 
-<h3>
-🟡 สาย
-</h3>
+<h3>🟡 สาย</h3>
 
 <div
 id="myLate"
@@ -2144,12 +1844,9 @@ class="card-number"
 
 </div>
 
-
 <div class="card">
 
-<h3>
-🔴 ขาด
-</h3>
+<h3>🔴 ขาด</h3>
 
 <div
 id="myAbsent"
@@ -2160,12 +1857,9 @@ class="card-number"
 
 </div>
 
-
 <div class="card">
 
-<h3>
-🔵 ลา
-</h3>
+<h3>🔵 ลา</h3>
 
 <div
 id="myLeave"
@@ -2178,9 +1872,7 @@ class="card-number"
 
 </div>
 
-
 <br>
-
 
 <div class="card">
 
@@ -2198,25 +1890,15 @@ class="card-number"
 
 <tr>
 
-<th>
-วันที่
-</th>
-
-<th>
-เวลา
-</th>
-
-<th>
-สถานะ
-</th>
+<th>วันที่</th>
+<th>เวลา</th>
+<th>สถานะ</th>
 
 </tr>
 
 </thead>
 
-<tbody
-id="myAttendanceTable"
->
+<tbody id="myAttendanceTable">
 </tbody>
 
 </table>
@@ -2226,7 +1908,6 @@ id="myAttendanceTable"
 </div>
 
 </div>
-
 
 <!-- ========================================================
      STUDENT STATUS
@@ -2241,14 +1922,11 @@ class="page-section"
 ⚠️ สถานะผลการเรียน
 </h1>
 
-
 <div class="cards">
 
 <div class="card">
 
-<h3>
-ติด 0
-</h3>
+<h3>ติด 0</h3>
 
 <div
 id="studentStatusZero"
@@ -2259,12 +1937,9 @@ class="card-number"
 
 </div>
 
-
 <div class="card">
 
-<h3>
-ติด ร
-</h3>
+<h3>ติด ร</h3>
 
 <div
 id="studentStatusR"
@@ -2275,12 +1950,9 @@ class="card-number"
 
 </div>
 
-
 <div class="card">
 
-<h3>
-ติด มส.
-</h3>
+<h3>ติด มส.</h3>
 
 <div
 id="studentStatusMS"
@@ -2291,12 +1963,9 @@ class="card-number"
 
 </div>
 
-
 <div class="card">
 
-<h3>
-ติด มผ.
-</h3>
+<h3>ติด มผ.</h3>
 
 <div
 id="studentStatusMP"
@@ -2309,9 +1978,7 @@ class="card-number"
 
 </div>
 
-
 <br>
-
 
 <div class="card">
 
@@ -2329,25 +1996,15 @@ class="card-number"
 
 <tr>
 
-<th>
-วิชา
-</th>
-
-<th>
-คะแนน
-</th>
-
-<th>
-สถานะ
-</th>
+<th>วิชา</th>
+<th>คะแนน</th>
+<th>สถานะ</th>
 
 </tr>
 
 </thead>
 
-<tbody
-id="myStatusTable"
->
+<tbody id="myStatusTable">
 </tbody>
 
 </table>
@@ -2358,11 +2015,96 @@ id="myStatusTable"
 
 </div>
 
+<!-- ========================================================
+     STUDENT ASSIGNMENTS
+========================================================= -->
+
+<div
+id="studentAssignments"
+class="page-section"
+>
+
+<h1 class="page-title">
+📚 งานของฉัน
+</h1>
+
+<div class="cards">
+
+<div class="card">
+
+<h3>
+📋 งานทั้งหมด
+</h3>
+
+<div
+id="studentAssignmentTotal"
+class="card-number"
+>
+0
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>
+🔴 ยังไม่ส่ง
+</h3>
+
+<div
+id="studentAssignmentPending"
+class="card-number"
+>
+0
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>
+🟢 ส่งแล้ว
+</h3>
+
+<div
+id="studentAssignmentSubmitted"
+class="card-number"
+>
+0
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>
+⏰ เกินกำหนด
+</h3>
+
+<div
+id="studentAssignmentLate"
+class="card-number"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+<br>
+
+<div
+id="studentAssignmentsList"
+class="assignment-grid"
+>
+</div>
+
+</div>
 
 </div>
 
 </section>
-
 
 <script>
 
@@ -2374,7 +2116,7 @@ const SUPABASE_URL =
 "https://yhbuatktksavohtyzarr.supabase.co";
 
 const SUPABASE_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloYnVhdGt0a3Nhdm9odHl6YXJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyMDU0NjMsImV4cCI6MjEwMDc4MTQ2M30.vLBkYxdhxma9tnWcrqSvPVwHR3pAhPBI4AxuAIP3JII";
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFub24iLCJpYXQiOjE3ODUyMDU0NjMsImV4cCI6MjEwMDc4MTQ2M30.vLBkYxdhxma9tnWcrqSvPVwHR3pAhPBI4AxuAIP3JII";
 
 const supabaseClient =
 supabase.createClient(
@@ -2382,23 +2124,16 @@ supabase.createClient(
     SUPABASE_KEY
 );
 
-
 /* =========================================================
    GLOBAL VARIABLES
 ========================================================= */
 
 let currentUser = null;
-
 let currentStudent = null;
-
 let studentsCache = [];
-
 let statusStudentsCache = [];
-
 let attendanceData = [];
-
 let teacherChart = null;
-
 
 /* =========================================================
    LOGIN
@@ -2407,13 +2142,16 @@ let teacherChart = null;
 async function login(){
 
     const loginValue =
-        document.getElementById("email").value.trim();
+        document.getElementById("email")
+        .value.trim();
 
     const password =
-        document.getElementById("password").value;
+        document.getElementById("password")
+        .value;
 
     const selectedRole =
-        document.getElementById("role").value;
+        document.getElementById("role")
+        .value;
 
     const message =
         document.getElementById("loginMessage");
@@ -2426,59 +2164,36 @@ async function login(){
             "กรุณากรอกบัญชีผู้ใช้และรหัสผ่าน";
 
         return;
-
     }
 
     try{
-
-        /*
-         * Supabase Auth ใช้อีเมล
-         *
-         * ถ้าผู้ใช้กรอกเลขนักเรียน
-         * ระบบจะค้นหาอีเมลใน students ก่อน
-         */
 
         let email = loginValue;
 
         if(!loginValue.includes("@")){
 
-            const {
-                data,
-                error
-            } = await supabaseClient
+            const {data,error} =
+                await supabaseClient
                 .from("students")
                 .select("email")
-                .eq(
-                    "student_id",
-                    loginValue
-                )
+                .eq("student_id",loginValue)
                 .maybeSingle();
 
             if(error){
-
                 console.error(error);
-
             }
 
             if(data && data.email){
-
                 email = data.email;
-
             }
-
         }
 
-        const {
-            data,
-            error
-        } =
-        await supabaseClient.auth.signInWithPassword({
-
-            email:email,
-
-            password:password
-
-        });
+        const {data,error} =
+            await supabaseClient.auth
+            .signInWithPassword({
+                email:email,
+                password:password
+            });
 
         if(error){
 
@@ -2488,31 +2203,18 @@ async function login(){
                 "บัญชีผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
 
             return;
-
         }
 
-        currentUser =
-            data.user;
+        currentUser = data.user;
 
-        /*
-         * role ที่เลือกในหน้า login
-         *
-         * สำหรับความปลอดภัยจริง
-         * ควรกำหนด role ใน Supabase
-         * user_metadata
-         */
-
-        let realRole =
-            selectedRole;
+        let realRole = selectedRole;
 
         if(
             currentUser.user_metadata &&
             currentUser.user_metadata.role
         ){
-
             realRole =
                 currentUser.user_metadata.role;
-
         }
 
         localStorage.setItem(
@@ -2534,11 +2236,8 @@ async function login(){
 
         message.textContent =
             "เกิดข้อผิดพลาดในการเข้าสู่ระบบ";
-
     }
-
 }
-
 
 /* =========================================================
    OPEN SYSTEM
@@ -2546,69 +2245,46 @@ async function login(){
 
 async function openSystem(role){
 
-    document.getElementById(
-        "loginPage"
-    ).style.display =
-        "none";
+    document.getElementById("loginPage")
+        .style.display = "none";
 
-    document.getElementById(
-        "systemPage"
-    ).style.display =
-        "block";
+    document.getElementById("systemPage")
+        .style.display = "block";
 
-    document.getElementById(
-        "teacherMenu"
-    ).style.display =
-        "none";
+    document.getElementById("teacherMenu")
+        .style.display = "none";
 
-    document.getElementById(
-        "studentMenu"
-    ).style.display =
-        "none";
+    document.getElementById("studentMenu")
+        .style.display = "none";
 
     hideAllSections();
 
     if(role === "teacher"){
 
-        document.getElementById(
-            "teacherMenu"
-        ).style.display =
-            "block";
+        document.getElementById("teacherMenu")
+            .style.display = "block";
 
-        document.getElementById(
-            "sidebarUser"
-        ).textContent =
-            "👨‍🏫 ระบบครู";
+        document.getElementById("sidebarUser")
+            .textContent = "👨‍🏫 ระบบครู";
 
-        showSection(
-            "teacherDashboard"
-        );
+        showSection("teacherDashboard");
 
         await loadTeacherDashboard();
 
     }
     else{
 
-        document.getElementById(
-            "studentMenu"
-        ).style.display =
-            "block";
+        document.getElementById("studentMenu")
+            .style.display = "block";
 
-        document.getElementById(
-            "sidebarUser"
-        ).textContent =
-            "👨‍🎓 ระบบนักเรียน";
+        document.getElementById("sidebarUser")
+            .textContent = "👨‍🎓 ระบบนักเรียน";
 
-        showSection(
-            "studentDashboard"
-        );
+        showSection("studentDashboard");
 
         await loadCurrentStudent();
-
     }
-
 }
-
 
 /* =========================================================
    SHOW SECTION
@@ -2619,58 +2295,45 @@ function showSection(sectionId){
     hideAllSections();
 
     const section =
-        document.getElementById(
-            sectionId
-        );
+        document.getElementById(sectionId);
 
     if(section){
-
-        section.classList.add(
-            "active"
-        );
-
+        section.classList.add("active");
     }
 
     if(sectionId === "teacherStudents"){
-
         loadStudents();
-
     }
 
     if(sectionId === "teacherStatus"){
-
         loadStatusStudents();
+    }
 
+    if(sectionId === "teacherAssignments"){
+        loadTeacherAssignments();
     }
 
     if(sectionId === "teacherReport"){
-
         setTodayReportDate();
-
         loadAttendanceReport();
-
     }
 
     if(sectionId === "studentGrades"){
-
         loadStudentGrades();
-
     }
 
     if(sectionId === "studentAttendance"){
-
         loadStudentAttendance();
-
     }
 
     if(sectionId === "studentStatus"){
-
         loadStudentStatuses();
-
     }
 
+    if(sectionId === "studentAssignments"){
+        loadStudentAssignments();
+    }
 }
-
 
 /* =========================================================
    HIDE ALL SECTIONS
@@ -2679,16 +2342,11 @@ function showSection(sectionId){
 function hideAllSections(){
 
     document
-        .querySelectorAll(".page-section")
-        .forEach(
-            section =>
-                section.classList.remove(
-                    "active"
-                )
-        );
-
+    .querySelectorAll(".page-section")
+    .forEach(section =>
+        section.classList.remove("active")
+    );
 }
-
 
 /* =========================================================
    LOGOUT
@@ -2699,33 +2357,20 @@ async function logout(){
     await supabaseClient.auth.signOut();
 
     currentUser = null;
-
     currentStudent = null;
 
-    localStorage.removeItem(
-        "userRole"
-    );
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userEmail");
 
-    localStorage.removeItem(
-        "userEmail"
-    );
+    document.getElementById("systemPage")
+        .style.display = "none";
 
-    document.getElementById(
-        "systemPage"
-    ).style.display =
-        "none";
+    document.getElementById("loginPage")
+        .style.display = "flex";
 
-    document.getElementById(
-        "loginPage"
-    ).style.display =
-        "flex";
-
-    document.getElementById(
-        "password"
-    ).value = "";
-
+    document.getElementById("password")
+        .value = "";
 }
-
 
 /* =========================================================
    PASSWORD
@@ -2734,28 +2379,13 @@ async function logout(){
 function togglePassword(){
 
     const password =
-        document.getElementById(
-            "password"
-        );
+        document.getElementById("password");
 
-    if(
-        password.type ===
-        "password"
-    ){
-
-        password.type =
-            "text";
-
-    }
-    else{
-
-        password.type =
-            "password";
-
-    }
-
+    password.type =
+        password.type === "password"
+        ? "text"
+        : "password";
 }
-
 
 /* =========================================================
    TEACHER DASHBOARD
@@ -2763,130 +2393,145 @@ function togglePassword(){
 
 async function loadTeacherDashboard(){
 
-    const {
-        data:students,
-        error
-    } =
-    await supabaseClient
+    const {data:students,error} =
+        await supabaseClient
         .from("students")
         .select("*");
 
     if(error){
-
         console.error(error);
-
         return;
-
     }
 
     const total =
-        students
-        ? students.length
-        : 0;
+        students ? students.length : 0;
 
     document.getElementById(
         "teacherTotalStudents"
-    ).textContent =
-        total;
+    ).textContent = total;
 
     let present = 0;
-
     let absent = 0;
-
     let problem = 0;
 
-    const today =
-        getToday();
+    const today = getToday();
 
-    const {
-        data:attendance
-    } =
-    await supabaseClient
+    const {data:attendance} =
+        await supabaseClient
         .from("attendance")
         .select("*")
-        .eq(
-            "date",
-            today
-        );
+        .eq("date",today);
 
-    (attendance || [])
-    .forEach(record => {
+    (attendance || []).forEach(record => {
 
-        if(record.status === "มา"){
-
+        if(record.status === "มา")
             present++;
 
-        }
-
-        if(record.status === "ขาด"){
-
+        if(record.status === "ขาด")
             absent++;
-
-        }
-
     });
 
-
-    /*
-     * นับนักเรียนที่มีสถานะผิดปกติ
-     */
-
-    const {
-        data:grades
-    } =
-    await supabaseClient
+    const {data:grades} =
+        await supabaseClient
         .from("grades")
         .select("*");
 
-    const problemStudents =
-        new Set();
+    const problemStudents = new Set();
 
-    (grades || [])
-    .forEach(grade => {
+    (grades || []).forEach(grade => {
 
         if(
             ["0","ร","มส.","มผ."]
-            .includes(
-                String(
-                    grade.status
-                )
-            )
+            .includes(String(grade.status))
         ){
-
             problemStudents.add(
                 grade.student_id
             );
-
         }
-
     });
 
-    problem =
-        problemStudents.size;
+    problem = problemStudents.size;
 
     document.getElementById(
         "teacherPresent"
-    ).textContent =
-        present;
+    ).textContent = present;
 
     document.getElementById(
         "teacherAbsent"
-    ).textContent =
-        absent;
+    ).textContent = absent;
 
     document.getElementById(
         "teacherProblem"
-    ).textContent =
-        problem;
+    ).textContent = problem;
+
+    await loadTeacherPendingCount();
 
     createTeacherChart(
         present,
         absent,
         problem
     );
-
 }
 
+/* =========================================================
+   TEACHER PENDING COUNT
+========================================================= */
+
+async function loadTeacherPendingCount(){
+
+    const {data:assignments,error} =
+        await supabaseClient
+        .from("assignments")
+        .select("*");
+
+    if(error){
+        console.error(error);
+        return;
+    }
+
+    const {data:students} =
+        await supabaseClient
+        .from("students")
+        .select("student_id");
+
+    const {data:submissions} =
+        await supabaseClient
+        .from("submissions")
+        .select("*");
+
+    let pending = 0;
+
+    (assignments || []).forEach(assignment => {
+
+        (students || []).forEach(student => {
+
+            const submitted =
+                (submissions || []).some(
+                    submission =>
+                        String(
+                            submission.assignment_id
+                        ) === String(assignment.id)
+                        &&
+                        String(
+                            submission.student_id
+                        ) === String(student.student_id)
+                );
+
+            if(!submitted){
+                pending++;
+            }
+        });
+    });
+
+    const element =
+        document.getElementById(
+            "teacherPendingAssignments"
+        );
+
+    if(element){
+        element.textContent = pending;
+    }
+}
 
 /* =========================================================
    TEACHER CHART
@@ -2899,31 +2544,21 @@ function createTeacherChart(
 ){
 
     const canvas =
-        document.getElementById(
-            "teacherChart"
-        );
+        document.getElementById("teacherChart");
 
-    if(!canvas){
-
+    if(!canvas)
         return;
 
-    }
-
-    if(teacherChart){
-
+    if(teacherChart)
         teacherChart.destroy();
-
-    }
 
     teacherChart =
         new Chart(
             canvas,
             {
-
                 type:"bar",
 
                 data:{
-
                     labels:[
                         "มาเรียน",
                         "ขาดเรียน",
@@ -2931,33 +2566,23 @@ function createTeacherChart(
                     ],
 
                     datasets:[{
-
-                        label:
-                            "จำนวน",
+                        label:"จำนวน",
 
                         data:[
                             present,
                             absent,
                             problem
                         ]
-
                     }]
-
                 },
 
                 options:{
-
                     responsive:true,
-
                     maintainAspectRatio:true
-
                 }
-
             }
         );
-
 }
-
 
 /* =========================================================
    STUDENTS
@@ -2965,18 +2590,13 @@ function createTeacherChart(
 
 async function loadStudents(){
 
-    const {
-        data,
-        error
-    } =
-    await supabaseClient
+    const {data,error} =
+        await supabaseClient
         .from("students")
         .select("*")
         .order(
             "student_id",
-            {
-                ascending:true
-            }
+            {ascending:true}
         );
 
     if(error){
@@ -2989,31 +2609,21 @@ async function loadStudents(){
         );
 
         return;
-
     }
 
-    studentsCache =
-        data || [];
+    studentsCache = data || [];
 
-    renderStudents(
-        studentsCache
-    );
-
+    renderStudents(studentsCache);
 }
-
 
 /* =========================================================
    RENDER STUDENTS
 ========================================================= */
 
-function renderStudents(
-    students
-){
+function renderStudents(students){
 
     const table =
-        document.getElementById(
-            "studentTable"
-        );
+        document.getElementById("studentTable");
 
     table.innerHTML = "";
 
@@ -3021,79 +2631,56 @@ function renderStudents(
 
         table.innerHTML = `
             <tr>
-                <td
-                    colspan="6"
-                    class="empty"
-                >
+                <td colspan="6" class="empty">
                     ยังไม่มีข้อมูลนักเรียน
                 </td>
             </tr>
         `;
 
         return;
-
     }
 
-    students.forEach(
-        (student,index) => {
+    students.forEach((student,index) => {
 
-            table.innerHTML += `
+        table.innerHTML += `
 
-                <tr>
+            <tr>
 
-                    <td>
-                        ${index + 1}
-                    </td>
+                <td>${index + 1}</td>
 
-                    <td>
-                        ${escapeHTML(
-                            student.student_id
-                        )}
-                    </td>
+                <td>
+                    ${escapeHTML(student.student_id)}
+                </td>
 
-                    <td>
-                        ${escapeHTML(
-                            student.fullname
-                        )}
-                    </td>
+                <td>
+                    ${escapeHTML(student.fullname)}
+                </td>
 
-                    <td>
-                        ${escapeHTML(
-                            student.class || "-"
-                        )}
-                    </td>
+                <td>
+                    ${escapeHTML(student.class || "-")}
+                </td>
 
-                    <td>
-                        ${
-                            student.gpa ??
-                            "-"
-                        }
-                    </td>
+                <td>
+                    ${student.gpa ?? "-"}
+                </td>
 
-                    <td>
+                <td>
 
-                        <button
-                            class="btn btn-danger"
-                            onclick="
-                                deleteStudent(
-                                    '${student.id}'
-                                )
-                            "
-                        >
-                            ลบ
-                        </button>
+                    <button
+                        class="btn btn-danger"
+                        onclick="
+                            deleteStudent('${student.id}')
+                        "
+                    >
+                        ลบ
+                    </button>
 
-                    </td>
+                </td>
 
-                </tr>
-
-            `;
-
-        }
-    );
-
+            </tr>
+        `;
+    });
 }
-
 
 /* =========================================================
    FILTER STUDENTS
@@ -3102,45 +2689,29 @@ function renderStudents(
 function filterStudents(){
 
     const keyword =
-        document.getElementById(
-            "studentSearch"
-        )
+        document.getElementById("studentSearch")
         .value
         .toLowerCase();
 
     const result =
-        studentsCache.filter(
-            student => {
+        studentsCache.filter(student => {
 
-                return (
+            return (
 
-                    String(
-                        student.student_id
-                    )
-                    .toLowerCase()
-                    .includes(
-                        keyword
-                    )
+                String(student.student_id)
+                .toLowerCase()
+                .includes(keyword)
 
-                    ||
+                ||
 
-                    String(
-                        student.fullname
-                    )
-                    .toLowerCase()
-                    .includes(
-                        keyword
-                    )
-
-                );
-
-            }
-        );
+                String(student.fullname)
+                .toLowerCase()
+                .includes(keyword)
+            );
+        });
 
     renderStudents(result);
-
 }
-
 
 /* =========================================================
    ADD STUDENT
@@ -3149,59 +2720,43 @@ function filterStudents(){
 async function addStudent(){
 
     const studentId =
-        document.getElementById(
-            "student_id"
-        ).value.trim();
+        document.getElementById("student_id")
+        .value.trim();
 
     const fullname =
-        document.getElementById(
-            "fullname"
-        ).value.trim();
+        document.getElementById("fullname")
+        .value.trim();
 
     const classroom =
-        document.getElementById(
-            "classroom"
-        ).value.trim();
+        document.getElementById("classroom")
+        .value.trim();
 
     const gpaValue =
-        document.getElementById(
-            "student_gpa"
-        ).value;
+        document.getElementById("student_gpa")
+        .value;
 
-    if(
-        !studentId ||
-        !fullname
-    ){
+    if(!studentId || !fullname){
 
-        alert(
-            "กรุณากรอกรหัสและชื่อ"
-        );
+        alert("กรุณากรอกรหัสและชื่อ");
 
         return;
-
     }
 
-    const {
-        error
-    } =
-    await supabaseClient
+    const {error} =
+        await supabaseClient
         .from("students")
         .insert([{
 
-            student_id:
-                studentId,
+            student_id:studentId,
 
-            fullname:
-                fullname,
+            fullname:fullname,
 
-            class:
-                classroom,
+            class:classroom,
 
             gpa:
                 gpaValue
                 ? Number(gpaValue)
                 : null
-
         }]);
 
     if(error){
@@ -3214,35 +2769,18 @@ async function addStudent(){
         );
 
         return;
-
     }
 
-    alert(
-        "เพิ่มนักเรียนสำเร็จ"
-    );
+    alert("เพิ่มนักเรียนสำเร็จ");
 
-    document.getElementById(
-        "student_id"
-    ).value = "";
-
-    document.getElementById(
-        "fullname"
-    ).value = "";
-
-    document.getElementById(
-        "classroom"
-    ).value = "";
-
-    document.getElementById(
-        "student_gpa"
-    ).value = "";
+    document.getElementById("student_id").value = "";
+    document.getElementById("fullname").value = "";
+    document.getElementById("classroom").value = "";
+    document.getElementById("student_gpa").value = "";
 
     loadStudents();
-
     loadTeacherDashboard();
-
 }
-
 
 /* =========================================================
    DELETE STUDENT
@@ -3250,31 +2788,19 @@ async function addStudent(){
 
 async function deleteStudent(id){
 
-    const confirmed =
-        confirm(
-            "ต้องการลบนักเรียนคนนี้หรือไม่?"
-        );
-
-    if(!confirmed){
-
+    if(!confirm(
+        "ต้องการลบนักเรียนคนนี้หรือไม่?"
+    )){
         return;
-
     }
 
-    const {
-        error
-    } =
-    await supabaseClient
+    const {error} =
+        await supabaseClient
         .from("students")
         .delete()
-        .eq(
-            "id",
-            id
-        );
+        .eq("id",id);
 
     if(error){
-
-        console.error(error);
 
         alert(
             "ลบข้อมูลไม่สำเร็จ\n" +
@@ -3282,19 +2808,13 @@ async function deleteStudent(id){
         );
 
         return;
-
     }
 
-    alert(
-        "ลบข้อมูลสำเร็จ"
-    );
+    alert("ลบข้อมูลสำเร็จ");
 
     loadStudents();
-
     loadTeacherDashboard();
-
 }
-
 
 /* =========================================================
    STATUS MANAGEMENT
@@ -3302,43 +2822,26 @@ async function deleteStudent(id){
 
 async function loadStatusStudents(){
 
-    const {
-        data:students,
-        error:studentError
-    } =
-    await supabaseClient
+    const {data:students,error:studentError} =
+        await supabaseClient
         .from("students")
         .select("*")
         .order(
             "student_id",
-            {
-                ascending:true
-            }
+            {ascending:true}
         );
 
     if(studentError){
-
-        console.error(
-            studentError
-        );
-
+        console.error(studentError);
         return;
-
     }
 
-    const {
-        data:grades,
-        error:gradeError
-    } =
-    await supabaseClient
+    const {data:grades,error:gradeError} =
+        await supabaseClient
         .from("grades")
         .select("*");
 
     if(gradeError){
-
-        console.error(
-            gradeError
-        );
 
         alert(
             "ไม่สามารถโหลดผลการเรียนได้\n" +
@@ -3346,19 +2849,15 @@ async function loadStatusStudents(){
         );
 
         return;
-
     }
 
-    statusStudentsCache =
-        students || [];
+    statusStudentsCache = students || [];
 
     renderStatusTable(
         students || [],
         grades || []
     );
-
 }
-
 
 /* =========================================================
    RENDER STATUS TABLE
@@ -3370,9 +2869,7 @@ function renderStatusTable(
 ){
 
     const table =
-        document.getElementById(
-            "statusTable"
-        );
+        document.getElementById("statusTable");
 
     table.innerHTML = "";
 
@@ -3383,56 +2880,38 @@ function renderStatusTable(
         const studentGrades =
             grades.filter(
                 grade =>
-                    String(
-                        grade.student_id
-                    ) ===
-                    String(
-                        student.student_id
-                    )
+                    String(grade.student_id) ===
+                    String(student.student_id)
             );
 
-        /*
-         * ถ้ายังไม่มีข้อมูลวิชา
-         * ให้สร้างช่องบันทึกเปล่า
-         */
-
-        if(
-            studentGrades.length === 0
-        ){
+        if(studentGrades.length === 0){
 
             number++;
 
             table.innerHTML +=
-            createStatusRow(
-                student,
-                null,
-                number
-            );
+                createStatusRow(
+                    student,
+                    null,
+                    number
+                );
 
         }
         else{
 
-            studentGrades.forEach(
-                grade => {
+            studentGrades.forEach(grade => {
 
-                    number++;
+                number++;
 
-                    table.innerHTML +=
+                table.innerHTML +=
                     createStatusRow(
                         student,
                         grade,
                         number
                     );
-
-                }
-            );
-
+            });
         }
-
     });
-
 }
-
 
 /* =========================================================
    CREATE STATUS ROW
@@ -3445,49 +2924,33 @@ function createStatusRow(
 ){
 
     const gradeId =
-        grade
-        ? grade.id
-        : "";
+        grade ? grade.id : "";
 
     const subject =
-        grade
-        ? grade.subject
-        : "";
+        grade ? grade.subject : "";
 
     const score =
-        grade
-        ? grade.score
-        : "";
+        grade ? grade.score : "";
 
     const status =
-        grade
-        ? grade.status
-        : "";
+        grade ? grade.status : "";
 
     return `
 
         <tr>
 
+            <td>${number}</td>
+
             <td>
-                ${number}
+                ${escapeHTML(student.student_id)}
             </td>
 
             <td>
-                ${escapeHTML(
-                    student.student_id
-                )}
+                ${escapeHTML(student.fullname)}
             </td>
 
             <td>
-                ${escapeHTML(
-                    student.fullname
-                )}
-            </td>
-
-            <td>
-                ${escapeHTML(
-                    student.class || "-"
-                )}
+                ${escapeHTML(student.class || "-")}
             </td>
 
             <td>
@@ -3495,9 +2958,7 @@ function createStatusRow(
                 <input
                     class="form-control"
                     id="subject_${student.student_id}_${gradeId}"
-                    value="${escapeAttribute(
-                        subject
-                    )}"
+                    value="${escapeAttribute(subject)}"
                     placeholder="ชื่อวิชา"
                 >
 
@@ -3523,51 +2984,31 @@ function createStatusRow(
                 >
 
                     <option value=""
-                        ${
-                            status === ""
-                            ? "selected"
-                            : ""
-                        }
+                        ${status === "" ? "selected" : ""}
                     >
                         ปกติ
                     </option>
 
                     <option value="0"
-                        ${
-                            status === "0"
-                            ? "selected"
-                            : ""
-                        }
+                        ${status === "0" ? "selected" : ""}
                     >
                         0
                     </option>
 
                     <option value="ร"
-                        ${
-                            status === "ร"
-                            ? "selected"
-                            : ""
-                        }
+                        ${status === "ร" ? "selected" : ""}
                     >
                         ร
                     </option>
 
                     <option value="มส."
-                        ${
-                            status === "มส."
-                            ? "selected"
-                            : ""
-                        }
+                        ${status === "มส." ? "selected" : ""}
                     >
                         มส.
                     </option>
 
                     <option value="มผ."
-                        ${
-                            status === "มผ."
-                            ? "selected"
-                            : ""
-                        }
+                        ${status === "มผ." ? "selected" : ""}
                     >
                         มผ.
                     </option>
@@ -3593,11 +3034,8 @@ function createStatusRow(
             </td>
 
         </tr>
-
     `;
-
 }
-
 
 /* =========================================================
    SAVE GRADE
@@ -3625,21 +3063,16 @@ async function saveGrade(
 
     if(!subject){
 
-        alert(
-            "กรุณากรอกชื่อวิชา"
-        );
+        alert("กรุณากรอกชื่อวิชา");
 
         return;
-
     }
 
     const payload = {
 
-        student_id:
-            studentId,
+        student_id:studentId,
 
-        subject:
-            subject,
+        subject:subject,
 
         score:
             score
@@ -3648,7 +3081,6 @@ async function saveGrade(
 
         status:
             status || null
-
     };
 
     let result;
@@ -3657,30 +3089,20 @@ async function saveGrade(
 
         result =
             await supabaseClient
-                .from("grades")
-                .update(payload)
-                .eq(
-                    "id",
-                    gradeId
-                );
+            .from("grades")
+            .update(payload)
+            .eq("id",gradeId);
 
     }
     else{
 
         result =
             await supabaseClient
-                .from("grades")
-                .insert([
-                    payload
-                ]);
-
+            .from("grades")
+            .insert([payload]);
     }
 
     if(result.error){
-
-        console.error(
-            result.error
-        );
 
         alert(
             "บันทึกไม่สำเร็จ\n" +
@@ -3688,7 +3110,6 @@ async function saveGrade(
         );
 
         return;
-
     }
 
     alert(
@@ -3696,11 +3117,8 @@ async function saveGrade(
     );
 
     loadStatusStudents();
-
     loadTeacherDashboard();
-
 }
-
 
 /* =========================================================
    FILTER STATUS
@@ -3709,59 +3127,39 @@ async function saveGrade(
 function filterStatusStudents(){
 
     const keyword =
-        document.getElementById(
-            "statusSearch"
-        )
+        document.getElementById("statusSearch")
         .value
         .toLowerCase();
 
     const filtered =
-        statusStudentsCache.filter(
-            student => {
+        statusStudentsCache.filter(student => {
 
-                return (
+            return (
 
-                    String(
-                        student.student_id
-                    )
-                    .toLowerCase()
-                    .includes(
-                        keyword
-                    )
+                String(student.student_id)
+                .toLowerCase()
+                .includes(keyword)
 
-                    ||
+                ||
 
-                    String(
-                        student.fullname
-                    )
-                    .toLowerCase()
-                    .includes(
-                        keyword
-                    )
-
-                );
-
-            }
-        );
-
-    /*
-     * โหลด grades ใหม่เพื่อ render
-     */
-
-    supabaseClient
-        .from("grades")
-        .select("*")
-        .then(result => {
-
-            renderStatusTable(
-                filtered,
-                result.data || []
+                String(student.fullname)
+                .toLowerCase()
+                .includes(keyword)
             );
-
         });
 
-}
+    supabaseClient
+    .from("grades")
+    .select("*")
+    .then(result => {
 
+        renderStatusTable(
+            filtered,
+            result.data || []
+        );
+
+    });
+}
 
 /* =========================================================
    ATTENDANCE
@@ -3770,76 +3168,45 @@ function filterStatusStudents(){
 async function loadAttendanceStudents(){
 
     const date =
-        document.getElementById(
-            "attendanceDate"
-        ).value;
+        document.getElementById("attendanceDate")
+        .value;
 
     if(!date){
 
-        alert(
-            "กรุณาเลือกวันที่"
-        );
+        alert("กรุณาเลือกวันที่");
 
         return;
-
     }
 
-    const {
-        data:students,
-        error:studentError
-    } =
-    await supabaseClient
+    const {data:students,error:studentError} =
+        await supabaseClient
         .from("students")
         .select("*")
         .order(
             "student_id",
-            {
-                ascending:true
-            }
+            {ascending:true}
         );
 
     if(studentError){
-
-        console.error(
-            studentError
-        );
 
         alert(
             "โหลดรายชื่อนักเรียนไม่สำเร็จ"
         );
 
         return;
-
     }
 
-    const {
-        data:existing,
-        error:attendanceError
-    } =
-    await supabaseClient
+    const {data:existing} =
+        await supabaseClient
         .from("attendance")
         .select("*")
-        .eq(
-            "date",
-            date
-        );
-
-    if(attendanceError){
-
-        console.error(
-            attendanceError
-        );
-
-    }
+        .eq("date",date);
 
     const map = {};
 
-    (existing || [])
-    .forEach(record => {
+    (existing || []).forEach(record => {
 
-        map[
-            record.student_id
-        ] = record;
+        map[record.student_id] = record;
 
     });
 
@@ -3852,55 +3219,38 @@ async function loadAttendanceStudents(){
 
     attendanceData = [];
 
-    (students || [])
-    .forEach(
+    (students || []).forEach(
         (student,index) => {
 
             const old =
-                map[
-                    student.student_id
-                ];
+                map[student.student_id];
 
             const oldStatus =
-                old
-                ? old.status
-                : "มา";
+                old ? old.status : "มา";
 
             const oldTime =
                 old
-                ? (
-                    old.check_in_time || ""
-                )
+                ? old.check_in_time || ""
                 : "";
 
-            attendanceData.push(
-                student
-            );
+            attendanceData.push(student);
 
             table.innerHTML += `
 
                 <tr>
 
+                    <td>${index + 1}</td>
+
                     <td>
-                        ${index + 1}
+                        ${escapeHTML(student.student_id)}
                     </td>
 
                     <td>
-                        ${escapeHTML(
-                            student.student_id
-                        )}
+                        ${escapeHTML(student.fullname)}
                     </td>
 
                     <td>
-                        ${escapeHTML(
-                            student.fullname
-                        )}
-                    </td>
-
-                    <td>
-                        ${escapeHTML(
-                            student.class || "-"
-                        )}
+                        ${escapeHTML(student.class || "-")}
                     </td>
 
                     <td>
@@ -3921,46 +3271,26 @@ async function loadAttendanceStudents(){
                             class="status-select"
                         >
 
-                            <option
-                                value="มา"
-                                ${
-                                    oldStatus === "มา"
-                                    ? "selected"
-                                    : ""
-                                }
+                            <option value="มา"
+                                ${oldStatus === "มา" ? "selected" : ""}
                             >
                                 🟢 มา
                             </option>
 
-                            <option
-                                value="สาย"
-                                ${
-                                    oldStatus === "สาย"
-                                    ? "selected"
-                                    : ""
-                                }
+                            <option value="สาย"
+                                ${oldStatus === "สาย" ? "selected" : ""}
                             >
                                 🟡 สาย
                             </option>
 
-                            <option
-                                value="ขาด"
-                                ${
-                                    oldStatus === "ขาด"
-                                    ? "selected"
-                                    : ""
-                                }
+                            <option value="ขาด"
+                                ${oldStatus === "ขาด" ? "selected" : ""}
                             >
                                 🔴 ขาด
                             </option>
 
-                            <option
-                                value="ลา"
-                                ${
-                                    oldStatus === "ลา"
-                                    ? "selected"
-                                    : ""
-                                }
+                            <option value="ลา"
+                                ${oldStatus === "ลา" ? "selected" : ""}
                             >
                                 🔵 ลา
                             </option>
@@ -3970,14 +3300,10 @@ async function loadAttendanceStudents(){
                     </td>
 
                 </tr>
-
             `;
-
         }
     );
-
 }
-
 
 /* =========================================================
    SAVE ATTENDANCE
@@ -3986,18 +3312,14 @@ async function loadAttendanceStudents(){
 async function saveAttendance(){
 
     const date =
-        document.getElementById(
-            "attendanceDate"
-        ).value;
+        document.getElementById("attendanceDate")
+        .value;
 
     if(!date){
 
-        alert(
-            "กรุณาเลือกวันที่"
-        );
+        alert("กรุณาเลือกวันที่");
 
         return;
-
     }
 
     if(
@@ -4010,55 +3332,34 @@ async function saveAttendance(){
         );
 
         return;
-
     }
 
-    for(
-        const student
-        of attendanceData
-    ){
+    for(const student of attendanceData){
 
         const status =
             document.getElementById(
-                "status_" +
-                student.student_id
+                "status_" + student.student_id
             ).value;
 
         const time =
             document.getElementById(
-                "time_" +
-                student.student_id
+                "time_" + student.student_id
             ).value;
 
-        /*
-         * ใช้ upsert
-         * เพื่อป้องกันการบันทึกวันเดิมซ้ำ
-         *
-         * ต้องสร้าง UNIQUE
-         * (student_id,date)
-         * ใน Supabase
-         */
-
-        const {
-            error
-        } =
-        await supabaseClient
+        const {error} =
+            await supabaseClient
             .from("attendance")
             .upsert(
                 [{
-
                     student_id:
                         student.student_id,
 
-                    date:
-                        date,
+                    date:date,
 
                     check_in_time:
                         time || null,
 
-                    status:
-                        status
-
+                    status:status
                 }],
                 {
                     onConflict:
@@ -4068,17 +3369,13 @@ async function saveAttendance(){
 
         if(error){
 
-            console.error(error);
-
             alert(
                 "บันทึกการเข้าเรียนไม่สำเร็จ\n" +
                 error.message
             );
 
             return;
-
         }
-
     }
 
     alert(
@@ -4086,9 +3383,7 @@ async function saveAttendance(){
     );
 
     loadTeacherDashboard();
-
 }
-
 
 /* =========================================================
    REPORT
@@ -4097,104 +3392,55 @@ async function saveAttendance(){
 function setTodayReportDate(){
 
     const date =
-        document.getElementById(
-            "reportDate"
-        );
+        document.getElementById("reportDate");
 
     if(date){
-
-        date.value =
-            getToday();
-
+        date.value = getToday();
     }
-
 }
-
-
-/* =========================================================
-   LOAD ATTENDANCE REPORT
-========================================================= */
 
 async function loadAttendanceReport(){
 
     const date =
-        document.getElementById(
-            "reportDate"
-        ).value;
+        document.getElementById("reportDate")
+        .value;
 
     if(!date){
 
-        alert(
-            "กรุณาเลือกวันที่"
-        );
+        alert("กรุณาเลือกวันที่");
 
         return;
-
     }
 
-    const {
-        data:students,
-        error:studentError
-    } =
-    await supabaseClient
+    const {data:students,error:studentError} =
+        await supabaseClient
         .from("students")
         .select("*")
         .order(
             "student_id",
-            {
-                ascending:true
-            }
+            {ascending:true}
         );
 
-    if(studentError){
-
-        console.error(
-            studentError
-        );
-
+    if(studentError)
         return;
 
-    }
-
-    const {
-        data:attendance,
-        error:attendanceError
-    } =
-    await supabaseClient
+    const {data:attendance} =
+        await supabaseClient
         .from("attendance")
         .select("*")
-        .eq(
-            "date",
-            date
-        );
-
-    if(attendanceError){
-
-        console.error(
-            attendanceError
-        );
-
-        return;
-
-    }
+        .eq("date",date);
 
     const map = {};
 
-    (attendance || [])
-    .forEach(record => {
+    (attendance || []).forEach(record => {
 
-        map[
-            record.student_id
-        ] = record;
+        map[record.student_id] = record;
 
     });
 
     let present = 0;
-
     let late = 0;
-
     let absent = 0;
-
     let leave = 0;
 
     const table =
@@ -4204,14 +3450,11 @@ async function loadAttendanceReport(){
 
     table.innerHTML = "";
 
-    (students || [])
-    .forEach(
+    (students || []).forEach(
         (student,index) => {
 
             const record =
-                map[
-                    student.student_id
-                ];
+                map[student.student_id];
 
             const status =
                 record
@@ -4220,10 +3463,7 @@ async function loadAttendanceReport(){
 
             const time =
                 record
-                ? (
-                    record.check_in_time
-                    || "-"
-                )
+                ? record.check_in_time || "-"
                 : "-";
 
             if(status === "มา")
@@ -4242,9 +3482,831 @@ async function loadAttendanceReport(){
 
                 <tr>
 
+                    <td>${index + 1}</td>
+
                     <td>
-                        ${index + 1}
+                        ${escapeHTML(student.student_id)}
                     </td>
+
+                    <td>
+                        ${escapeHTML(student.fullname)}
+                    </td>
+
+                    <td>
+                        ${escapeHTML(student.class || "-")}
+                    </td>
+
+                    <td>${time}</td>
+
+                    <td>
+                        ${formatAttendanceStatus(status)}
+                    </td>
+
+                </tr>
+            `;
+        }
+    );
+
+    document.getElementById(
+        "reportTotalStudents"
+    ).textContent =
+        students ? students.length : 0;
+
+    document.getElementById(
+        "reportPresent"
+    ).textContent = present;
+
+    document.getElementById(
+        "reportLate"
+    ).textContent = late;
+
+    document.getElementById(
+        "reportAbsent"
+    ).textContent = absent;
+
+    document.getElementById(
+        "reportLeave"
+    ).textContent = leave;
+}
+
+/* =========================================================
+   CURRENT STUDENT
+========================================================= */
+
+async function loadCurrentStudent(){
+
+    if(!currentUser)
+        return;
+
+    const {data,error} =
+        await supabaseClient
+        .from("students")
+        .select("*")
+        .eq(
+            "email",
+            currentUser.email
+        )
+        .maybeSingle();
+
+    if(error){
+        console.error(error);
+    }
+
+    if(data){
+
+        currentStudent = data;
+
+    }
+    else{
+
+        const studentId =
+            currentUser.user_metadata
+            ? currentUser.user_metadata.student_id
+            : null;
+
+        if(studentId){
+
+            const result =
+                await supabaseClient
+                .from("students")
+                .select("*")
+                .eq(
+                    "student_id",
+                    studentId
+                )
+                .maybeSingle();
+
+            currentStudent = result.data;
+        }
+    }
+
+    if(!currentStudent){
+
+        alert(
+            "ไม่พบข้อมูลนักเรียนที่ผูกกับบัญชีนี้"
+        );
+
+        return;
+    }
+
+    renderStudentProfile();
+
+    loadStudentGrades();
+    loadStudentAttendance();
+    loadStudentStatuses();
+    loadStudentAssignments();
+}
+
+/* =========================================================
+   STUDENT PROFILE
+========================================================= */
+
+function renderStudentProfile(){
+
+    const student = currentStudent;
+
+    document.getElementById(
+        "studentProfile"
+    ).innerHTML = `
+
+        <div class="profile-item">
+            <small>รหัสนักเรียน</small>
+            <strong>
+                ${escapeHTML(student.student_id)}
+            </strong>
+        </div>
+
+        <div class="profile-item">
+            <small>ชื่อ-นามสกุล</small>
+            <strong>
+                ${escapeHTML(student.fullname)}
+            </strong>
+        </div>
+
+        <div class="profile-item">
+            <small>ห้อง</small>
+            <strong>
+                ${escapeHTML(student.class || "-")}
+            </strong>
+        </div>
+
+        <div class="profile-item">
+            <small>GPA</small>
+            <strong>
+                ${student.gpa ?? "-"}
+            </strong>
+        </div>
+    `;
+
+    document.getElementById(
+        "myGPA"
+    ).textContent =
+        student.gpa ?? "-";
+}
+
+/* =========================================================
+   STUDENT GRADES
+========================================================= */
+
+async function loadStudentGrades(){
+
+    if(!currentStudent)
+        return;
+
+    const {data,error} =
+        await supabaseClient
+        .from("grades")
+        .select("*")
+        .eq(
+            "student_id",
+            currentStudent.student_id
+        )
+        .order(
+            "subject",
+            {ascending:true}
+        );
+
+    if(error){
+        console.error(error);
+        return;
+    }
+
+    const table =
+        document.getElementById(
+            "myGradesTable"
+        );
+
+    table.innerHTML = "";
+
+    if(!data || !data.length){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="5" class="empty">
+                    ยังไม่มีข้อมูลผลการเรียน
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    data.forEach((grade,index) => {
+
+        table.innerHTML += `
+
+            <tr>
+
+                <td>${index + 1}</td>
+
+                <td>
+                    ${escapeHTML(grade.subject)}
+                </td>
+
+                <td>
+                    ${grade.score ?? "-"}
+                </td>
+
+                <td>
+                    ${grade.grade ?? "-"}
+                </td>
+
+                <td>
+                    ${
+                        grade.status
+                        ? formatGradeStatus(
+                            grade.status
+                        )
+                        :
+                        '<span class="badge badge-ok">ปกติ</span>'
+                    }
+                </td>
+
+            </tr>
+        `;
+    });
+}
+
+/* =========================================================
+   STUDENT ATTENDANCE
+========================================================= */
+
+async function loadStudentAttendance(){
+
+    if(!currentStudent)
+        return;
+
+    const {data,error} =
+        await supabaseClient
+        .from("attendance")
+        .select("*")
+        .eq(
+            "student_id",
+            currentStudent.student_id
+        )
+        .order(
+            "date",
+            {ascending:false}
+        );
+
+    if(error){
+        console.error(error);
+        return;
+    }
+
+    let present = 0;
+    let late = 0;
+    let absent = 0;
+    let leave = 0;
+
+    const table =
+        document.getElementById(
+            "myAttendanceTable"
+        );
+
+    table.innerHTML = "";
+
+    (data || []).forEach(record => {
+
+        if(record.status === "มา")
+            present++;
+
+        if(record.status === "สาย")
+            late++;
+
+        if(record.status === "ขาด")
+            absent++;
+
+        if(record.status === "ลา")
+            leave++;
+
+        table.innerHTML += `
+
+            <tr>
+
+                <td>${record.date}</td>
+
+                <td>
+                    ${record.check_in_time || "-"}
+                </td>
+
+                <td>
+                    ${formatAttendanceStatus(
+                        record.status
+                    )}
+                </td>
+
+            </tr>
+        `;
+    });
+
+    document.getElementById("myPresent")
+        .textContent = present;
+
+    document.getElementById("myLate")
+        .textContent = late;
+
+    document.getElementById("myAbsent")
+        .textContent = absent;
+
+    document.getElementById("myLeave")
+        .textContent = leave;
+}
+
+/* =========================================================
+   STUDENT STATUS
+========================================================= */
+
+async function loadStudentStatuses(){
+
+    if(!currentStudent)
+        return;
+
+    const {data,error} =
+        await supabaseClient
+        .from("grades")
+        .select("*")
+        .eq(
+            "student_id",
+            currentStudent.student_id
+        );
+
+    if(error){
+        console.error(error);
+        return;
+    }
+
+    let zero = 0;
+    let r = 0;
+    let ms = 0;
+    let mp = 0;
+
+    const table =
+        document.getElementById(
+            "myStatusTable"
+        );
+
+    table.innerHTML = "";
+
+    (data || []).forEach(grade => {
+
+        if(String(grade.status) === "0")
+            zero++;
+
+        if(String(grade.status) === "ร")
+            r++;
+
+        if(String(grade.status) === "มส.")
+            ms++;
+
+        if(String(grade.status) === "มผ.")
+            mp++;
+
+        if(grade.status){
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>
+                        ${escapeHTML(grade.subject)}
+                    </td>
+
+                    <td>
+                        ${grade.score ?? "-"}
+                    </td>
+
+                    <td>
+                        ${formatGradeStatus(
+                            grade.status
+                        )}
+                    </td>
+
+                </tr>
+            `;
+        }
+    });
+
+    document.getElementById("myZero")
+        .textContent = zero;
+
+    document.getElementById("myR")
+        .textContent = r;
+
+    document.getElementById("myMS")
+        .textContent = ms;
+
+    document.getElementById("myMP")
+        .textContent = mp;
+
+    document.getElementById("studentStatusZero")
+        .textContent = zero;
+
+    document.getElementById("studentStatusR")
+        .textContent = r;
+
+    document.getElementById("studentStatusMS")
+        .textContent = ms;
+
+    document.getElementById("studentStatusMP")
+        .textContent = mp;
+}
+
+/* =========================================================
+   ASSIGNMENT - TEACHER
+========================================================= */
+
+async function createAssignment(){
+
+    const subject =
+        document.getElementById(
+            "assignmentSubject"
+        ).value.trim();
+
+    const title =
+        document.getElementById(
+            "assignmentTitle"
+        ).value.trim();
+
+    const dueDate =
+        document.getElementById(
+            "assignmentDueDate"
+        ).value;
+
+    const description =
+        document.getElementById(
+            "assignmentDescription"
+        ).value.trim();
+
+    if(!subject || !title || !dueDate){
+
+        alert(
+            "กรุณากรอกวิชา ชื่องาน และวันกำหนดส่ง"
+        );
+
+        return;
+    }
+
+    const {error} =
+        await supabaseClient
+        .from("assignments")
+        .insert([{
+
+            subject:subject,
+
+            title:title,
+
+            description:
+                description || null,
+
+            due_date:dueDate
+
+        }]);
+
+    if(error){
+
+        console.error(error);
+
+        alert(
+            "สร้างงานไม่สำเร็จ\n" +
+            error.message
+        );
+
+        return;
+    }
+
+    alert(
+        "✅ สร้างงานสำเร็จ"
+    );
+
+    document.getElementById(
+        "assignmentSubject"
+    ).value = "";
+
+    document.getElementById(
+        "assignmentTitle"
+    ).value = "";
+
+    document.getElementById(
+        "assignmentDueDate"
+    ).value = "";
+
+    document.getElementById(
+        "assignmentDescription"
+    ).value = "";
+
+    loadTeacherAssignments();
+}
+
+/* =========================================================
+   LOAD TEACHER ASSIGNMENTS
+========================================================= */
+
+async function loadTeacherAssignments(){
+
+    const {data,error} =
+        await supabaseClient
+        .from("assignments")
+        .select("*")
+        .order(
+            "due_date",
+            {ascending:true}
+        );
+
+    if(error){
+
+        console.error(error);
+
+        document.getElementById(
+            "teacherAssignmentsList"
+        ).innerHTML = `
+            <div class="empty">
+                ไม่สามารถโหลดรายการงานได้
+            </div>
+        `;
+
+        return;
+    }
+
+    const container =
+        document.getElementById(
+            "teacherAssignmentsList"
+        );
+
+    const select =
+        document.getElementById(
+            "assignmentCheckSelect"
+        );
+
+    container.innerHTML = "";
+
+    select.innerHTML = `
+        <option value="">
+            -- เลือกงาน --
+        </option>
+    `;
+
+    if(!data || !data.length){
+
+        container.innerHTML = `
+            <div class="empty">
+                ยังไม่มีงานที่สร้าง
+            </div>
+        `;
+
+        return;
+    }
+
+    data.forEach(assignment => {
+
+        const expired =
+            isPastDate(assignment.due_date);
+
+        container.innerHTML += `
+
+            <div class="assignment-card">
+
+                <div class="assignment-subject">
+                    📚 ${escapeHTML(
+                        assignment.subject
+                    )}
+                </div>
+
+                <h3>
+                    ${escapeHTML(
+                        assignment.title
+                    )}
+                </h3>
+
+                <div class="assignment-description">
+                    ${escapeHTML(
+                        assignment.description ||
+                        "ไม่มีรายละเอียด"
+                    )}
+                </div>
+
+                <div class="assignment-due">
+
+                    📅 กำหนดส่ง:
+                    <strong>
+                        ${assignment.due_date}
+                    </strong>
+
+                    <br>
+
+                    ${
+                        expired
+                        ? '<span class="badge badge-late">เลยกำหนด</span>'
+                        : '<span class="badge badge-ok">ยังไม่ถึงกำหนด</span>'
+                    }
+
+                </div>
+
+                <div class="assignment-actions">
+
+                    <button
+                        class="btn btn-info"
+                        onclick="
+                            selectAssignmentReport(
+                                '${assignment.id}'
+                            )
+                        "
+                    >
+                        👨‍🎓 ดูการส่ง
+                    </button>
+
+                    <button
+                        class="btn btn-danger"
+                        onclick="
+                            deleteAssignment(
+                                '${assignment.id}'
+                            )
+                        "
+                    >
+                        🗑️ ลบ
+                    </button>
+
+                </div>
+
+            </div>
+        `;
+
+        select.innerHTML += `
+
+            <option value="${assignment.id}">
+                ${escapeHTML(
+                    assignment.subject
+                )}
+                -
+                ${escapeHTML(
+                    assignment.title
+                )}
+            </option>
+        `;
+    });
+}
+
+/* =========================================================
+   SELECT ASSIGNMENT REPORT
+========================================================= */
+
+function selectAssignmentReport(id){
+
+    const select =
+        document.getElementById(
+            "assignmentCheckSelect"
+        );
+
+    select.value = id;
+
+    loadSubmissionReport();
+}
+
+/* =========================================================
+   DELETE ASSIGNMENT
+========================================================= */
+
+async function deleteAssignment(id){
+
+    if(!confirm(
+        "ต้องการลบงานนี้หรือไม่?\nข้อมูลการส่งงานของนักเรียนจะถูกลบด้วย"
+    )){
+        return;
+    }
+
+    const {error} =
+        await supabaseClient
+        .from("assignments")
+        .delete()
+        .eq("id",id);
+
+    if(error){
+
+        alert(
+            "ลบงานไม่สำเร็จ\n" +
+            error.message
+        );
+
+        return;
+    }
+
+    alert("ลบงานสำเร็จ");
+
+    loadTeacherAssignments();
+    loadTeacherDashboard();
+}
+
+/* =========================================================
+   SUBMISSION REPORT
+========================================================= */
+
+async function loadSubmissionReport(){
+
+    const assignmentId =
+        document.getElementById(
+            "assignmentCheckSelect"
+        ).value;
+
+    const table =
+        document.getElementById(
+            "submissionReportTable"
+        );
+
+    table.innerHTML = "";
+
+    if(!assignmentId){
+
+        table.innerHTML = `
+            <tr>
+                <td colspan="6" class="empty">
+                    กรุณาเลือกงาน
+                </td>
+            </tr>
+        `;
+
+        return;
+    }
+
+    const {data:students,error:studentError} =
+        await supabaseClient
+        .from("students")
+        .select("*")
+        .order(
+            "student_id",
+            {ascending:true}
+        );
+
+    if(studentError){
+
+        console.error(studentError);
+        return;
+    }
+
+    const {data:submissions,error:submissionError} =
+        await supabaseClient
+        .from("submissions")
+        .select("*")
+        .eq(
+            "assignment_id",
+            assignmentId
+        );
+
+    if(submissionError){
+
+        console.error(submissionError);
+
+        alert(
+            "โหลดข้อมูลการส่งงานไม่สำเร็จ\n" +
+            submissionError.message
+        );
+
+        return;
+    }
+
+    const map = {};
+
+    (submissions || []).forEach(submission => {
+
+        map[
+            submission.student_id
+        ] = submission;
+    });
+
+    (students || []).forEach(
+        (student,index) => {
+
+            const submission =
+                map[student.student_id];
+
+            let statusHTML = "";
+
+            let submittedTime = "-";
+
+            if(submission){
+
+                statusHTML =
+                    '<span class="badge badge-submitted">🟢 ส่งแล้ว</span>';
+
+                if(submission.submitted_at){
+
+                    submittedTime =
+                        formatDateTime(
+                            submission.submitted_at
+                        );
+                }
+
+            }
+            else{
+
+                statusHTML =
+                    '<span class="badge badge-pending">🔴 ยังไม่ส่ง</span>';
+            }
+
+            table.innerHTML += `
+
+                <tr>
+
+                    <td>${index + 1}</td>
 
                     <td>
                         ${escapeHTML(
@@ -4265,254 +4327,266 @@ async function loadAttendanceReport(){
                     </td>
 
                     <td>
-                        ${time}
+                        ${statusHTML}
                     </td>
 
                     <td>
-                        ${formatAttendanceStatus(
-                            status
-                        )}
+                        ${submittedTime}
                     </td>
 
                 </tr>
-
             `;
-
         }
     );
-
-    document.getElementById(
-        "reportTotalStudents"
-    ).textContent =
-        students
-        ? students.length
-        : 0;
-
-    document.getElementById(
-        "reportPresent"
-    ).textContent =
-        present;
-
-    document.getElementById(
-        "reportLate"
-    ).textContent =
-        late;
-
-    document.getElementById(
-        "reportAbsent"
-    ).textContent =
-        absent;
-
-    document.getElementById(
-        "reportLeave"
-    ).textContent =
-        leave;
-
 }
 
-
 /* =========================================================
-   CURRENT STUDENT
+   STUDENT ASSIGNMENTS
 ========================================================= */
 
-async function loadCurrentStudent(){
+async function loadStudentAssignments(){
 
-    if(!currentUser){
-
+    if(!currentStudent)
         return;
 
-    }
-
-    /*
-     * หา student จาก email
-     */
-
-    const {
-        data,
-        error
-    } =
-    await supabaseClient
-        .from("students")
+    const {data:assignments,error} =
+        await supabaseClient
+        .from("assignments")
         .select("*")
-        .eq(
-            "email",
-            currentUser.email
-        )
-        .maybeSingle();
+        .order(
+            "due_date",
+            {ascending:true}
+        );
 
     if(error){
 
         console.error(error);
 
+        return;
     }
 
-    if(data){
+    const {data:submissions} =
+        await supabaseClient
+        .from("submissions")
+        .select("*")
+        .eq(
+            "student_id",
+            currentStudent.student_id
+        );
 
-        currentStudent =
-            data;
+    const submissionMap = {};
 
-    }
-    else{
+    (submissions || []).forEach(submission => {
 
-        /*
-         * กรณีไม่ได้ผูก email
-         * ให้ลองใช้ student_id
-         * จาก metadata
-         */
+        submissionMap[
+            submission.assignment_id
+        ] = submission;
+    });
 
-        const studentId =
-            currentUser.user_metadata
-            ? currentUser.user_metadata.student_id
-            : null;
+    let total = 0;
+    let pending = 0;
+    let submitted = 0;
+    let late = 0;
 
-        if(studentId){
+    const container =
+        document.getElementById(
+            "studentAssignmentsList"
+        );
 
-            const result =
-                await supabaseClient
-                    .from("students")
-                    .select("*")
-                    .eq(
-                        "student_id",
-                        studentId
-                    )
-                    .maybeSingle();
+    container.innerHTML = "";
 
-            currentStudent =
-                result.data;
+    (assignments || []).forEach(assignment => {
+
+        total++;
+
+        const submission =
+            submissionMap[assignment.id];
+
+        const expired =
+            isPastDate(assignment.due_date);
+
+        let statusHTML = "";
+        let actionHTML = "";
+
+        if(submission){
+
+            submitted++;
+
+            statusHTML =
+                '<span class="badge badge-submitted">🟢 ส่งแล้ว</span>';
+
+            actionHTML = `
+
+                <button
+                    class="btn btn-secondary"
+                    disabled
+                >
+                    ✅ ส่งงานแล้ว
+                </button>
+            `;
 
         }
+        else if(expired){
 
+            late++;
+
+            statusHTML =
+                '<span class="badge badge-late">⏰ เกินกำหนด</span>';
+
+            actionHTML = `
+
+                <button
+                    class="btn btn-warning"
+                    onclick="
+                        submitAssignment(
+                            '${assignment.id}'
+                        )
+                    "
+                >
+                    📤 ส่งงานล่าช้า
+                </button>
+            `;
+
+        }
+        else{
+
+            pending++;
+
+            statusHTML =
+                '<span class="badge badge-pending">🔴 ยังไม่ส่ง</span>';
+
+            actionHTML = `
+
+                <button
+                    class="btn btn-success"
+                    onclick="
+                        submitAssignment(
+                            '${assignment.id}'
+                        )
+                    "
+                >
+                    📤 ส่งงาน
+                </button>
+            `;
+        }
+
+        container.innerHTML += `
+
+            <div class="assignment-card">
+
+                <div class="assignment-subject">
+                    📚 ${escapeHTML(
+                        assignment.subject
+                    )}
+                </div>
+
+                <h3>
+                    ${escapeHTML(
+                        assignment.title
+                    )}
+                </h3>
+
+                <div class="assignment-description">
+                    ${escapeHTML(
+                        assignment.description ||
+                        "ไม่มีรายละเอียด"
+                    )}
+                </div>
+
+                <div class="assignment-due">
+
+                    📅 กำหนดส่ง:
+                    <strong>
+                        ${assignment.due_date}
+                    </strong>
+
+                    <br><br>
+
+                    ${statusHTML}
+
+                </div>
+
+                <div class="assignment-actions">
+
+                    ${actionHTML}
+
+                </div>
+
+            </div>
+        `;
+    });
+
+    if(!assignments || !assignments.length){
+
+        container.innerHTML = `
+            <div class="empty">
+                🎉 ตอนนี้ยังไม่มีงานที่ได้รับมอบหมาย
+            </div>
+        `;
     }
+
+    document.getElementById(
+        "studentAssignmentTotal"
+    ).textContent = total;
+
+    document.getElementById(
+        "studentAssignmentPending"
+    ).textContent = pending;
+
+    document.getElementById(
+        "studentAssignmentSubmitted"
+    ).textContent = submitted;
+
+    document.getElementById(
+        "studentAssignmentLate"
+    ).textContent = late;
+}
+
+/* =========================================================
+   SUBMIT ASSIGNMENT
+========================================================= */
+
+async function submitAssignment(
+    assignmentId
+){
 
     if(!currentStudent){
 
         alert(
-            "ไม่พบข้อมูลนักเรียนที่ผูกกับบัญชีนี้"
+            "ไม่พบข้อมูลนักเรียน"
         );
 
         return;
-
     }
 
-    renderStudentProfile();
+    const confirmed =
+        confirm(
+            "ยืนยันการส่งงานนี้หรือไม่?"
+        );
 
-    loadStudentGrades();
-
-    loadStudentAttendance();
-
-    loadStudentStatuses();
-
-}
-
-
-/* =========================================================
-   STUDENT PROFILE
-========================================================= */
-
-function renderStudentProfile(){
-
-    const student =
-        currentStudent;
-
-    document.getElementById(
-        "studentProfile"
-    ).innerHTML = `
-
-        <div class="profile-item">
-
-            <small>
-                รหัสนักเรียน
-            </small>
-
-            <strong>
-                ${escapeHTML(
-                    student.student_id
-                )}
-            </strong>
-
-        </div>
-
-        <div class="profile-item">
-
-            <small>
-                ชื่อ-นามสกุล
-            </small>
-
-            <strong>
-                ${escapeHTML(
-                    student.fullname
-                )}
-            </strong>
-
-        </div>
-
-        <div class="profile-item">
-
-            <small>
-                ห้อง
-            </small>
-
-            <strong>
-                ${escapeHTML(
-                    student.class || "-"
-                )}
-            </strong>
-
-        </div>
-
-        <div class="profile-item">
-
-            <small>
-                GPA
-            </small>
-
-            <strong>
-                ${
-                    student.gpa ??
-                    "-"
-                }
-            </strong>
-
-        </div>
-
-    `;
-
-    document.getElementById(
-        "myGPA"
-    ).textContent =
-        student.gpa ??
-        "-";
-
-}
-
-
-/* =========================================================
-   STUDENT GRADES
-========================================================= */
-
-async function loadStudentGrades(){
-
-    if(!currentStudent){
-
+    if(!confirmed)
         return;
 
-    }
+    const {error} =
+        await supabaseClient
+        .from("submissions")
+        .upsert(
+            [{
+                assignment_id:
+                    assignmentId,
 
-    const {
-        data,
-        error
-    } =
-    await supabaseClient
-        .from("grades")
-        .select("*")
-        .eq(
-            "student_id",
-            currentStudent.student_id
-        )
-        .order(
-            "subject",
+                student_id:
+                    currentStudent.student_id,
+
+                submitted_at:
+                    new Date().toISOString(),
+
+                status:
+                    "ส่งแล้ว"
+            }],
             {
-                ascending:true
+                onConflict:
+                    "assignment_id,student_id"
             }
         );
 
@@ -4520,363 +4594,23 @@ async function loadStudentGrades(){
 
         console.error(error);
 
-        return;
-
-    }
-
-    const table =
-        document.getElementById(
-            "myGradesTable"
+        alert(
+            "ส่งงานไม่สำเร็จ\n" +
+            error.message
         );
 
-    table.innerHTML = "";
-
-    if(!data || !data.length){
-
-        table.innerHTML = `
-
-            <tr>
-
-                <td
-                    colspan="5"
-                    class="empty"
-                >
-                    ยังไม่มีข้อมูลผลการเรียน
-                </td>
-
-            </tr>
-
-        `;
-
         return;
-
     }
 
-    data.forEach(
-        (grade,index) => {
-
-            table.innerHTML += `
-
-                <tr>
-
-                    <td>
-                        ${index + 1}
-                    </td>
-
-                    <td>
-                        ${escapeHTML(
-                            grade.subject
-                        )}
-                    </td>
-
-                    <td>
-                        ${
-                            grade.score ??
-                            "-"
-                        }
-                    </td>
-
-                    <td>
-                        ${
-                            grade.grade ??
-                            "-"
-                        }
-                    </td>
-
-                    <td>
-                        ${
-                            grade.status
-                            ? formatGradeStatus(
-                                grade.status
-                            )
-                            : '<span class="badge badge-ok">ปกติ</span>'
-                        }
-                    </td>
-
-                </tr>
-
-            `;
-
-        }
+    alert(
+        "✅ ส่งงานเรียบร้อยแล้ว"
     );
 
+    loadStudentAssignments();
 }
 
-
 /* =========================================================
-   STUDENT ATTENDANCE
-========================================================= */
-
-async function loadStudentAttendance(){
-
-    if(!currentStudent){
-
-        return;
-
-    }
-
-    const {
-        data,
-        error
-    } =
-    await supabaseClient
-        .from("attendance")
-        .select("*")
-        .eq(
-            "student_id",
-            currentStudent.student_id
-        )
-        .order(
-            "date",
-            {
-                ascending:false
-            }
-        );
-
-    if(error){
-
-        console.error(error);
-
-        return;
-
-    }
-
-    let present = 0;
-
-    let late = 0;
-
-    let absent = 0;
-
-    let leave = 0;
-
-    const table =
-        document.getElementById(
-            "myAttendanceTable"
-        );
-
-    table.innerHTML = "";
-
-    (data || [])
-    .forEach(record => {
-
-        if(record.status === "มา")
-            present++;
-
-        if(record.status === "สาย")
-            late++;
-
-        if(record.status === "ขาด")
-            absent++;
-
-        if(record.status === "ลา")
-            leave++;
-
-        table.innerHTML += `
-
-            <tr>
-
-                <td>
-                    ${record.date}
-                </td>
-
-                <td>
-                    ${
-                        record.check_in_time
-                        || "-"
-                    }
-                </td>
-
-                <td>
-                    ${formatAttendanceStatus(
-                        record.status
-                    )}
-                </td>
-
-            </tr>
-
-        `;
-
-    });
-
-    document.getElementById(
-        "myPresent"
-    ).textContent =
-        present;
-
-    document.getElementById(
-        "myLate"
-    ).textContent =
-        late;
-
-    document.getElementById(
-        "myAbsent"
-    ).textContent =
-        absent;
-
-    document.getElementById(
-        "myLeave"
-    ).textContent =
-        leave;
-
-}
-
-
-/* =========================================================
-   STUDENT STATUS
-========================================================= */
-
-async function loadStudentStatuses(){
-
-    if(!currentStudent){
-
-        return;
-
-    }
-
-    const {
-        data,
-        error
-    } =
-    await supabaseClient
-        .from("grades")
-        .select("*")
-        .eq(
-            "student_id",
-            currentStudent.student_id
-        );
-
-    if(error){
-
-        console.error(error);
-
-        return;
-
-    }
-
-    let zero = 0;
-
-    let r = 0;
-
-    let ms = 0;
-
-    let mp = 0;
-
-    const table =
-        document.getElementById(
-            "myStatusTable"
-        );
-
-    table.innerHTML = "";
-
-    (data || [])
-    .forEach(grade => {
-
-        if(
-            String(
-                grade.status
-            ) === "0"
-        )
-            zero++;
-
-        if(
-            String(
-                grade.status
-            ) === "ร"
-        )
-            r++;
-
-        if(
-            String(
-                grade.status
-            ) === "มส."
-        )
-            ms++;
-
-        if(
-            String(
-                grade.status
-            ) === "มผ."
-        )
-            mp++;
-
-        if(grade.status){
-
-            table.innerHTML += `
-
-                <tr>
-
-                    <td>
-                        ${escapeHTML(
-                            grade.subject
-                        )}
-                    </td>
-
-                    <td>
-                        ${
-                            grade.score ??
-                            "-"
-                        }
-                    </td>
-
-                    <td>
-                        ${formatGradeStatus(
-                            grade.status
-                        )}
-                    </td>
-
-                </tr>
-
-            `;
-
-        }
-
-    });
-
-    document.getElementById(
-        "myZero"
-    ).textContent =
-        zero;
-
-    document.getElementById(
-        "myR"
-    ).textContent =
-        r;
-
-    document.getElementById(
-        "myMS"
-    ).textContent =
-        ms;
-
-    document.getElementById(
-        "myMP"
-    ).textContent =
-        mp;
-
-    document.getElementById(
-        "studentStatusZero"
-    ).textContent =
-        zero;
-
-    document.getElementById(
-        "studentStatusR"
-    ).textContent =
-        r;
-
-    document.getElementById(
-        "studentStatusMS"
-    ).textContent =
-        ms;
-
-    document.getElementById(
-        "studentStatusMP"
-    ).textContent =
-        mp;
-
-}
-
-
-/* =========================================================
-   FORMAT STATUS
+   FORMAT GRADE STATUS
 ========================================================= */
 
 function formatGradeStatus(status){
@@ -4888,7 +4622,6 @@ function formatGradeStatus(status){
                 ติด 0
             </span>
         `;
-
     }
 
     if(status === "ร"){
@@ -4898,7 +4631,6 @@ function formatGradeStatus(status){
                 ติด ร
             </span>
         `;
-
     }
 
     if(status === "มส."){
@@ -4908,7 +4640,6 @@ function formatGradeStatus(status){
                 ติด มส.
             </span>
         `;
-
     }
 
     if(status === "มผ."){
@@ -4918,7 +4649,6 @@ function formatGradeStatus(status){
                 ติด มผ.
             </span>
         `;
-
     }
 
     return `
@@ -4926,46 +4656,28 @@ function formatGradeStatus(status){
             ปกติ
         </span>
     `;
-
 }
-
 
 /* =========================================================
    FORMAT ATTENDANCE
 ========================================================= */
 
-function formatAttendanceStatus(
-    status
-){
+function formatAttendanceStatus(status){
 
-    if(status === "มา"){
-
+    if(status === "มา")
         return "🟢 มา";
 
-    }
-
-    if(status === "สาย"){
-
+    if(status === "สาย")
         return "🟡 สาย";
 
-    }
-
-    if(status === "ขาด"){
-
+    if(status === "ขาด")
         return "🔴 ขาด";
 
-    }
-
-    if(status === "ลา"){
-
+    if(status === "ลา")
         return "🔵 ลา";
 
-    }
-
     return "⚪ " + status;
-
 }
-
 
 /* =========================================================
    DATE
@@ -4973,8 +4685,7 @@ function formatAttendanceStatus(
 
 function getToday(){
 
-    const date =
-        new Date();
+    const date = new Date();
 
     const year =
         date.getFullYear();
@@ -4982,14 +4693,12 @@ function getToday(){
     const month =
         String(
             date.getMonth() + 1
-        )
-        .padStart(2,"0");
+        ).padStart(2,"0");
 
     const day =
         String(
             date.getDate()
-        )
-        .padStart(2,"0");
+        ).padStart(2,"0");
 
     return (
         year +
@@ -4998,9 +4707,35 @@ function getToday(){
         "-" +
         day
     );
-
 }
 
+function isPastDate(dateString){
+
+    if(!dateString)
+        return false;
+
+    return dateString < getToday();
+}
+
+function formatDateTime(value){
+
+    if(!value)
+        return "-";
+
+    const date =
+        new Date(value);
+
+    if(isNaN(date.getTime()))
+        return value;
+
+    return date.toLocaleString(
+        "th-TH",
+        {
+            dateStyle:"short",
+            timeStyle:"short"
+        }
+    );
+}
 
 /* =========================================================
    SECURITY HELPERS
@@ -5008,44 +4743,25 @@ function getToday(){
 
 function escapeHTML(value){
 
-    if(value === null ||
-       value === undefined){
-
+    if(
+        value === null ||
+        value === undefined
+    ){
         return "";
-
     }
 
     return String(value)
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-        .replace(
-            /</g,
-            "&lt;"
-        )
-        .replace(
-            />/g,
-            "&gt;"
-        )
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;")
+        .replace(/"/g,"&quot;")
+        .replace(/'/g,"&#039;");
 }
-
 
 function escapeAttribute(value){
 
     return escapeHTML(value);
-
 }
-
 
 /* =========================================================
    AUTO LOGIN
@@ -5055,10 +4771,8 @@ window.addEventListener(
     "load",
     async function(){
 
-        const {
-            data
-        } =
-        await supabaseClient
+        const {data} =
+            await supabaseClient
             .auth
             .getSession();
 
@@ -5078,12 +4792,9 @@ window.addEventListener(
                 "student";
 
             openSystem(role);
-
         }
-
     }
 );
-
 
 /* =========================================================
    AUTH STATE
@@ -5094,18 +4805,12 @@ supabaseClient
 .onAuthStateChange(
     (event,session) => {
 
-        if(
-            event ===
-            "SIGNED_OUT"
-        ){
+        if(event === "SIGNED_OUT"){
 
             currentUser = null;
-
         }
-
     }
 );
-
 
 /* =========================================================
    DEFAULT DATE
@@ -5124,7 +4829,6 @@ document.addEventListener(
 
             attendanceDate.value =
                 getToday();
-
         }
 
         const reportDate =
@@ -5136,9 +4840,7 @@ document.addEventListener(
 
             reportDate.value =
                 getToday();
-
         }
-
     }
 );
 
