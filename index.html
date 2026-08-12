@@ -1692,8 +1692,15 @@ async function loadTeacherAssignments() {
 
 async function loadTeacherSubmissions() {
     const table = document.getElementById("teacherSubmissionsList");
-    const { data: subs, error } = await supabaseClient.from("submissions").select("*").order("created_at", { ascending: false });
+    
+    // ดึงข้อมูลส่งงานเรียงตามเวลา submitted_at
+    const { data: subs, error } = await supabaseClient
+        .from("submissions")
+        .select("*")
+        .order("submitted_at", { ascending: false });
+        
     const { data: assigns } = await supabaseClient.from("assignments").select("*");
+    const { data: students } = await supabaseClient.from("students").select("*");
 
     if (error || !subs || subs.length === 0) {
         table.innerHTML = `<tr><td colspan="5" class="empty">ยังไม่มีการส่งงานจากนักเรียน</td></tr>`;
@@ -1703,16 +1710,24 @@ async function loadTeacherSubmissions() {
     const assignMap = {};
     (assigns || []).forEach(a => { assignMap[a.id] = a; });
 
+    const studentMap = {};
+    (students || []).forEach(s => { studentMap[s.student_id] = s.fullname; });
+
     table.innerHTML = "";
     subs.forEach(s => {
         const assign = assignMap[s.assignment_id];
         const assignInfo = assign ? `[${escapeHTML(assign.subject)}] ${escapeHTML(assign.title)}` : "งานที่ไม่ทราบชื่อ";
-        const url = s.work_url ? `<a href="${escapeAttribute(s.work_url)}" target="_blank" style="color:#1565c0; font-weight:bold;">🔗 เปิดดูผลงาน</a>` : "-";
+        
+        // รองรับทั้ง file_url และ work_url
+        const linkUrl = s.file_url || s.work_url;
+        const url = linkUrl ? `<a href="${escapeAttribute(linkUrl)}" target="_blank" style="color:#1565c0; font-weight:bold;">🔗 เปิดดูผลงาน</a>` : "-";
+        
+        const studentName = studentMap[s.student_id] || "-";
 
         table.innerHTML += `
             <tr>
                 <td>${escapeHTML(s.student_id)}</td>
-                <td>${escapeHTML(s.student_name || "-")}</td>
+                <td>${escapeHTML(studentName)}</td>
                 <td>${assignInfo}</td>
                 <td>${url}</td>
                 <td><span class="badge badge-ok">${escapeHTML(s.status || "ส่งแล้ว")}</span></td>
@@ -2028,12 +2043,13 @@ async function submitWork(assignmentId) {
     if (!urlInput) return alert("กรุณากรอกลิงก์งานก่อนกดส่ง");
     if (!currentStudent) return alert("ไม่พบข้อมูลนักเรียน");
 
+    // บันทึกลงคอลัมน์ file_url และ submitted_at ให้ตรงกับ Supabase
     const { error } = await supabaseClient.from("submissions").upsert([{
         assignment_id: assignmentId,
         student_id: currentStudent.student_id,
-        student_name: currentStudent.fullname,
-        work_url: urlInput,
-        status: "ส่งแล้ว"
+        file_url: urlInput,
+        status: "ส่งแล้ว",
+        submitted_at: new Date().toISOString()
     }], { onConflict: "assignment_id,student_id" });
 
     if (error) return alert("ส่งงานไม่สำเร็จ: " + error.message);
@@ -2041,6 +2057,7 @@ async function submitWork(assignmentId) {
     alert("✅ ส่งงานเรียบร้อยแล้ว!");
     loadStudentAssignments();
 }
+
 
 /* STUDENT QUIZZES */
 async function loadStudentQuizzes(){
