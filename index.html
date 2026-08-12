@@ -2115,8 +2115,8 @@ async function loadStudentQuizzes() {
     // ดึงข้อมูลแนวข้อสอบจากตาราง quizzes ใน Supabase
     const { data, error } = await supabaseClient
         .from("lesson_questions")
-        .select("*")
-        .order("created_at", { ascending: false });
+        .select("*");
+        
 
     if (error) {
         console.error("Error loading quizzes:", error.message);
