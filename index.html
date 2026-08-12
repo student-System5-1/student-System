@@ -2106,27 +2106,38 @@ async function submitWork(assignmentId) {
 
 
 /* STUDENT QUIZZES */
-async function loadStudentQuizzes(){
-    await loadQuizzesFromDB();
-    const table = document.getElementById("studentQuizTable");
-    table.innerHTML = "";
+async function loadStudentQuizzes() {
+    const tableBody = document.getElementById("studentQuizTable");
+    if (!tableBody) return;
 
-    if(!quizzesData.length){
-        table.innerHTML = `<tr><td colspan="4" class="empty">ยังไม่มีข้อมูลแนวข้อสอบ</td></tr>`;
+    // ดึงข้อมูลแนวข้อสอบจากตาราง quizzes ใน Supabase
+    const { data, error } = await supabaseClient
+        .from("quizzes")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error("Error loading quizzes:", error.message);
+        tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:red;">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>`;
         return;
     }
 
-    quizzesData.forEach(q => {
-        table.innerHTML += `
-            <tr>
-                <td>${escapeHTML(q.subject)}</td>
-                <td>${escapeHTML(q.title)}</td>
-                <td>${escapeHTML(q.question)}</td>
-                <td><details><summary>คลิกเพื่อดูเฉลย</summary>${escapeHTML(q.answer)}</details></td>
-            </tr>
-        `;
-    });
+    if (!data || data.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="4" class="empty" style="text-align:center;">ยังไม่มีข้อมูลแนวข้อสอบ</td></tr>`;
+        return;
+    }
+
+    // นำข้อมูลแนวข้อสอบมาสร้างเป็นแถวในตาราง
+    tableBody.innerHTML = data.map(q => `
+        <tr>
+            <td>${escapeHTML(q.subject || '-')}</td>
+            <td>${escapeHTML(q.title || '-')}</td>
+            <td>${escapeHTML(q.question || '-')}</td>
+            <td><details><summary>คลิกเพื่อเฉลย</summary>${escapeHTML(q.answer || '-')}</details></td>
+        </tr>
+    `).join("");
 }
+
 
 /* FORMATTERS & UTILS */
 function formatGradeStatus(status){
