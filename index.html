@@ -1946,7 +1946,9 @@ async function loadStudentLessonsOptions(){
         });
     } else {
         select.innerHTML = '<option value="">-- ยังไม่มีบทเรียนในระบบ --</option>';
-    }
+            
+    }     
+    if (typeof loadStudentQuizzes === "function") loadStudentQuizzes();
 }
 
 
