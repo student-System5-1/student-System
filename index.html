@@ -1591,25 +1591,41 @@ async function saveAttendance(){
 }
 
 /* LESSONS & QUIZZES */
-async function saveLesson(){
-    const subject = document.getElementById("lessonSubject").value.trim();
-    const title = document.getElementById("lessonTitle").value.trim();
-    const content = document.getElementById("lessonContent").value.trim();
+async function saveLesson() {
+    const subject = document.getElementById("lessonSubject")?.value.trim();
+    const title = document.getElementById("lessonTitle")?.value.trim();
+    const content = document.getElementById("lessonContent")?.value.trim();
 
-    if(!subject || !title || !content) return alert("กรุณากรอกข้อมูลให้ครบถ้วน");
-
-    const { error } = await supabaseClient.from("lessons").insert([{ subject, title, content }]);
-    if(error){
-        lessonsData.push({ id: Date.now(), subject, title, content });
-    } else {
-        await loadLessonsFromDB();
+    if (!subject || !title || !content) {
+        return alert("กรุณากรอกข้อมูลบทเรียนให้ครบทุกช่อง (ชื่อวิชา, ชื่อบทเรียน, เนื้อหา)");
     }
 
-    alert("บันทึกบทเรียนสำเร็จ!");
+    // ส่งข้อมูลเข้าตาราง lessons ใน Supabase
+    const { data, error } = await supabaseClient
+        .from("lessons")
+        .insert([{
+            subject: subject,
+            title: title,
+            content: content,
+            created_at: new Date().toISOString()
+        }]);
+
+    if (error) {
+        return alert("บันทึกบทเรียนไม่สำเร็จ: " + error.message);
+    }
+
+    alert("✅ บันทึกบทเรียนเรียบร้อยแล้ว!");
+
+    // ล้างค่าในช่องกรอก
     document.getElementById("lessonSubject").value = "";
     document.getElementById("lessonTitle").value = "";
     document.getElementById("lessonContent").value = "";
+
+    // โหลดข้อมูลบทเรียนใหม่
+    if (typeof loadLessonsFromDB === "function") loadLessonsFromDB();
+    if (typeof loadStudentLessonsOptions === "function") loadStudentLessonsOptions();
 }
+
 
 async function saveQuiz(){
     const subject = document.getElementById("quizSubject").value.trim();
