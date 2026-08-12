@@ -1,2369 +1,3 @@
-<!DOCTYPE html>
-<html lang="th">
-
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Student System5/1</title>
-
-<!-- ==============================
-     SUPABASE
-================================ -->
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<!-- ==============================
-     CHART
-================================ -->
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-
-/* =========================================================
-   RESET
-========================================================= */
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:
-    Tahoma,
-    Arial,
-    sans-serif;
-}
-
-body{
-
-    background:#f1f5f9;
-
-    color:#1e293b;
-
-    min-height:100vh;
-
-}
-
-button,
-input,
-select{
-
-    font-family:inherit;
-
-}
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-#loginPage{
-
-    min-height:100vh;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    padding:20px;
-
-    background:
-    linear-gradient(
-        135deg,
-        #d9a7f7,
-        #b8b9f0,
-        #8dd9ee
-    );
-
-}
-
-.login-wrapper{
-
-    width:100%;
-
-    max-width:680px;
-
-}
-
-/* =========================================================
-   SCHOOL HEADER
-========================================================= */
-
-.school-header{
-
-    background:
-    linear-gradient(
-        135deg,
-        #1769e0,
-        #2497e8,
-        #4cc8e9
-    );
-
-    color:white;
-
-    padding:30px;
-
-    border-radius:35px;
-
-    margin-bottom:25px;
-
-    box-shadow:
-    0 10px 30px
-    rgba(0,0,0,.15);
-
-}
-
-.school-top{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:20px;
-
-}
-
-.school-logo{
-
-    width:110px;
-
-    height:110px;
-
-    min-width:110px;
-
-    background:white;
-
-    border-radius:50%;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    overflow:hidden;
-
-}
-
-.school-logo img{
-
-    width:90%;
-
-    height:90%;
-
-    object-fit:contain;
-
-}
-
-.school-title h1{
-
-    font-size:42px;
-
-    font-weight:900;
-
-}
-
-.school-title h1 span{
-
-    color:#ff4fc3;
-
-}
-
-.school-title h2{
-
-    font-size:18px;
-
-    margin-top:5px;
-
-}
-
-.school-title p{
-
-    font-size:15px;
-
-    margin-top:5px;
-
-    font-weight:bold;
-
-}
-
-/* =========================================================
-   DEPARTMENT
-========================================================= */
-
-.department-box{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:15px;
-
-    margin-top:25px;
-
-    padding:18px;
-
-    border-radius:22px;
-
-    background:
-    rgba(255,255,255,.13);
-
-    border:
-    1px solid
-    rgba(255,255,255,.3);
-
-}
-
-.department-icon{
-
-    width:60px;
-
-    height:60px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    border-radius:18px;
-
-    background:
-    rgba(255,255,255,.15);
-
-    font-size:30px;
-
-}
-
-.department-box small{
-
-    display:block;
-
-    font-size:14px;
-
-}
-
-.department-box strong{
-
-    display:block;
-
-    font-size:22px;
-
-}
-
-/* =========================================================
-   LOGIN CARD
-========================================================= */
-
-.login-card{
-
-    background:
-    linear-gradient(
-        145deg,
-        #f8eaff,
-        #eee5f8
-    );
-
-    padding:35px;
-
-    border-radius:35px;
-
-    box-shadow:
-    0 10px 30px
-    rgba(0,0,0,.12);
-
-}
-
-.login-heading{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:15px;
-
-    margin-bottom:30px;
-
-}
-
-.login-icon{
-
-    width:65px;
-
-    height:65px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    border-radius:20px;
-
-    background:#e2e5ff;
-
-    font-size:30px;
-
-}
-
-.login-small{
-
-    color:#5964dc;
-
-    font-size:16px;
-
-    font-weight:bold;
-
-}
-
-.login-heading h2{
-
-    color:#162c55;
-
-    font-size:28px;
-
-}
-
-/* =========================================================
-   INPUT
-========================================================= */
-
-.form-group{
-
-    margin-bottom:20px;
-
-}
-
-.form-group label{
-
-    display:block;
-
-    margin-bottom:8px;
-
-    font-size:17px;
-
-    font-weight:bold;
-
-    color:#274263;
-
-}
-
-.input-box{
-
-    display:flex;
-
-    align-items:center;
-
-    min-height:64px;
-
-    padding:0 15px;
-
-    border-radius:20px;
-
-    background:#edf2fc;
-
-    border:
-    1px solid
-    #bdcce3;
-
-}
-
-.input-icon{
-
-    width:40px;
-
-    font-size:23px;
-
-    text-align:center;
-
-}
-
-.input-box input{
-
-    flex:1;
-
-    border:0;
-
-    outline:0;
-
-    background:transparent;
-
-    font-size:17px;
-
-    padding:10px;
-
-}
-
-.password-toggle{
-
-    border:0;
-
-    background:transparent;
-
-    font-size:20px;
-
-    cursor:pointer;
-
-}
-
-/* =========================================================
-   ROLE
-========================================================= */
-
-.role-select{
-
-    width:100%;
-
-    padding:14px;
-
-    border-radius:15px;
-
-    border:
-    1px solid
-    #bdcce3;
-
-    background:white;
-
-    margin-bottom:20px;
-
-    font-size:16px;
-
-}
-
-/* =========================================================
-   LOGIN BUTTON
-========================================================= */
-
-.login-button{
-
-    width:100%;
-
-    min-height:64px;
-
-    border:0;
-
-    border-radius:20px;
-
-    background:
-    linear-gradient(
-        100deg,
-        #2468ed,
-        #4e9be9
-    );
-
-    color:white;
-
-    font-size:20px;
-
-    font-weight:bold;
-
-    cursor:pointer;
-
-    box-shadow:
-    0 8px 20px
-    rgba(36,104,237,.25);
-
-}
-
-.login-button:hover{
-
-    transform:translateY(-2px);
-
-}
-
-.login-message{
-
-    text-align:center;
-
-    margin-top:15px;
-
-    color:#d32f2f;
-
-    min-height:24px;
-
-}
-
-/* =========================================================
-   SYSTEM
-========================================================= */
-
-#systemPage{
-
-    display:none;
-
-}
-
-/* =========================================================
-   SIDEBAR
-========================================================= */
-
-.sidebar{
-
-    position:fixed;
-
-    left:0;
-
-    top:0;
-
-    width:250px;
-
-    height:100vh;
-
-    background:
-    linear-gradient(
-        180deg,
-        #1565c0,
-        #0d47a1
-    );
-
-    color:white;
-
-    padding:20px;
-
-    overflow-y:auto;
-
-}
-
-.sidebar-title{
-
-    text-align:center;
-
-    margin-bottom:8px;
-
-    font-size:24px;
-
-}
-
-.sidebar-subtitle{
-
-    text-align:center;
-
-    font-size:13px;
-
-    opacity:.8;
-
-    margin-bottom:25px;
-
-}
-
-.menu{
-
-    list-style:none;
-
-}
-
-.menu li{
-
-    padding:14px;
-
-    cursor:pointer;
-
-    border-radius:10px;
-
-    margin-bottom:6px;
-
-    transition:.2s;
-
-}
-
-.menu li:hover{
-
-    background:
-    rgba(255,255,255,.15);
-
-}
-
-/* =========================================================
-   CONTENT
-========================================================= */
-
-.content{
-
-    margin-left:250px;
-
-    padding:30px;
-
-    min-height:100vh;
-
-}
-
-.page-title{
-
-    margin-bottom:20px;
-
-}
-
-/* =========================================================
-   CARDS
-========================================================= */
-
-.cards{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(
-        auto-fit,
-        minmax(190px,1fr)
-    );
-
-    gap:20px;
-
-}
-
-.card{
-
-    background:white;
-
-    padding:20px;
-
-    border-radius:15px;
-
-    box-shadow:
-    0 5px 15px
-    rgba(0,0,0,.08);
-
-}
-
-.card h3{
-
-    color:#1565c0;
-
-    margin-bottom:10px;
-
-}
-
-.card-number{
-
-    font-size:34px;
-
-    font-weight:bold;
-
-}
-
-/* =========================================================
-   BUTTONS
-========================================================= */
-
-.btn{
-
-    border:0;
-
-    padding:11px 18px;
-
-    border-radius:9px;
-
-    background:#1565c0;
-
-    color:white;
-
-    cursor:pointer;
-
-    font-size:15px;
-
-}
-
-.btn:hover{
-
-    background:#0d47a1;
-
-}
-
-.btn-danger{
-
-    background:#dc2626;
-
-}
-
-.btn-danger:hover{
-
-    background:#991b1b;
-
-}
-
-.btn-success{
-
-    background:#16a34a;
-
-}
-
-.btn-warning{
-
-    background:#d97706;
-
-}
-
-/* =========================================================
-   TABLE
-========================================================= */
-
-.table-wrapper{
-
-    width:100%;
-
-    overflow-x:auto;
-
-}
-
-table{
-
-    width:100%;
-
-    border-collapse:collapse;
-
-    min-width:650px;
-
-}
-
-th,
-td{
-
-    padding:11px;
-
-    border:1px solid #ddd;
-
-    text-align:left;
-
-}
-
-th{
-
-    background:#e8f1ff;
-
-    color:#164e87;
-
-}
-
-tr:nth-child(even){
-
-    background:#fafafa;
-
-}
-
-/* =========================================================
-   FORM
-========================================================= */
-
-.form-grid{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(
-        auto-fit,
-        minmax(180px,1fr)
-    );
-
-    gap:12px;
-
-}
-
-.form-control{
-
-    width:100%;
-
-    padding:12px;
-
-    border:
-    1px solid
-    #cbd5e1;
-
-    border-radius:9px;
-
-    outline:none;
-
-}
-
-.form-control:focus{
-
-    border-color:#1565c0;
-
-}
-
-/* =========================================================
-   BADGES
-========================================================= */
-
-.badge{
-
-    display:inline-block;
-
-    padding:5px 10px;
-
-    border-radius:20px;
-
-    font-size:13px;
-
-    font-weight:bold;
-
-}
-
-.badge-zero{
-
-    background:#fee2e2;
-
-    color:#991b1b;
-
-}
-
-.badge-r{
-
-    background:#fef3c7;
-
-    color:#92400e;
-
-}
-
-.badge-ms{
-
-    background:#dbeafe;
-
-    color:#1e40af;
-
-}
-
-.badge-mp{
-
-    background:#ede9fe;
-
-    color:#5b21b6;
-
-}
-
-.badge-ok{
-
-    background:#dcfce7;
-
-    color:#166534;
-
-}
-
-/* =========================================================
-   STATUS SELECT
-========================================================= */
-
-.status-select{
-
-    padding:8px;
-
-    border-radius:8px;
-
-    border:1px solid #ccc;
-
-}
-
-/* =========================================================
-   SECTION
-========================================================= */
-
-.page-section{
-
-    display:none;
-
-}
-
-.page-section.active{
-
-    display:block;
-
-}
-
-/* =========================================================
-   STUDENT PROFILE
-========================================================= */
-
-.profile-box{
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(
-        auto-fit,
-        minmax(180px,1fr)
-    );
-
-    gap:15px;
-
-}
-
-.profile-item{
-
-    background:#f8fafc;
-
-    padding:15px;
-
-    border-radius:12px;
-
-}
-
-.profile-item small{
-
-    color:#64748b;
-
-}
-
-.profile-item strong{
-
-    display:block;
-
-    margin-top:5px;
-
-    font-size:18px;
-
-}
-
-/* =========================================================
-   EMPTY
-========================================================= */
-
-.empty{
-
-    text-align:center;
-
-    padding:30px;
-
-    color:#64748b;
-
-}
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media(max-width:800px){
-
-    .sidebar{
-
-        position:relative;
-
-        width:100%;
-
-        height:auto;
-
-    }
-
-    .content{
-
-        margin-left:0;
-
-        padding:15px;
-
-    }
-
-    .school-top{
-
-        gap:12px;
-
-    }
-
-    .school-header{
-
-        padding:20px;
-
-    }
-
-    .school-logo{
-
-        width:80px;
-
-        height:80px;
-
-        min-width:80px;
-
-    }
-
-    .school-title h1{
-
-        font-size:29px;
-
-    }
-
-    .school-title h2{
-
-        font-size:12px;
-
-    }
-
-    .school-title p{
-
-        font-size:10px;
-
-    }
-
-    .login-card{
-
-        padding:25px 18px;
-
-    }
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-
-<!-- ========================================================
-     LOGIN PAGE
-========================================================= -->
-
-<section id="loginPage">
-
-<div class="login-wrapper">
-
-
-<div class="school-header">
-
-<div class="school-top">
-
-<div class="school-logo">
-
-<img
-src="assets/logo.png"
-alt="โลโก้โรงเรียน"
-onerror="this.style.display='none'"
->
-
-</div>
-
-<div class="school-title">
-
-<h1>
-Student<span> System5/1</span>
-</h1>
-
-<h2>
-ระบบตรวจสอบผลการเรียนและการเข้าเรียน
-</h2>
-
-<p>
-โรงเรียนท่าใหม่ “พูลสวัสดิ์ราษฎร์นุกูล”
-</p>
-
-</div>
-
-</div>
-
-
-<div class="department-box">
-
-<div class="department-icon">
-🏫
-</div>
-
-<div>
-
-<small>
-ฝ่ายบริหารงานวิชาการ
-</small>
-
-<strong>
-งานทะเบียน-วัดผล
-</strong>
-
-</div>
-
-</div>
-
-</div>
-
-
-<div class="login-card">
-
-<div class="login-heading">
-
-<div class="login-icon">
-👥
-</div>
-
-<div>
-
-<div class="login-small">
-LOGIN
-</div>
-
-<h2>
-เข้าสู่ระบบ
-</h2>
-
-</div>
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-บัญชีผู้ใช้
-</label>
-
-<div class="input-box">
-
-<span class="input-icon">
-👤
-</span>
-
-<input
-id="email"
-type="text"
-placeholder="อีเมลหรือบัญชีผู้ใช้"
->
-
-</div>
-
-</div>
-
-
-<div class="form-group">
-
-<label>
-รหัสผ่าน
-</label>
-
-<div class="input-box">
-
-<span class="input-icon">
-🔐
-</span>
-
-<input
-id="password"
-type="password"
-placeholder="กรอกรหัสผ่าน"
->
-
-<button
-type="button"
-class="password-toggle"
-onclick="togglePassword()"
->
-👁️
-</button>
-
-</div>
-
-</div>
-
-
-<label>
-ประเภทผู้ใช้งาน
-</label>
-
-<select
-id="role"
-class="role-select"
->
-
-<option value="student">
-👨‍🎓 นักเรียน
-</option>
-
-<option value="teacher">
-👨‍🏫 ครู
-</option>
-
-</select>
-
-
-<button
-class="login-button"
-onclick="login()"
->
-
-➜ เข้าสู่ระบบ
-
-</button>
-
-
-<p
-id="loginMessage"
-class="login-message"
-></p>
-
-
-</div>
-
-</div>
-
-</section>
-
-
-<!-- ========================================================
-     SYSTEM PAGE
-========================================================= -->
-
-<section id="systemPage">
-
-
-<!-- ========================================================
-     SIDEBAR
-========================================================= -->
-
-<div class="sidebar">
-
-<h2 class="sidebar-title">
-Student System5/1
-</h2>
-
-<p
-id="sidebarUser"
-class="sidebar-subtitle"
->
-กำลังโหลด...
-</p>
-
-
-<ul
-id="teacherMenu"
-class="menu"
-style="display:none;"
->
-
-<li onclick="showSection('teacherDashboard')">
-🏠 Dashboard
-</li>
-
-<li onclick="showSection('teacherStudents')">
-👨‍🎓 นักเรียน
-</li>
-
-<li onclick="showSection('teacherAttendance')">
-📋 เช็กชื่อ
-</li>
-
-<li onclick="showSection('teacherStatus')">
-⚠️ 0 / ร / มส. / มผ.
-</li>
-
-<li onclick="showSection('teacherReport')">
-📊 รายงาน
-</li>
-
-<li onclick="logout()">
-🚪 ออกจากระบบ
-</li>
-
-</ul>
-
-
-<ul
-id="studentMenu"
-class="menu"
-style="display:none;"
->
-
-<li onclick="showSection('studentDashboard')">
-🏠 หน้าหลัก
-</li>
-
-<li onclick="showSection('studentGrades')">
-📚 ผลการเรียน
-</li>
-
-<li onclick="showSection('studentAttendance')">
-📋 การเข้าเรียน
-</li>
-
-<li onclick="showSection('studentStatus')">
-⚠️ สถานะ 0 / ร / มส. / มผ.
-</li>
-
-<li onclick="logout()">
-🚪 ออกจากระบบ
-</li>
-
-</ul>
-
-</div>
-
-
-<!-- ========================================================
-     CONTENT
-========================================================= -->
-
-<div class="content">
-
-
-<!-- ========================================================
-     TEACHER DASHBOARD
-========================================================= -->
-
-<div
-id="teacherDashboard"
-class="page-section"
->
-
-<h1 class="page-title">
-🏠 Dashboard ครู
-</h1>
-
-<div class="cards">
-
-<div class="card">
-
-<h3>
-👨‍🎓 นักเรียนทั้งหมด
-</h3>
-
-<div
-id="teacherTotalStudents"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-🟢 มาเรียน
-</h3>
-
-<div
-id="teacherPresent"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-🔴 ขาดเรียน
-</h3>
-
-<div
-id="teacherAbsent"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-⚠️ มีปัญหาผลการเรียน
-</h3>
-
-<div
-id="teacherProblem"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-</div>
-
-
-<br>
-
-
-<div class="card">
-
-<h3>
-📊 สรุปข้อมูล
-</h3>
-
-<canvas id="teacherChart"></canvas>
-
-</div>
-
-</div>
-
-
-<!-- ========================================================
-     TEACHER STUDENTS
-========================================================= -->
-
-<div
-id="teacherStudents"
-class="page-section"
->
-
-<h1 class="page-title">
-👨‍🎓 จัดการข้อมูลนักเรียน
-</h1>
-
-
-<div class="card">
-
-<h3>
-เพิ่มนักเรียน
-</h3>
-
-<br>
-
-<div class="form-grid">
-
-<input
-id="student_id"
-class="form-control"
-placeholder="รหัสนักเรียน"
->
-
-<input
-id="fullname"
-class="form-control"
-placeholder="ชื่อ-นามสกุล"
->
-
-<input
-id="classroom"
-class="form-control"
-placeholder="ห้อง เช่น ม.5/1"
->
-
-<input
-id="student_gpa"
-class="form-control"
-type="number"
-step="0.01"
-placeholder="GPA"
->
-
-</div>
-
-<br>
-
-<button
-class="btn btn-success"
-onclick="addStudent()"
->
-➕ เพิ่มนักเรียน
-</button>
-
-</div>
-
-
-<br>
-
-
-<div class="card">
-
-<h3>
-รายชื่อนักเรียน
-</h3>
-
-<br>
-
-<input
-id="studentSearch"
-class="form-control"
-placeholder="🔎 ค้นหารหัสหรือชื่อ..."
-oninput="filterStudents()"
->
-
-<br>
-
-<div class="table-wrapper">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-ลำดับ
-</th>
-
-<th>
-รหัส
-</th>
-
-<th>
-ชื่อ
-</th>
-
-<th>
-ห้อง
-</th>
-
-<th>
-GPA
-</th>
-
-<th>
-จัดการ
-</th>
-
-</tr>
-
-</thead>
-
-<tbody
-id="studentTable"
->
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ========================================================
-     TEACHER ATTENDANCE
-========================================================= -->
-
-<div
-id="teacherAttendance"
-class="page-section"
->
-
-<h1 class="page-title">
-📋 เช็กชื่อเข้าเรียน
-</h1>
-
-
-<div class="card">
-
-<h3>
-เลือกวันที่
-</h3>
-
-<br>
-
-<input
-type="date"
-id="attendanceDate"
-class="form-control"
->
-
-<br>
-
-<button
-class="btn"
-onclick="loadAttendanceStudents()"
->
-📋 โหลดรายชื่อนักเรียน
-</button>
-
-</div>
-
-
-<br>
-
-
-<div class="card">
-
-<h3>
-รายชื่อนักเรียน
-</h3>
-
-<br>
-
-<div class="table-wrapper">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-ลำดับ
-</th>
-
-<th>
-รหัส
-</th>
-
-<th>
-ชื่อ
-</th>
-
-<th>
-ห้อง
-</th>
-
-<th>
-เวลา
-</th>
-
-<th>
-สถานะ
-</th>
-
-</tr>
-
-</thead>
-
-<tbody
-id="attendanceTable"
->
-</tbody>
-
-</table>
-
-</div>
-
-<br>
-
-<button
-class="btn btn-success"
-onclick="saveAttendance()"
->
-💾 บันทึกการเข้าเรียน
-</button>
-
-</div>
-
-</div>
-
-
-<!-- ========================================================
-     TEACHER STATUS
-========================================================= -->
-
-<div
-id="teacherStatus"
-class="page-section"
->
-
-<h1 class="page-title">
-⚠️ ตรวจสอบ 0 / ร / มส. / มผ.
-</h1>
-
-
-<div class="card">
-
-<h3>
-ค้นหานักเรียน
-</h3>
-
-<br>
-
-<input
-id="statusSearch"
-class="form-control"
-placeholder="🔎 ค้นหารหัสหรือชื่อ..."
-oninput="filterStatusStudents()"
->
-
-</div>
-
-
-<br>
-
-
-<div class="card">
-
-<div class="table-wrapper">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-ลำดับ
-</th>
-
-<th>
-รหัส
-</th>
-
-<th>
-ชื่อ
-</th>
-
-<th>
-ห้อง
-</th>
-
-<th>
-วิชา
-</th>
-
-<th>
-คะแนน
-</th>
-
-<th>
-สถานะ
-</th>
-
-<th>
-บันทึก
-</th>
-
-</tr>
-
-</thead>
-
-<tbody
-id="statusTable"
->
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ========================================================
-     TEACHER REPORT
-========================================================= -->
-
-<div
-id="teacherReport"
-class="page-section"
->
-
-<h1 class="page-title">
-📊 รายงาน
-</h1>
-
-
-<div class="card">
-
-<h3>
-รายงานการเข้าเรียนตามวันที่
-</h3>
-
-<br>
-
-<input
-type="date"
-id="reportDate"
-class="form-control"
->
-
-<br>
-
-<button
-class="btn"
-onclick="loadAttendanceReport()"
->
-🔎 ดูรายงาน
-</button>
-
-</div>
-
-
-<br>
-
-
-<div class="cards">
-
-<div class="card">
-
-<h3>
-นักเรียนทั้งหมด
-</h3>
-
-<div
-id="reportTotalStudents"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-มา
-</h3>
-
-<div
-id="reportPresent"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-สาย
-</h3>
-
-<div
-id="reportLate"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-ขาด
-</h3>
-
-<div
-id="reportAbsent"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-ลา
-</h3>
-
-<div
-id="reportLeave"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-</div>
-
-
-<br>
-
-
-<div class="card">
-
-<h3>
-รายละเอียด
-</h3>
-
-<br>
-
-<div class="table-wrapper">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-ลำดับ
-</th>
-
-<th>
-รหัส
-</th>
-
-<th>
-ชื่อ
-</th>
-
-<th>
-ห้อง
-</th>
-
-<th>
-เวลา
-</th>
-
-<th>
-สถานะ
-</th>
-
-</tr>
-
-</thead>
-
-<tbody
-id="attendanceReportTable"
->
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ========================================================
-     STUDENT DASHBOARD
-========================================================= -->
-
-<div
-id="studentDashboard"
-class="page-section"
->
-
-<h1 class="page-title">
-🏠 หน้าหลักนักเรียน
-</h1>
-
-
-<div class="card">
-
-<h2>
-👋 ยินดีต้อนรับ
-</h2>
-
-<br>
-
-<div
-id="studentProfile"
-class="profile-box"
->
-</div>
-
-</div>
-
-
-<br>
-
-
-<div class="cards">
-
-<div class="card">
-
-<h3>
-📚 GPA
-</h3>
-
-<div
-id="myGPA"
-class="card-number"
->
--
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-⚠️ 0
-</h3>
-
-<div
-id="myZero"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-⚠️ ร
-</h3>
-
-<div
-id="myR"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-⚠️ มส.
-</h3>
-
-<div
-id="myMS"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-⚠️ มผ.
-</h3>
-
-<div
-id="myMP"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ========================================================
-     STUDENT GRADES
-========================================================= -->
-
-<div
-id="studentGrades"
-class="page-section"
->
-
-<h1 class="page-title">
-📚 ผลการเรียน
-</h1>
-
-
-<div class="card">
-
-<div class="table-wrapper">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-ลำดับ
-</th>
-
-<th>
-วิชา
-</th>
-
-<th>
-คะแนน
-</th>
-
-<th>
-เกรด
-</th>
-
-<th>
-สถานะ
-</th>
-
-</tr>
-
-</thead>
-
-<tbody
-id="myGradesTable"
->
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ========================================================
-     STUDENT ATTENDANCE
-========================================================= -->
-
-<div
-id="studentAttendance"
-class="page-section"
->
-
-<h1 class="page-title">
-📋 ประวัติการเข้าเรียน
-</h1>
-
-
-<div class="cards">
-
-<div class="card">
-
-<h3>
-🟢 มา
-</h3>
-
-<div
-id="myPresent"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-🟡 สาย
-</h3>
-
-<div
-id="myLate"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-🔴 ขาด
-</h3>
-
-<div
-id="myAbsent"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-🔵 ลา
-</h3>
-
-<div
-id="myLeave"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-</div>
-
-
-<br>
-
-
-<div class="card">
-
-<h3>
-ประวัติ
-</h3>
-
-<br>
-
-<div class="table-wrapper">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-วันที่
-</th>
-
-<th>
-เวลา
-</th>
-
-<th>
-สถานะ
-</th>
-
-</tr>
-
-</thead>
-
-<tbody
-id="myAttendanceTable"
->
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</div>
-
-
-<!-- ========================================================
-     STUDENT STATUS
-========================================================= -->
-
-<div
-id="studentStatus"
-class="page-section"
->
-
-<h1 class="page-title">
-⚠️ สถานะผลการเรียน
-</h1>
-
-
-<div class="cards">
-
-<div class="card">
-
-<h3>
-ติด 0
-</h3>
-
-<div
-id="studentStatusZero"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-ติด ร
-</h3>
-
-<div
-id="studentStatusR"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-ติด มส.
-</h3>
-
-<div
-id="studentStatusMS"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-
-<div class="card">
-
-<h3>
-ติด มผ.
-</h3>
-
-<div
-id="studentStatusMP"
-class="card-number"
->
-0
-</div>
-
-</div>
-
-</div>
-
-
-<br>
-
-
-<div class="card">
-
-<h3>
-รายละเอียด
-</h3>
-
-<br>
-
-<div class="table-wrapper">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-วิชา
-</th>
-
-<th>
-คะแนน
-</th>
-
-<th>
-สถานะ
-</th>
-
-</tr>
-
-</thead>
-
-<tbody
-id="myStatusTable"
->
-</tbody>
-
-</table>
-
-</div>
-
-</div>
-
-</div>
-
-
-</div>
-
-</section>
-
-
 <script>
 
 /* =========================================================
@@ -2374,7 +8,7 @@ const SUPABASE_URL =
 "https://yhbuatktksavohtyzarr.supabase.co";
 
 const SUPABASE_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloYnVhdGt0a3Nhdm9odHl6YXJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyMDU0NjMsImV4cCI6MjEwMDc4MTQ2M30.vLBkYxdhxma9tnWcrqSvPVwHR3pAhPBI4AxuAIP3JII";
+"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloYnVhdGt0a3Nhdm9odHl6YXJyIiwicm9sZSI6MTc4NTIwNTQ2MywiZXhwIjoyMTAwNzgxNDYzfQ.vLBkYxdhxma9tnWcrqSvPVwHR3pAhPBI4AxuAIP3JII";
 
 const supabaseClient =
 supabase.createClient(
@@ -2388,15 +22,10 @@ supabase.createClient(
 ========================================================= */
 
 let currentUser = null;
-
 let currentStudent = null;
-
 let studentsCache = [];
-
 let statusStudentsCache = [];
-
 let attendanceData = [];
-
 let teacherChart = null;
 
 
@@ -2407,13 +36,17 @@ let teacherChart = null;
 async function login(){
 
     const loginValue =
-        document.getElementById("email").value.trim();
+        document.getElementById("email")
+        .value
+        .trim();
 
     const password =
-        document.getElementById("password").value;
+        document.getElementById("password")
+        .value;
 
     const selectedRole =
-        document.getElementById("role").value;
+        document.getElementById("role")
+        .value;
 
     const message =
         document.getElementById("loginMessage");
@@ -2431,21 +64,21 @@ async function login(){
 
     try{
 
-        /*
-         * Supabase Auth ใช้อีเมล
-         *
-         * ถ้าผู้ใช้กรอกเลขนักเรียน
-         * ระบบจะค้นหาอีเมลใน students ก่อน
-         */
-
         let email = loginValue;
+
+
+        /* =================================================
+           ถ้ากรอกรหัสนักเรียน
+           ให้ค้นหา Email จาก students
+        ================================================= */
 
         if(!loginValue.includes("@")){
 
             const {
                 data,
                 error
-            } = await supabaseClient
+            } =
+            await supabaseClient
                 .from("students")
                 .select("email")
                 .eq(
@@ -2456,7 +89,10 @@ async function login(){
 
             if(error){
 
-                console.error(error);
+                console.error(
+                    "ค้นหา Email ไม่สำเร็จ:",
+                    error
+                );
 
             }
 
@@ -2468,21 +104,31 @@ async function login(){
 
         }
 
+
+        /* =================================================
+           LOGIN SUPABASE AUTH
+        ================================================= */
+
         const {
             data,
             error
         } =
-        await supabaseClient.auth.signInWithPassword({
+        await supabaseClient.auth
+            .signInWithPassword({
 
-            email:email,
+                email: email,
 
-            password:password
+                password: password
 
-        });
+            });
+
 
         if(error){
 
-            console.error(error);
+            console.error(
+                "Login Error:",
+                error
+            );
 
             message.textContent =
                 "บัญชีผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
@@ -2491,98 +137,128 @@ async function login(){
 
         }
 
+
+        if(!data || !data.user){
+
+            message.textContent =
+                "ไม่พบข้อมูลบัญชีผู้ใช้";
+
+            return;
+
+        }
+
+
         currentUser =
             data.user;
 
-        /*
-         * role ที่เลือกในหน้า login
-         *
-         * สำหรับความปลอดภัยจริง
-         * ควรกำหนด role ใน Supabase
-         * user_metadata
-         */
 
-        /* =====================================================
-   ตรวจสอบ ROLE จาก profiles
-   ไม่ใช้ค่าที่ผู้ใช้เลือกเอง
-===================================================== */
+        /* =================================================
+           ตรวจสอบ PROFILE
+        ================================================= */
 
-const {
-    data: profile,
-    error: profileError
-} = await supabaseClient
-    .from("profiles")
-    .select("role, student_id, fullname")
-    .eq("id", currentUser.id)
-    .maybeSingle();
-
-if(profileError){
-
-    console.error(profileError);
-
-    message.textContent =
-        "ไม่สามารถตรวจสอบสิทธิ์ผู้ใช้ได้";
-
-    await supabaseClient.auth.signOut();
-
-    return;
-
-}
-
-if(!profile){
-
-    message.textContent =
-        "ไม่พบข้อมูลสิทธิ์ของบัญชีนี้";
-
-    await supabaseClient.auth.signOut();
-
-    return;
-
-}
-
-const realRole = profile.role;
+        const {
+            data: profile,
+            error: profileError
+        } =
+        await supabaseClient
+            .from("profiles")
+            .select(
+                "role, student_id, fullname"
+            )
+            .eq(
+                "id",
+                currentUser.id
+            )
+            .maybeSingle();
 
 
-/* =====================================================
-   ตรวจสอบว่าประเภทที่เลือกตรงกับบัญชีจริงหรือไม่
-===================================================== */
+        if(profileError){
 
-if(realRole !== selectedRole){
+            console.error(
+                "Profile Error:",
+                profileError
+            );
 
-    message.textContent =
-        "ประเภทผู้ใช้งานไม่ตรงกับบัญชีนี้";
+            message.textContent =
+                "ไม่สามารถตรวจสอบสิทธิ์ผู้ใช้ได้";
 
-    await supabaseClient.auth.signOut();
+            await supabaseClient
+                .auth
+                .signOut();
 
-    return;
+            currentUser = null;
 
-}
+            return;
+
+        }
 
 
-/* =====================================================
-   เก็บข้อมูล Login
-===================================================== */
+        if(!profile){
 
-localStorage.setItem(
-    "userRole",
-    realRole
-);
+            message.textContent =
+                "ไม่พบข้อมูลสิทธิ์ของบัญชีนี้ใน profiles";
 
-localStorage.setItem(
-    "userEmail",
-    currentUser.email || email
-);
+            await supabaseClient
+                .auth
+                .signOut();
 
-if(profile.student_id){
+            currentUser = null;
 
-    localStorage.setItem(
-        "studentId",
-        profile.student_id
-    );
+            return;
 
-}
+        }
 
-openSystem(realRole);
+
+        /* =================================================
+           ROLE จริงจาก profiles
+        ================================================= */
+
+        const realRole =
+            profile.role;
+
+
+        /* =================================================
+           ตรวจสอบ ROLE
+        ================================================= */
+
+        if(
+            realRole !== "student" &&
+            realRole !== "teacher"
+        ){
+
+            message.textContent =
+                "บัญชีนี้ไม่มีประเภทผู้ใช้งานที่ถูกต้อง";
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+            currentUser = null;
+
+            return;
+
+        }
+
+
+        if(realRole !== selectedRole){
+
+            message.textContent =
+                "ประเภทผู้ใช้งานไม่ตรงกับบัญชีนี้";
+
+            await supabaseClient
+                .auth
+                .signOut();
+
+            currentUser = null;
+
+            return;
+
+        }
+
+
+        /* =================================================
+           บันทึกข้อมูล Login
+        ================================================= */
 
         localStorage.setItem(
             "userRole",
@@ -2594,12 +270,39 @@ openSystem(realRole);
             currentUser.email || email
         );
 
-        openSystem(realRole);
+
+        if(profile.student_id){
+
+            localStorage.setItem(
+                "studentId",
+                profile.student_id
+            );
+
+        }
+        else{
+
+            localStorage.removeItem(
+                "studentId"
+            );
+
+        }
+
+
+        /* =================================================
+           เปิดระบบ
+        ================================================= */
+
+        await openSystem(
+            realRole
+        );
 
     }
     catch(error){
 
-        console.error(error);
+        console.error(
+            "LOGIN ERROR:",
+            error
+        );
 
         message.textContent =
             "เกิดข้อผิดพลาดในการเข้าสู่ระบบ";
@@ -2617,60 +320,71 @@ async function openSystem(role){
 
     document.getElementById(
         "loginPage"
-    ).style.display =
-        "none";
+    ).style.display = "none";
 
     document.getElementById(
         "systemPage"
-    ).style.display =
-        "block";
+    ).style.display = "block";
+
 
     document.getElementById(
         "teacherMenu"
-    ).style.display =
-        "none";
+    ).style.display = "none";
 
     document.getElementById(
         "studentMenu"
-    ).style.display =
-        "none";
+    ).style.display = "none";
+
 
     hideAllSections();
+
+
+    /* =====================================================
+       TEACHER
+    ===================================================== */
 
     if(role === "teacher"){
 
         document.getElementById(
             "teacherMenu"
-        ).style.display =
-            "block";
+        ).style.display = "block";
 
         document.getElementById(
             "sidebarUser"
         ).textContent =
             "👨‍🏫 ระบบครู";
 
+
         showSection(
             "teacherDashboard"
         );
 
+
         await loadTeacherDashboard();
 
     }
-    else{
+
+
+    /* =====================================================
+       STUDENT
+    ===================================================== */
+
+    else if(role === "student"){
 
         document.getElementById(
             "studentMenu"
-        ).style.display =
-            "block";
+        ).style.display = "block";
 
         document.getElementById(
             "sidebarUser"
         ).textContent =
             "👨‍🎓 ระบบนักเรียน";
 
+
         showSection(
             "studentDashboard"
         );
+
 
         await loadCurrentStudent();
 
@@ -2700,17 +414,20 @@ function showSection(sectionId){
 
     }
 
+
     if(sectionId === "teacherStudents"){
 
         loadStudents();
 
     }
 
+
     if(sectionId === "teacherStatus"){
 
         loadStatusStudents();
 
     }
+
 
     if(sectionId === "teacherReport"){
 
@@ -2720,17 +437,20 @@ function showSection(sectionId){
 
     }
 
+
     if(sectionId === "studentGrades"){
 
         loadStudentGrades();
 
     }
 
+
     if(sectionId === "studentAttendance"){
 
         loadStudentAttendance();
 
     }
+
 
     if(sectionId === "studentStatus"){
 
@@ -2750,10 +470,13 @@ function hideAllSections(){
     document
         .querySelectorAll(".page-section")
         .forEach(
-            section =>
+            section => {
+
                 section.classList.remove(
                     "active"
-                )
+                );
+
+            }
         );
 
 }
@@ -2765,11 +488,25 @@ function hideAllSections(){
 
 async function logout(){
 
-    await supabaseClient.auth.signOut();
+    try{
+
+        await supabaseClient
+            .auth
+            .signOut();
+
+    }
+    catch(error){
+
+        console.error(
+            error
+        );
+
+    }
+
 
     currentUser = null;
-
     currentStudent = null;
+
 
     localStorage.removeItem(
         "userRole"
@@ -2779,19 +516,28 @@ async function logout(){
         "userEmail"
     );
 
+    localStorage.removeItem(
+        "studentId"
+    );
+
+
     document.getElementById(
         "systemPage"
-    ).style.display =
-        "none";
+    ).style.display = "none";
 
     document.getElementById(
         "loginPage"
-    ).style.display =
-        "flex";
+    ).style.display = "flex";
+
 
     document.getElementById(
         "password"
     ).value = "";
+
+
+    document.getElementById(
+        "loginMessage"
+    ).textContent = "";
 
 }
 
@@ -2806,6 +552,7 @@ function togglePassword(){
         document.getElementById(
             "password"
         );
+
 
     if(
         password.type ===
@@ -2832,127 +579,184 @@ function togglePassword(){
 
 async function loadTeacherDashboard(){
 
-    const {
-        data:students,
-        error
-    } =
-    await supabaseClient
-        .from("students")
-        .select("*");
+    try{
 
-    if(error){
+        const {
+            data: students,
+            error: studentError
+        } =
+        await supabaseClient
+            .from("students")
+            .select("*");
 
-        console.error(error);
 
-        return;
+        if(studentError){
 
-    }
+            console.error(
+                studentError
+            );
 
-    const total =
-        students
-        ? students.length
-        : 0;
-
-    document.getElementById(
-        "teacherTotalStudents"
-    ).textContent =
-        total;
-
-    let present = 0;
-
-    let absent = 0;
-
-    let problem = 0;
-
-    const today =
-        getToday();
-
-    const {
-        data:attendance
-    } =
-    await supabaseClient
-        .from("attendance")
-        .select("*")
-        .eq(
-            "date",
-            today
-        );
-
-    (attendance || [])
-    .forEach(record => {
-
-        if(record.status === "มา"){
-
-            present++;
+            return;
 
         }
 
-        if(record.status === "ขาด"){
 
-            absent++;
-
-        }
-
-    });
+        const total =
+            students
+            ? students.length
+            : 0;
 
 
-    /*
-     * นับนักเรียนที่มีสถานะผิดปกติ
-     */
+        document.getElementById(
+            "teacherTotalStudents"
+        ).textContent =
+            total;
 
-    const {
-        data:grades
-    } =
-    await supabaseClient
-        .from("grades")
-        .select("*");
 
-    const problemStudents =
-        new Set();
+        let present = 0;
+        let absent = 0;
 
-    (grades || [])
-    .forEach(grade => {
 
-        if(
-            ["0","ร","มส.","มผ."]
-            .includes(
-                String(
-                    grade.status
-                )
-            )
-        ){
+        const today =
+            getToday();
 
-            problemStudents.add(
-                grade.student_id
+
+        const {
+            data: attendance,
+            error: attendanceError
+        } =
+        await supabaseClient
+            .from("attendance")
+            .select("*")
+            .eq(
+                "date",
+                today
+            );
+
+
+        if(attendanceError){
+
+            console.error(
+                attendanceError
             );
 
         }
 
-    });
 
-    problem =
-        problemStudents.size;
+        (attendance || [])
+        .forEach(
+            record => {
 
-    document.getElementById(
-        "teacherPresent"
-    ).textContent =
-        present;
+                if(record.status === "มา"){
 
-    document.getElementById(
-        "teacherAbsent"
-    ).textContent =
-        absent;
+                    present++;
 
-    document.getElementById(
-        "teacherProblem"
-    ).textContent =
-        problem;
+                }
 
-    createTeacherChart(
-        present,
-        absent,
-        problem
-    );
+                if(record.status === "ขาด"){
+
+                    absent++;
+
+                }
+
+            }
+        );
+
+
+        /* =================================================
+           PROBLEM STUDENTS
+        ================================================= */
+
+        let problem = 0;
+
+
+        const {
+            data: grades,
+            error: gradeError
+        } =
+        await supabaseClient
+            .from("grades")
+            .select("*");
+
+
+        if(gradeError){
+
+            console.error(
+                gradeError
+            );
+
+        }
+
+
+        const problemStudents =
+            new Set();
+
+
+        (grades || [])
+        .forEach(
+            grade => {
+
+                if(
+                    [
+                        "0",
+                        "ร",
+                        "มส.",
+                        "มผ."
+                    ]
+                    .includes(
+                        String(
+                            grade.status
+                        )
+                    )
+                ){
+
+                    problemStudents.add(
+                        grade.student_id
+                    );
+
+                }
+
+            }
+        );
+
+
+        problem =
+            problemStudents.size;
+
+
+        document.getElementById(
+            "teacherPresent"
+        ).textContent =
+            present;
+
+
+        document.getElementById(
+            "teacherAbsent"
+        ).textContent =
+            absent;
+
+
+        document.getElementById(
+            "teacherProblem"
+        ).textContent =
+            problem;
+
+
+        createTeacherChart(
+            present,
+            absent,
+            problem
+        );
+
+    }
+    catch(error){
+
+        console.error(
+            "Dashboard Error:",
+            error
+        );
+
+    }
 
 }
 
@@ -2972,17 +776,20 @@ function createTeacherChart(
             "teacherChart"
         );
 
+
     if(!canvas){
 
         return;
 
     }
 
+
     if(teacherChart){
 
         teacherChart.destroy();
 
     }
+
 
     teacherChart =
         new Chart(
@@ -3001,8 +808,7 @@ function createTeacherChart(
 
                     datasets:[{
 
-                        label:
-                            "จำนวน",
+                        label:"จำนวน",
 
                         data:[
                             present,
@@ -3029,7 +835,7 @@ function createTeacherChart(
 
 
 /* =========================================================
-   STUDENTS
+   LOAD STUDENTS
 ========================================================= */
 
 async function loadStudents(){
@@ -3048,9 +854,12 @@ async function loadStudents(){
             }
         );
 
+
     if(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
         alert(
             "โหลดข้อมูลนักเรียนไม่สำเร็จ\n" +
@@ -3061,8 +870,10 @@ async function loadStudents(){
 
     }
 
+
     studentsCache =
         data || [];
+
 
     renderStudents(
         studentsCache
@@ -3084,16 +895,15 @@ function renderStudents(
             "studentTable"
         );
 
+
     table.innerHTML = "";
+
 
     if(!students.length){
 
         table.innerHTML = `
             <tr>
-                <td
-                    colspan="6"
-                    class="empty"
-                >
+                <td colspan="6" class="empty">
                     ยังไม่มีข้อมูลนักเรียน
                 </td>
             </tr>
@@ -3102,6 +912,7 @@ function renderStudents(
         return;
 
     }
+
 
     students.forEach(
         (student,index) => {
@@ -3145,7 +956,9 @@ function renderStudents(
                             class="btn btn-danger"
                             onclick="
                                 deleteStudent(
-                                    '${student.id}'
+                                    '${escapeAttribute(
+                                        student.id
+                                    )}'
                                 )
                             "
                         >
@@ -3177,6 +990,7 @@ function filterStudents(){
         .value
         .toLowerCase();
 
+
     const result =
         studentsCache.filter(
             student => {
@@ -3206,7 +1020,10 @@ function filterStudents(){
             }
         );
 
-    renderStudents(result);
+
+    renderStudents(
+        result
+    );
 
 }
 
@@ -3222,20 +1039,24 @@ async function addStudent(){
             "student_id"
         ).value.trim();
 
+
     const fullname =
         document.getElementById(
             "fullname"
         ).value.trim();
+
 
     const classroom =
         document.getElementById(
             "classroom"
         ).value.trim();
 
+
     const gpaValue =
         document.getElementById(
             "student_gpa"
         ).value;
+
 
     if(
         !studentId ||
@@ -3249,6 +1070,7 @@ async function addStudent(){
         return;
 
     }
+
 
     const {
         error
@@ -3273,9 +1095,12 @@ async function addStudent(){
 
         }]);
 
+
     if(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
         alert(
             "เพิ่มข้อมูลไม่สำเร็จ\n" +
@@ -3286,9 +1111,11 @@ async function addStudent(){
 
     }
 
+
     alert(
         "เพิ่มนักเรียนสำเร็จ"
     );
+
 
     document.getElementById(
         "student_id"
@@ -3306,9 +1133,10 @@ async function addStudent(){
         "student_gpa"
     ).value = "";
 
-    loadStudents();
 
-    loadTeacherDashboard();
+    await loadStudents();
+
+    await loadTeacherDashboard();
 
 }
 
@@ -3324,11 +1152,13 @@ async function deleteStudent(id){
             "ต้องการลบนักเรียนคนนี้หรือไม่?"
         );
 
+
     if(!confirmed){
 
         return;
 
     }
+
 
     const {
         error
@@ -3341,9 +1171,12 @@ async function deleteStudent(id){
             id
         );
 
+
     if(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
         alert(
             "ลบข้อมูลไม่สำเร็จ\n" +
@@ -3354,13 +1187,15 @@ async function deleteStudent(id){
 
     }
 
+
     alert(
         "ลบข้อมูลสำเร็จ"
     );
 
-    loadStudents();
 
-    loadTeacherDashboard();
+    await loadStudents();
+
+    await loadTeacherDashboard();
 
 }
 
@@ -3385,6 +1220,7 @@ async function loadStatusStudents(){
             }
         );
 
+
     if(studentError){
 
         console.error(
@@ -3395,6 +1231,7 @@ async function loadStatusStudents(){
 
     }
 
+
     const {
         data:grades,
         error:gradeError
@@ -3402,6 +1239,7 @@ async function loadStatusStudents(){
     await supabaseClient
         .from("grades")
         .select("*");
+
 
     if(gradeError){
 
@@ -3418,8 +1256,10 @@ async function loadStatusStudents(){
 
     }
 
+
     statusStudentsCache =
         students || [];
+
 
     renderStatusTable(
         students || [],
@@ -3443,62 +1283,65 @@ function renderStatusTable(
             "statusTable"
         );
 
+
     table.innerHTML = "";
+
 
     let number = 0;
 
-    students.forEach(student => {
 
-        const studentGrades =
-            grades.filter(
-                grade =>
-                    String(
-                        grade.student_id
-                    ) ===
-                    String(
-                        student.student_id
-                    )
-            );
+    students.forEach(
+        student => {
 
-        /*
-         * ถ้ายังไม่มีข้อมูลวิชา
-         * ให้สร้างช่องบันทึกเปล่า
-         */
+            const studentGrades =
+                grades.filter(
+                    grade =>
+                        String(
+                            grade.student_id
+                        ) ===
+                        String(
+                            student.student_id
+                        )
+                );
 
-        if(
-            studentGrades.length === 0
-        ){
 
-            number++;
+            if(
+                studentGrades.length === 0
+            ){
 
-            table.innerHTML +=
-            createStatusRow(
-                student,
-                null,
-                number
-            );
+                number++;
 
-        }
-        else{
 
-            studentGrades.forEach(
-                grade => {
-
-                    number++;
-
-                    table.innerHTML +=
+                table.innerHTML +=
                     createStatusRow(
                         student,
-                        grade,
+                        null,
                         number
                     );
 
-                }
-            );
+            }
+            else{
+
+                studentGrades.forEach(
+                    grade => {
+
+                        number++;
+
+
+                        table.innerHTML +=
+                            createStatusRow(
+                                student,
+                                grade,
+                                number
+                            );
+
+                    }
+                );
+
+            }
 
         }
-
-    });
+    );
 
 }
 
@@ -3518,20 +1361,24 @@ function createStatusRow(
         ? grade.id
         : "";
 
+
     const subject =
         grade
         ? grade.subject
         : "";
+
 
     const score =
         grade
         ? grade.score
         : "";
 
+
     const status =
         grade
         ? grade.status
         : "";
+
 
     return `
 
@@ -3563,7 +1410,11 @@ function createStatusRow(
 
                 <input
                     class="form-control"
-                    id="subject_${student.student_id}_${gradeId}"
+                    id="subject_${escapeAttribute(
+                        student.student_id
+                    )}_${escapeAttribute(
+                        gradeId
+                    )}"
                     value="${escapeAttribute(
                         subject
                     )}"
@@ -3577,7 +1428,11 @@ function createStatusRow(
                 <input
                     class="form-control"
                     type="number"
-                    id="score_${student.student_id}_${gradeId}"
+                    id="score_${escapeAttribute(
+                        student.student_id
+                    )}_${escapeAttribute(
+                        gradeId
+                    )}"
                     value="${score ?? ""}"
                     placeholder="คะแนน"
                 >
@@ -3588,7 +1443,11 @@ function createStatusRow(
 
                 <select
                     class="status-select"
-                    id="status_${student.student_id}_${gradeId}"
+                    id="status_${escapeAttribute(
+                        student.student_id
+                    )}_${escapeAttribute(
+                        gradeId
+                    )}"
                 >
 
                     <option value=""
@@ -3651,8 +1510,12 @@ function createStatusRow(
                     class="btn btn-success"
                     onclick="
                         saveGrade(
-                            '${student.student_id}',
-                            '${gradeId}'
+                            '${escapeAttribute(
+                                student.student_id
+                            )}',
+                            '${escapeAttribute(
+                                gradeId
+                            )}'
                         )
                     "
                 >
@@ -3680,17 +1543,24 @@ async function saveGrade(
     const subject =
         document.getElementById(
             `subject_${studentId}_${gradeId}`
-        ).value.trim();
+        )
+        .value
+        .trim();
+
 
     const score =
         document.getElementById(
             `score_${studentId}_${gradeId}`
-        ).value;
+        )
+        .value;
+
 
     const status =
         document.getElementById(
             `status_${studentId}_${gradeId}`
-        ).value;
+        )
+        .value;
+
 
     if(!subject){
 
@@ -3701,6 +1571,7 @@ async function saveGrade(
         return;
 
     }
+
 
     const payload = {
 
@@ -3720,7 +1591,9 @@ async function saveGrade(
 
     };
 
+
     let result;
+
 
     if(gradeId){
 
@@ -3745,6 +1618,7 @@ async function saveGrade(
 
     }
 
+
     if(result.error){
 
         console.error(
@@ -3760,13 +1634,15 @@ async function saveGrade(
 
     }
 
+
     alert(
         "บันทึกผลการเรียนสำเร็จ"
     );
 
-    loadStatusStudents();
 
-    loadTeacherDashboard();
+    await loadStatusStudents();
+
+    await loadTeacherDashboard();
 
 }
 
@@ -3775,7 +1651,7 @@ async function saveGrade(
    FILTER STATUS
 ========================================================= */
 
-function filterStatusStudents(){
+async function filterStatusStudents(){
 
     const keyword =
         document.getElementById(
@@ -3783,6 +1659,7 @@ function filterStatusStudents(){
         )
         .value
         .toLowerCase();
+
 
     const filtered =
         statusStudentsCache.filter(
@@ -3813,27 +1690,25 @@ function filterStatusStudents(){
             }
         );
 
-    /*
-     * โหลด grades ใหม่เพื่อ render
-     */
 
-    supabaseClient
+    const {
+        data:grades
+    } =
+    await supabaseClient
         .from("grades")
-        .select("*")
-        .then(result => {
+        .select("*");
 
-            renderStatusTable(
-                filtered,
-                result.data || []
-            );
 
-        });
+    renderStatusTable(
+        filtered,
+        grades || []
+    );
 
 }
 
 
 /* =========================================================
-   ATTENDANCE
+   LOAD ATTENDANCE STUDENTS
 ========================================================= */
 
 async function loadAttendanceStudents(){
@@ -3842,6 +1717,7 @@ async function loadAttendanceStudents(){
         document.getElementById(
             "attendanceDate"
         ).value;
+
 
     if(!date){
 
@@ -3852,6 +1728,7 @@ async function loadAttendanceStudents(){
         return;
 
     }
+
 
     const {
         data:students,
@@ -3867,6 +1744,7 @@ async function loadAttendanceStudents(){
             }
         );
 
+
     if(studentError){
 
         console.error(
@@ -3881,6 +1759,7 @@ async function loadAttendanceStudents(){
 
     }
 
+
     const {
         data:existing,
         error:attendanceError
@@ -3893,6 +1772,7 @@ async function loadAttendanceStudents(){
             date
         );
 
+
     if(attendanceError){
 
         console.error(
@@ -3901,25 +1781,32 @@ async function loadAttendanceStudents(){
 
     }
 
+
     const map = {};
 
+
     (existing || [])
-    .forEach(record => {
+    .forEach(
+        record => {
 
-        map[
-            record.student_id
-        ] = record;
+            map[
+                record.student_id
+            ] = record;
 
-    });
+        }
+    );
+
 
     const table =
         document.getElementById(
             "attendanceTable"
         );
 
+
     table.innerHTML = "";
 
     attendanceData = [];
+
 
     (students || [])
     .forEach(
@@ -3930,21 +1817,26 @@ async function loadAttendanceStudents(){
                     student.student_id
                 ];
 
+
             const oldStatus =
                 old
                 ? old.status
                 : "มา";
 
+
             const oldTime =
                 old
                 ? (
-                    old.check_in_time || ""
+                    old.check_in_time ||
+                    ""
                 )
                 : "";
+
 
             attendanceData.push(
                 student
             );
+
 
             table.innerHTML += `
 
@@ -3976,9 +1868,13 @@ async function loadAttendanceStudents(){
 
                         <input
                             type="time"
-                            id="time_${student.student_id}"
+                            id="time_${escapeAttribute(
+                                student.student_id
+                            )}"
                             class="form-control"
-                            value="${oldTime}"
+                            value="${escapeAttribute(
+                                oldTime
+                            )}"
                         >
 
                     </td>
@@ -3986,7 +1882,9 @@ async function loadAttendanceStudents(){
                     <td>
 
                         <select
-                            id="status_${student.student_id}"
+                            id="status_${escapeAttribute(
+                                student.student_id
+                            )}"
                             class="status-select"
                         >
 
@@ -4059,6 +1957,7 @@ async function saveAttendance(){
             "attendanceDate"
         ).value;
 
+
     if(!date){
 
         alert(
@@ -4068,6 +1967,7 @@ async function saveAttendance(){
         return;
 
     }
+
 
     if(
         !attendanceData ||
@@ -4082,6 +1982,7 @@ async function saveAttendance(){
 
     }
 
+
     for(
         const student
         of attendanceData
@@ -4093,20 +1994,13 @@ async function saveAttendance(){
                 student.student_id
             ).value;
 
+
         const time =
             document.getElementById(
                 "time_" +
                 student.student_id
             ).value;
 
-        /*
-         * ใช้ upsert
-         * เพื่อป้องกันการบันทึกวันเดิมซ้ำ
-         *
-         * ต้องสร้าง UNIQUE
-         * (student_id,date)
-         * ใน Supabase
-         */
 
         const {
             error
@@ -4135,9 +2029,12 @@ async function saveAttendance(){
                 }
             );
 
+
         if(error){
 
-            console.error(error);
+            console.error(
+                error
+            );
 
             alert(
                 "บันทึกการเข้าเรียนไม่สำเร็จ\n" +
@@ -4150,17 +2047,19 @@ async function saveAttendance(){
 
     }
 
+
     alert(
         "✅ บันทึกการเข้าเรียนเรียบร้อยแล้ว"
     );
 
-    loadTeacherDashboard();
+
+    await loadTeacherDashboard();
 
 }
 
 
 /* =========================================================
-   REPORT
+   REPORT DATE
 ========================================================= */
 
 function setTodayReportDate(){
@@ -4169,6 +2068,7 @@ function setTodayReportDate(){
         document.getElementById(
             "reportDate"
         );
+
 
     if(date){
 
@@ -4191,6 +2091,7 @@ async function loadAttendanceReport(){
             "reportDate"
         ).value;
 
+
     if(!date){
 
         alert(
@@ -4200,6 +2101,7 @@ async function loadAttendanceReport(){
         return;
 
     }
+
 
     const {
         data:students,
@@ -4215,6 +2117,7 @@ async function loadAttendanceReport(){
             }
         );
 
+
     if(studentError){
 
         console.error(
@@ -4224,6 +2127,7 @@ async function loadAttendanceReport(){
         return;
 
     }
+
 
     const {
         data:attendance,
@@ -4237,6 +2141,7 @@ async function loadAttendanceReport(){
             date
         );
 
+
     if(attendanceError){
 
         console.error(
@@ -4247,31 +2152,36 @@ async function loadAttendanceReport(){
 
     }
 
+
     const map = {};
 
+
     (attendance || [])
-    .forEach(record => {
+    .forEach(
+        record => {
 
-        map[
-            record.student_id
-        ] = record;
+            map[
+                record.student_id
+            ] = record;
 
-    });
+        }
+    );
+
 
     let present = 0;
-
     let late = 0;
-
     let absent = 0;
-
     let leave = 0;
+
 
     const table =
         document.getElementById(
             "attendanceReportTable"
         );
 
+
     table.innerHTML = "";
+
 
     (students || [])
     .forEach(
@@ -4282,30 +2192,37 @@ async function loadAttendanceReport(){
                     student.student_id
                 ];
 
+
             const status =
                 record
                 ? record.status
                 : "ยังไม่เช็ก";
 
+
             const time =
                 record
                 ? (
-                    record.check_in_time
-                    || "-"
+                    record.check_in_time ||
+                    "-"
                 )
                 : "-";
+
 
             if(status === "มา")
                 present++;
 
+
             if(status === "สาย")
                 late++;
+
 
             if(status === "ขาด")
                 absent++;
 
+
             if(status === "ลา")
                 leave++;
+
 
             table.innerHTML += `
 
@@ -4334,7 +2251,9 @@ async function loadAttendanceReport(){
                     </td>
 
                     <td>
-                        ${time}
+                        ${escapeHTML(
+                            time
+                        )}
                     </td>
 
                     <td>
@@ -4350,6 +2269,7 @@ async function loadAttendanceReport(){
         }
     );
 
+
     document.getElementById(
         "reportTotalStudents"
     ).textContent =
@@ -4357,20 +2277,24 @@ async function loadAttendanceReport(){
         ? students.length
         : 0;
 
+
     document.getElementById(
         "reportPresent"
     ).textContent =
         present;
+
 
     document.getElementById(
         "reportLate"
     ).textContent =
         late;
 
+
     document.getElementById(
         "reportAbsent"
     ).textContent =
         absent;
+
 
     document.getElementById(
         "reportLeave"
@@ -4382,10 +2306,8 @@ async function loadAttendanceReport(){
 
 /* =========================================================
    CURRENT STUDENT
-========================================================= */
-
-/* =========================================================
-   CURRENT STUDENT
+   แก้ไขใหม่แล้ว
+   ไม่มีฟังก์ชันซ้ำ
 ========================================================= */
 
 async function loadCurrentStudent(){
@@ -4396,67 +2318,122 @@ async function loadCurrentStudent(){
 
     }
 
-    /*
-     * หา student จาก email
-     *
-     * ระบบจะตรวจสอบว่า
-     * email ของบัญชี Supabase Auth
-     * ตรงกับ email ในตาราง students หรือไม่
-     */
+
+    currentStudent = null;
+
+
+    /* =====================================================
+       1. ค้นหาจาก student_id ใน profiles ก่อน
+    ===================================================== */
 
     const {
-        data,
-        error
+        data: profile,
+        error: profileError
     } =
     await supabaseClient
-        .from("students")
-        .select("*")
+        .from("profiles")
+        .select(
+            "student_id, fullname"
+        )
         .eq(
-            "email",
-            currentUser.email
+            "id",
+            currentUser.id
         )
         .maybeSingle();
 
 
-    /* =====================================================
-       ตรวจสอบ Error
-    ===================================================== */
-
-    if(error){
+    if(profileError){
 
         console.error(
-            "เกิดข้อผิดพลาดในการค้นหานักเรียน:",
+            "โหลด Profile นักเรียนไม่สำเร็จ:",
+            profileError
+        );
+
+    }
+
+
+    if(
+        profile &&
+        profile.student_id
+    ){
+
+        const {
+            data:studentData,
+            error:studentError
+        } =
+        await supabaseClient
+            .from("students")
+            .select("*")
+            .eq(
+                "student_id",
+                profile.student_id
+            )
+            .maybeSingle();
+
+
+        if(studentError){
+
+            console.error(
+                "ค้นหานักเรียนไม่สำเร็จ:",
+                studentError
+            );
+
+        }
+        else if(studentData){
+
+            currentStudent =
+                studentData;
+
+        }
+
+    }
+
+
+    /* =====================================================
+       2. ถ้ายังไม่พบ ให้ค้นหาจาก Email
+    ===================================================== */
+
+    if(!currentStudent){
+
+        const {
+            data,
             error
-        );
+        } =
+        await supabaseClient
+            .from("students")
+            .select("*")
+            .eq(
+                "email",
+                currentUser.email
+            )
+            .maybeSingle();
 
-        alert(
-            "ไม่สามารถโหลดข้อมูลนักเรียนได้\n" +
-            error.message
-        );
 
-        return;
+        if(error){
+
+            console.error(
+                "ค้นหาจาก Email ไม่สำเร็จ:",
+                error
+            );
+
+        }
+
+
+        if(data){
+
+            currentStudent =
+                data;
+
+        }
 
     }
 
 
     /* =====================================================
-       ถ้าพบข้อมูลนักเรียนจาก Email
+       3. ถ้ายังไม่พบ ให้ค้นหาจาก user_metadata
     ===================================================== */
 
-    if(data){
-
-        currentStudent =
-            data;
-
-    }
-
-
-    /* =====================================================
-       ถ้าไม่พบจาก Email
-       ให้ลองค้นหาจาก student_id ใน user_metadata
-    ===================================================== */
-
-    else{
+    if(!currentStudent){
 
         const studentId =
             currentUser.user_metadata
@@ -4467,8 +2444,8 @@ async function loadCurrentStudent(){
         if(studentId){
 
             const {
-                data:studentData,
-                error:studentError
+                data,
+                error
             } =
             await supabaseClient
                 .from("students")
@@ -4480,25 +2457,22 @@ async function loadCurrentStudent(){
                 .maybeSingle();
 
 
-            if(studentError){
+            if(error){
 
                 console.error(
-                    "ค้นหาจากรหัสนักเรียนไม่สำเร็จ:",
-                    studentError
+                    "ค้นหาจาก Metadata ไม่สำเร็จ:",
+                    error
                 );
-
-                alert(
-                    "ไม่สามารถค้นหาข้อมูลนักเรียนได้\n" +
-                    studentError.message
-                );
-
-                return;
 
             }
 
 
-            currentStudent =
-                studentData;
+            if(data){
+
+                currentStudent =
+                    data;
+
+            }
 
         }
 
@@ -4506,15 +2480,15 @@ async function loadCurrentStudent(){
 
 
     /* =====================================================
-       ตรวจสอบว่าพบนักเรียนหรือไม่
+       ตรวจสอบ
     ===================================================== */
 
     if(!currentStudent){
 
         alert(
             "ไม่พบข้อมูลนักเรียนที่ผูกกับบัญชีนี้\n\n" +
-            "กรุณาตรวจสอบว่า Email ใน Supabase Auth\n" +
-            "ตรงกับ Email ในตาราง students หรือไม่"
+            "กรุณาตรวจสอบว่า student_id ใน profiles\n" +
+            "ตรงกับ student_id ใน students"
         );
 
         return;
@@ -4523,88 +2497,17 @@ async function loadCurrentStudent(){
 
 
     /* =====================================================
-       แสดงข้อมูลนักเรียน
+       แสดงข้อมูล
     ===================================================== */
 
     renderStudentProfile();
 
-
-    /* =====================================================
-       โหลดผลการเรียน
-    ===================================================== */
 
     await loadStudentGrades();
 
-
-    /* =====================================================
-       โหลดประวัติการเข้าเรียน
-    ===================================================== */
-
     await loadStudentAttendance();
 
-
-    /* =====================================================
-       โหลดสถานะ 0 / ร / มส. / มผ.
-    ===================================================== */
-
     await loadStudentStatuses();
-
-}
-    if(data){
-
-        currentStudent =
-            data;
-
-    }
-    else{
-
-        /*
-         * กรณีไม่ได้ผูก email
-         * ให้ลองใช้ student_id
-         * จาก metadata
-         */
-
-        const studentId =
-            currentUser.user_metadata
-            ? currentUser.user_metadata.student_id
-            : null;
-
-        if(studentId){
-
-            const result =
-                await supabaseClient
-                    .from("students")
-                    .select("*")
-                    .eq(
-                        "student_id",
-                        studentId
-                    )
-                    .maybeSingle();
-
-            currentStudent =
-                result.data;
-
-        }
-
-    }
-
-    if(!currentStudent){
-
-        alert(
-            "ไม่พบข้อมูลนักเรียนที่ผูกกับบัญชีนี้"
-        );
-
-        return;
-
-    }
-
-    renderStudentProfile();
-
-    loadStudentGrades();
-
-    loadStudentAttendance();
-
-    loadStudentStatuses();
 
 }
 
@@ -4615,8 +2518,16 @@ async function loadCurrentStudent(){
 
 function renderStudentProfile(){
 
+    if(!currentStudent){
+
+        return;
+
+    }
+
+
     const student =
         currentStudent;
+
 
     document.getElementById(
         "studentProfile"
@@ -4636,6 +2547,7 @@ function renderStudentProfile(){
 
         </div>
 
+
         <div class="profile-item">
 
             <small>
@@ -4650,6 +2562,7 @@ function renderStudentProfile(){
 
         </div>
 
+
         <div class="profile-item">
 
             <small>
@@ -4663,6 +2576,7 @@ function renderStudentProfile(){
             </strong>
 
         </div>
+
 
         <div class="profile-item">
 
@@ -4680,6 +2594,7 @@ function renderStudentProfile(){
         </div>
 
     `;
+
 
     document.getElementById(
         "myGPA"
@@ -4702,6 +2617,7 @@ async function loadStudentGrades(){
 
     }
 
+
     const {
         data,
         error
@@ -4720,22 +2636,31 @@ async function loadStudentGrades(){
             }
         );
 
+
     if(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
         return;
 
     }
+
 
     const table =
         document.getElementById(
             "myGradesTable"
         );
 
+
     table.innerHTML = "";
 
-    if(!data || !data.length){
+
+    if(
+        !data ||
+        !data.length
+    ){
 
         table.innerHTML = `
 
@@ -4755,6 +2680,7 @@ async function loadStudentGrades(){
         return;
 
     }
+
 
     data.forEach(
         (grade,index) => {
@@ -4819,6 +2745,7 @@ async function loadStudentAttendance(){
 
     }
 
+
     const {
         data,
         error
@@ -4837,85 +2764,98 @@ async function loadStudentAttendance(){
             }
         );
 
+
     if(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
         return;
 
     }
 
+
     let present = 0;
-
     let late = 0;
-
     let absent = 0;
-
     let leave = 0;
+
 
     const table =
         document.getElementById(
             "myAttendanceTable"
         );
 
+
     table.innerHTML = "";
 
+
     (data || [])
-    .forEach(record => {
+    .forEach(
+        record => {
 
-        if(record.status === "มา")
-            present++;
+            if(record.status === "มา")
+                present++;
 
-        if(record.status === "สาย")
-            late++;
+            if(record.status === "สาย")
+                late++;
 
-        if(record.status === "ขาด")
-            absent++;
+            if(record.status === "ขาด")
+                absent++;
 
-        if(record.status === "ลา")
-            leave++;
+            if(record.status === "ลา")
+                leave++;
 
-        table.innerHTML += `
 
-            <tr>
+            table.innerHTML += `
 
-                <td>
-                    ${record.date}
-                </td>
+                <tr>
 
-                <td>
-                    ${
-                        record.check_in_time
-                        || "-"
-                    }
-                </td>
+                    <td>
+                        ${escapeHTML(
+                            record.date
+                        )}
+                    </td>
 
-                <td>
-                    ${formatAttendanceStatus(
-                        record.status
-                    )}
-                </td>
+                    <td>
+                        ${
+                            record.check_in_time ||
+                            "-"
+                        }
+                    </td>
 
-            </tr>
+                    <td>
+                        ${formatAttendanceStatus(
+                            record.status
+                        )}
+                    </td>
 
-        `;
+                </tr>
 
-    });
+            `;
+
+        }
+    );
+
 
     document.getElementById(
         "myPresent"
     ).textContent =
         present;
 
+
     document.getElementById(
         "myLate"
     ).textContent =
         late;
 
+
     document.getElementById(
         "myAbsent"
     ).textContent =
         absent;
+
 
     document.getElementById(
         "myLeave"
@@ -4937,6 +2877,7 @@ async function loadStudentStatuses(){
 
     }
 
+
     const {
         data,
         error
@@ -4949,127 +2890,145 @@ async function loadStudentStatuses(){
             currentStudent.student_id
         );
 
+
     if(error){
 
-        console.error(error);
+        console.error(
+            error
+        );
 
         return;
 
     }
 
+
     let zero = 0;
-
     let r = 0;
-
     let ms = 0;
-
     let mp = 0;
+
 
     const table =
         document.getElementById(
             "myStatusTable"
         );
 
+
     table.innerHTML = "";
 
+
     (data || [])
-    .forEach(grade => {
+    .forEach(
+        grade => {
 
-        if(
-            String(
-                grade.status
-            ) === "0"
-        )
-            zero++;
+            if(
+                String(
+                    grade.status
+                ) === "0"
+            )
+                zero++;
 
-        if(
-            String(
-                grade.status
-            ) === "ร"
-        )
-            r++;
 
-        if(
-            String(
-                grade.status
-            ) === "มส."
-        )
-            ms++;
+            if(
+                String(
+                    grade.status
+                ) === "ร"
+            )
+                r++;
 
-        if(
-            String(
-                grade.status
-            ) === "มผ."
-        )
-            mp++;
 
-        if(grade.status){
+            if(
+                String(
+                    grade.status
+                ) === "มส."
+            )
+                ms++;
 
-            table.innerHTML += `
 
-                <tr>
+            if(
+                String(
+                    grade.status
+                ) === "มผ."
+            )
+                mp++;
 
-                    <td>
-                        ${escapeHTML(
-                            grade.subject
-                        )}
-                    </td>
 
-                    <td>
-                        ${
-                            grade.score ??
-                            "-"
-                        }
-                    </td>
+            if(grade.status){
 
-                    <td>
-                        ${formatGradeStatus(
-                            grade.status
-                        )}
-                    </td>
+                table.innerHTML += `
 
-                </tr>
+                    <tr>
 
-            `;
+                        <td>
+                            ${escapeHTML(
+                                grade.subject
+                            )}
+                        </td>
+
+                        <td>
+                            ${
+                                grade.score ??
+                                "-"
+                            }
+                        </td>
+
+                        <td>
+                            ${formatGradeStatus(
+                                grade.status
+                            )}
+                        </td>
+
+                    </tr>
+
+                `;
+
+            }
 
         }
+    );
 
-    });
 
     document.getElementById(
         "myZero"
     ).textContent =
         zero;
 
+
     document.getElementById(
         "myR"
     ).textContent =
         r;
+
 
     document.getElementById(
         "myMS"
     ).textContent =
         ms;
 
+
     document.getElementById(
         "myMP"
     ).textContent =
         mp;
+
 
     document.getElementById(
         "studentStatusZero"
     ).textContent =
         zero;
 
+
     document.getElementById(
         "studentStatusR"
     ).textContent =
         r;
 
+
     document.getElementById(
         "studentStatusMS"
     ).textContent =
         ms;
+
 
     document.getElementById(
         "studentStatusMP"
@@ -5080,7 +3039,7 @@ async function loadStudentStatuses(){
 
 
 /* =========================================================
-   FORMAT STATUS
+   FORMAT GRADE STATUS
 ========================================================= */
 
 function formatGradeStatus(status){
@@ -5095,6 +3054,7 @@ function formatGradeStatus(status){
 
     }
 
+
     if(status === "ร"){
 
         return `
@@ -5104,6 +3064,7 @@ function formatGradeStatus(status){
         `;
 
     }
+
 
     if(status === "มส."){
 
@@ -5115,6 +3076,7 @@ function formatGradeStatus(status){
 
     }
 
+
     if(status === "มผ."){
 
         return `
@@ -5124,6 +3086,7 @@ function formatGradeStatus(status){
         `;
 
     }
+
 
     return `
         <span class="badge badge-ok">
@@ -5148,11 +3111,13 @@ function formatAttendanceStatus(
 
     }
 
+
     if(status === "สาย"){
 
         return "🟡 สาย";
 
     }
+
 
     if(status === "ขาด"){
 
@@ -5160,11 +3125,13 @@ function formatAttendanceStatus(
 
     }
 
+
     if(status === "ลา"){
 
         return "🔵 ลา";
 
     }
+
 
     return "⚪ " + status;
 
@@ -5180,20 +3147,30 @@ function getToday(){
     const date =
         new Date();
 
+
     const year =
         date.getFullYear();
+
 
     const month =
         String(
             date.getMonth() + 1
         )
-        .padStart(2,"0");
+        .padStart(
+            2,
+            "0"
+        );
+
 
     const day =
         String(
             date.getDate()
         )
-        .padStart(2,"0");
+        .padStart(
+            2,
+            "0"
+        );
+
 
     return (
         year +
@@ -5212,12 +3189,15 @@ function getToday(){
 
 function escapeHTML(value){
 
-    if(value === null ||
-       value === undefined){
+    if(
+        value === null ||
+        value === undefined
+    ){
 
         return "";
 
     }
+
 
     return String(value)
         .replace(
@@ -5246,7 +3226,9 @@ function escapeHTML(value){
 
 function escapeAttribute(value){
 
-    return escapeHTML(value);
+    return escapeHTML(
+        value
+    );
 
 }
 
@@ -5259,29 +3241,130 @@ window.addEventListener(
     "load",
     async function(){
 
-        const {
-            data
-        } =
-        await supabaseClient
-            .auth
-            .getSession();
+        try{
 
-        if(
-            data &&
-            data.session &&
-            data.session.user
-        ){
+            const {
+                data,
+                error
+            } =
+            await supabaseClient
+                .auth
+                .getSession();
 
-            currentUser =
-                data.session.user;
 
-            const role =
-                localStorage.getItem(
-                    "userRole"
-                ) ||
-                "student";
+            if(error){
 
-            openSystem(role);
+                console.error(
+                    "Session Error:",
+                    error
+                );
+
+                return;
+
+            }
+
+
+            if(
+                data &&
+                data.session &&
+                data.session.user
+            ){
+
+                currentUser =
+                    data.session.user;
+
+
+                /* =========================================
+                   ตรวจสอบ Profile ใหม่ทุกครั้ง
+                ========================================= */
+
+                const {
+                    data:profile,
+                    error:profileError
+                } =
+                await supabaseClient
+                    .from("profiles")
+                    .select(
+                        "role, student_id, fullname"
+                    )
+                    .eq(
+                        "id",
+                        currentUser.id
+                    )
+                    .maybeSingle();
+
+
+                if(
+                    profileError ||
+                    !profile
+                ){
+
+                    await supabaseClient
+                        .auth
+                        .signOut();
+
+                    currentUser = null;
+
+                    return;
+
+                }
+
+
+                const role =
+                    profile.role;
+
+
+                if(
+                    role !== "student" &&
+                    role !== "teacher"
+                ){
+
+                    await supabaseClient
+                        .auth
+                        .signOut();
+
+                    currentUser = null;
+
+                    return;
+
+                }
+
+
+                localStorage.setItem(
+                    "userRole",
+                    role
+                );
+
+
+                localStorage.setItem(
+                    "userEmail",
+                    currentUser.email || ""
+                );
+
+
+                if(profile.student_id){
+
+                    localStorage.setItem(
+                        "studentId",
+                        profile.student_id
+                    );
+
+                }
+
+
+                await openSystem(
+                    role
+                );
+
+            }
+
+        }
+        catch(error){
+
+            console.error(
+                "AUTO LOGIN ERROR:",
+                error
+            );
 
         }
 
@@ -5305,6 +3388,8 @@ supabaseClient
 
             currentUser = null;
 
+            currentStudent = null;
+
         }
 
     }
@@ -5324,6 +3409,7 @@ document.addEventListener(
                 "attendanceDate"
             );
 
+
         if(attendanceDate){
 
             attendanceDate.value =
@@ -5331,10 +3417,12 @@ document.addEventListener(
 
         }
 
+
         const reportDate =
             document.getElementById(
                 "reportDate"
             );
+
 
         if(reportDate){
 
@@ -5347,7 +3435,3 @@ document.addEventListener(
 );
 
 </script>
-
-</body>
-
-</html>
