@@ -2502,18 +2502,87 @@ async function login(){
          * user_metadata
          */
 
-        let realRole =
-            selectedRole;
+        /* =====================================================
+   ตรวจสอบ ROLE จาก profiles
+   ไม่ใช้ค่าที่ผู้ใช้เลือกเอง
+===================================================== */
 
-        if(
-            currentUser.user_metadata &&
-            currentUser.user_metadata.role
-        ){
+const {
+    data: profile,
+    error: profileError
+} = await supabaseClient
+    .from("profiles")
+    .select("role, student_id, fullname")
+    .eq("id", currentUser.id)
+    .maybeSingle();
 
-            realRole =
-                currentUser.user_metadata.role;
+if(profileError){
 
-        }
+    console.error(profileError);
+
+    message.textContent =
+        "ไม่สามารถตรวจสอบสิทธิ์ผู้ใช้ได้";
+
+    await supabaseClient.auth.signOut();
+
+    return;
+
+}
+
+if(!profile){
+
+    message.textContent =
+        "ไม่พบข้อมูลสิทธิ์ของบัญชีนี้";
+
+    await supabaseClient.auth.signOut();
+
+    return;
+
+}
+
+const realRole = profile.role;
+
+
+/* =====================================================
+   ตรวจสอบว่าประเภทที่เลือกตรงกับบัญชีจริงหรือไม่
+===================================================== */
+
+if(realRole !== selectedRole){
+
+    message.textContent =
+        "ประเภทผู้ใช้งานไม่ตรงกับบัญชีนี้";
+
+    await supabaseClient.auth.signOut();
+
+    return;
+
+}
+
+
+/* =====================================================
+   เก็บข้อมูล Login
+===================================================== */
+
+localStorage.setItem(
+    "userRole",
+    realRole
+);
+
+localStorage.setItem(
+    "userEmail",
+    currentUser.email || email
+);
+
+if(profile.student_id){
+
+    localStorage.setItem(
+        "studentId",
+        profile.student_id
+    );
+
+}
+
+openSystem(realRole);
 
         localStorage.setItem(
             "userRole",
