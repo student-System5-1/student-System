@@ -1635,7 +1635,7 @@ async function saveQuiz(){
 
     if(!subject || !title || !question || !answer) return alert("กรุณากรอกข้อมูลแนวข้อสอบให้ครบ");
 
-    const { error } = await supabaseClient.from("quizzes").insert([{ subject, title, question, answer }]);
+    const { error } = await supabaseClient.from("lesson_questions").insert([{ subject, title, question, answer }]);
     if(error){
         quizzesData.push({ id: Date.now(), subject, title, question, answer });
     } else {
@@ -2114,7 +2114,7 @@ async function loadStudentQuizzes() {
 
     // ดึงข้อมูลแนวข้อสอบจากตาราง quizzes ใน Supabase
     const { data, error } = await supabaseClient
-        .from("quizzes")
+        .from("lesson_questions")
         .select("*")
         .order("created_at", { ascending: false });
 
