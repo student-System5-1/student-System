@@ -1909,13 +1909,30 @@ async function loadStudentStatuses(){
 
 /* STUDENT LESSONS & QUESTION BOX */
 async function loadStudentLessonsOptions(){
-    await loadLessonsFromDB();
+    // ดึงข้อมูลบทเรียนทั้งหมดจากตาราง lessons ใน Supabase
+    const { data, error } = await supabaseClient
+        .from("lessons")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (!error && data) {
+        lessonsData = data;
+    }
+
     const select = document.getElementById("studentLessonSelect");
+    if (!select) return;
+
     select.innerHTML = '<option value="">-- เลือกบทเรียน --</option>';
-    lessonsData.forEach(l => {
-        select.innerHTML += `<option value="${l.id}">[${escapeHTML(l.subject)}] ${escapeHTML(l.title)}</option>`;
-    });
+    
+    if (lessonsData && lessonsData.length > 0) {
+        lessonsData.forEach(l => {
+            select.innerHTML += `<option value="${l.id}">[${escapeHTML(l.subject)}] ${escapeHTML(l.title)}</option>`;
+        });
+    } else {
+        select.innerHTML = '<option value="">-- ยังไม่มีบทเรียนในระบบ --</option>';
+    }
 }
+
 
 function displayLessonContent(){
     const id = document.getElementById("studentLessonSelect").value;
@@ -1937,30 +1954,43 @@ async function submitStudentQuestion() {
     if (!currentStudent) return alert("ไม่พบข้อมูลนักเรียน กรุณาล็อกอินใหม่อีกครั้ง");
     if (!questionText) return alert("กรุณากรอกข้อความคำถามก่อนกดส่ง");
 
-    msgBox.style.color = "#1565c0";
-    msgBox.textContent = "กำลังส่งคำถาม...";
+    if (msgBox) {
+        msgBox.style.color = "#1565c0";
+        msgBox.textContent = "กำลังส่งคำถาม...";
+    }
 
-    const { data, error } = await supabaseClient
+    // บันทึกคำถามลงตาราง lesson_questions ใน Supabase
+    const { error } = await supabaseClient
         .from("lesson_questions")
         .insert([{
             student_id: currentStudent.student_id,
             student_name: currentStudent.fullname,
-            lesson_id: lessonId || null,
+            lesson_id: lessonId ? Number(lessonId) : null,
             question: questionText,
             status: "รอการตอบ"
         }]);
 
     if (error) {
-        msgBox.style.color = "#dc2626";
-        msgBox.textContent = "เกิดข้อผิดพลาด: " + error.message;
+        if (msgBox) {
+            msgBox.style.color = "#dc2626";
+            msgBox.textContent = "เกิดข้อผิดพลาด: " + error.message;
+        } else {
+            alert("เกิดข้อผิดพลาด: " + error.message);
+        }
         return;
     }
 
-    msgBox.style.color = "#16a34a";
-    msgBox.textContent = "✅ ส่งคำถามเรียบร้อยแล้ว!";
+    if (msgBox) {
+        msgBox.style.color = "#16a34a";
+        msgBox.textContent = "✅ ส่งคำถามเรียบร้อยแล้ว!";
+    } else {
+        alert("✅ ส่งคำถามเรียบร้อยแล้ว!");
+    }
+
     document.getElementById("studentQuestionText").value = "";
     loadStudentQuestions();
 }
+
 
 async function loadStudentQuestions() {
     if (!currentStudent) return;
