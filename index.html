@@ -765,6 +765,27 @@ tr:nth-child(even) {
                 <button class="btn btn-success" onclick="saveQuiz()">➕ เพิ่มแนวข้อสอบ</button>
             </div>
         </div>
+        <!-- การ์ดแสดงคำถามจากนักเรียน -->
+<div class="card" style="margin-top: 20px; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <h3 style="color: #0284c7; margin-bottom: 15px;">❓ คำถามจากนักเรียนถึงคุณครู</h3>
+    <div style="overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+                <tr style="background-color: #f1f5f9; border-bottom: 2px solid #cbd5e1;">
+                    <th style="padding: 10px;">วันที่/เวลา</th>
+                    <th style="padding: 10px;">บทเรียน</th>
+                    <th style="padding: 10px;">คำถามจากนักเรียน</th>
+                </tr>
+            </thead>
+            <tbody id="teacherQuestionsTable">
+                <tr>
+                    <td colspan="3" style="text-align: center; padding: 15px; color: #64748b;">กำลังโหลดข้อมูลคำถาม...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
 
         <!-- TEACHER ASSIGNMENTS -->
         <div id="teacherAssignments" class="page-section">
@@ -2196,6 +2217,43 @@ document.addEventListener("DOMContentLoaded", function(){
     const repDate = document.getElementById("reportDate");
     if(repDate) repDate.value = getToday();
 });
+    // ฟังก์ชันดึงคำถามจากนักเรียนมาแสดงฝั่งครู
+async function loadTeacherQuestions() {
+    const tableBody = document.getElementById("teacherQuestionsTable");
+    if (!tableBody) return;
+
+    const { data, error } = await supabaseClient
+        .from("lesson_questions")
+        .select("*");
+
+    if (error) {
+        console.error("Error loading student questions:", error.message);
+        tableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:red; padding:10px;">เกิดข้อผิดพลาดในการโหลดข้อมูลคำถาม</td></tr>`;
+        return;
+    }
+
+    // กรองเอาเฉพาะรายการที่เป็นคำถามจากนักเรียน (ไม่มีตัววิชา)
+    const questions = data ? data.filter(q => q.question && !q.subject) : [];
+
+    if (questions.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#64748b; padding:15px;">ยังไม่มีคำถามจากนักเรียนในขณะนี้</td></tr>`;
+        return;
+    }
+
+    tableBody.innerHTML = questions.map(q => `
+        <tr style="border-bottom: 1px solid #e2e8f0;">
+            <td style="padding: 10px; font-size: 14px; color: #64748b;">${q.created_at ? new Date(q.created_at).toLocaleString('th-TH') : '-'}</td>
+            <td style="padding: 10px; font-weight: bold;">${escapeHTML(q.title || 'คำถามทั่วไป')}</td>
+            <td style="padding: 10px; color: #1e293b;">${escapeHTML(q.question)}</td>
+        </tr>
+    `).join("");
+}
+
+// เรียกทำงานฟังก์ชันเมื่อโหลดหน้าเว็บ
+document.addEventListener("DOMContentLoaded", () => {
+    if (typeof loadTeacherQuestions === "function") loadTeacherQuestions();
+});
+
 </script>
 </body>
 </html>
