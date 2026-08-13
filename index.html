@@ -1502,11 +1502,19 @@ function createStatusRow(student, grade, number){
             <td><input class="form-control" type="number" id="score_${student.student_id}_${gradeId}" value="${score ?? ""}" placeholder="คะแนน"></td>
             <td>
                 <select class="status-select" id="status_${student.student_id}_${gradeId}">
-                    <option value="" ${status === "" ? "selected" : ""}>ปกติ</option>
+                                        <option value="" ${status === "" ? "selected" : ""}>ปกติ</option>
+                    <option value="4" ${status === "4" ? "selected" : ""}>4</option>
+                    <option value="3.5" ${status === "3.5" ? "selected" : ""}>3.5</option>
+                    <option value="3" ${status === "3" ? "selected" : ""}>3</option>
+                    <option value="2.5" ${status === "2.5" ? "selected" : ""}>2.5</option>
+                    <option value="2" ${status === "2" ? "selected" : ""}>2</option>
+                    <option value="1.5" ${status === "1.5" ? "selected" : ""}>1.5</option>
+                    <option value="1" ${status === "1" ? "selected" : ""}>1</option>
                     <option value="0" ${status === "0" ? "selected" : ""}>0</option>
                     <option value="ร" ${status === "ร" ? "selected" : ""}>ร</option>
                     <option value="มส." ${status === "มส." ? "selected" : ""}>มส.</option>
                     <option value="มผ." ${status === "มผ." ? "selected" : ""}>มผ.</option>
+
                 </select>
             </td>
             <td><button class="btn btn-success" onclick="saveGrade('${student.student_id}', '${gradeId}')">💾 บันทึก</button></td>
@@ -1521,12 +1529,16 @@ async function saveGrade(studentId, gradeId){
 
     if(!subject) return alert("กรุณากรอกชื่อวิชา");
 
-    const payload = {
-        student_id: studentId,
-        subject: subject,
-        score: score ? Number(score) : null,
-        status: status || null
-    };
+    const isGrade = ["4", "3.5", "3", "2.5", "2", "1.5", "1"].includes(status);
+
+const payload = {
+    student_id: studentId,
+    subject: subject,
+    score: score ? Number(score) : null,
+    grade: isGrade ? status : (status === "0" ? "0" : null),
+    status: isGrade ? null : (status || null)
+};
+
 
     let result = gradeId ? 
         await supabaseClient.from("grades").update(payload).eq("id", gradeId) :
