@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Student System5/1</title>
+<title>Student System 5/1 - โรงเรียนท่าใหม่ “พูลสวัสดิ์ราษฎร์นุกูล”</title>
 
 <!-- SUPABASE -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- CHART -->
+<!-- CHART.JS -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
@@ -68,6 +68,7 @@ button, input, select, textarea {
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    font-size: 50px;
 }
 
 .school-logo img {
@@ -472,7 +473,7 @@ tr:nth-child(even) {
         <div class="school-header">
             <div class="school-top">
                 <div class="school-logo">
-                    <img src="assets/logo.png" alt="โลโก้โรงเรียน" onerror="this.style.display='none'">
+                    <img src="assets/logo.png" alt="🏫" onerror="this.style.display='none'">
                 </div>
                 <div class="school-title">
                     <h1>Student<span> System5/1</span></h1>
@@ -1043,60 +1044,36 @@ tr:nth-child(even) {
                 <select id="studentLessonSelect" class="form-control" onchange="displayLessonContent()">
                     <option value="">-- เลือกบทเรียน --</option>
                 </select>
-                <br>
-                <div id="lessonDisplayArea" style="background: #f8fafc; padding: 15px; border-radius: 10px; font-size: 16px; min-height: 100px;">
-                    กรุณาเลือกบทเรียนเพื่ออ่านเนื้อหา...
+                <br><br>
+                <div id="lessonViewer" style="background:#f8fafc; padding:20px; border-radius:12px; min-height:100px;">
+                    กรุณาเลือกบทเรียนเพื่ออ่านรายละเอียด
                 </div>
             </div>
             <br>
-
             <div class="card">
-                <h3>❓ ส่งคำถามเกี่ยวกับบทเรียนถึงคุณครู</h3>
+                <h3>❓ ส่งคำถามถึงคุณครู</h3>
                 <br>
-                <div class="form-group">
-                    <label for="studentQuestionText">พิมพ์ข้อสงสัยหรือคำถามของคุณ:</label>
-                    <textarea id="studentQuestionText" class="form-control" rows="4" placeholder="ระบุข้อสงสัย เนื้อหาที่ไม่เข้าใจ หรือคำถามเกี่ยวกับบทเรียนนี้..."></textarea>
-                </div>
+                <textarea id="studentQuestionInput" class="form-control" rows="3" placeholder="พิมพ์ข้อสงสัยหรือคำถามที่นี่..."></textarea>
                 <br>
-                <button class="btn btn-success" onclick="submitStudentQuestion()">✉️ ส่งคำถาม</button>
-                <div id="questionStatusMsg" style="margin-top: 10px; font-weight: bold;"></div>
-            </div>
-            <br>
-
-            <div class="card">
-                <h3>💬 ประวัติคำถามและคำตอบของคุณ</h3>
-                <br>
-                <div class="table-wrapper">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>บทเรียน</th>
-                                <th>คำถามของคุณ</th>
-                                <th>คำตอบจากครู / ระบบ</th>
-                                <th>สถานะ</th>
-                            </tr>
-                        </thead>
-                        <tbody id="myQuestionsTable">
-                            <tr><td colspan="4" class="empty">ยังไม่มีประวัติการส่งคำถาม</td></tr>
-                        </tbody>
-                    </table>
-                </div>
+                <button class="btn btn-success" onclick="sendStudentQuestion()">📤 ส่งคำถาม</button>
             </div>
         </div>
 
         <!-- STUDENT ASSIGNMENTS -->
         <div id="studentAssignments" class="page-section">
-            <h1 class="page-title">📥 รายการงานที่ต้องส่ง</h1>
+            <h1 class="page-title">📥 การบ้าน & งานที่ได้รับมอบหมาย</h1>
             <div class="card">
+                <h3>รายการสั่งงาน</h3>
+                <br>
                 <div class="table-wrapper">
                     <table>
                         <thead>
                             <tr>
                                 <th>วิชา</th>
-                                <th>หัวข้องาน / รายละเอียด</th>
+                                <th>หัวข้องาน</th>
+                                <th>รายละเอียด</th>
                                 <th>กำหนดส่ง</th>
-                                <th>ส่งงาน (วางลิงก์ Google Drive / Canva / ไฟล์)</th>
-                                <th>สถานะ</th>
+                                <th>การส่งงาน</th>
                             </tr>
                         </thead>
                         <tbody id="studentAssignmentList"></tbody>
@@ -1107,10 +1084,8 @@ tr:nth-child(even) {
 
         <!-- STUDENT QUIZZES -->
         <div id="studentQuizzes" class="page-section">
-            <h1 class="page-title">✍️ แบบทดสอบและแนวข้อสอบวัดผล</h1>
+            <h1 class="page-title">✍️ แบบทดสอบ & แนวข้อสอบ</h1>
             <div class="card">
-                <h3>รายการข้อสอบทบทวนความรู้</h3>
-                <br>
                 <div class="table-wrapper">
                     <table>
                         <thead>
@@ -1118,12 +1093,10 @@ tr:nth-child(even) {
                                 <th>วิชา</th>
                                 <th>หัวข้อ</th>
                                 <th>คำถาม</th>
-                                <th>แนวทางคำตอบ / เฉลย</th>
+                                <th>แนวคำตอบ / เฉลย</th>
                             </tr>
                         </thead>
-                        <tbody id="studentQuizTable">
-                            <tr><td colspan="4" class="empty">ยังไม่มีข้อมูลแนวข้อสอบ</td></tr>
-                        </tbody>
+                        <tbody id="studentQuizList"></tbody>
                     </table>
                 </div>
             </div>
@@ -1133,1170 +1106,821 @@ tr:nth-child(even) {
 </section>
 
 <script>
-/* SUPABASE CONFIG */
-const SUPABASE_URL = "https://yhbuatktksavohtyzarr.supabase.co";
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InloYnVhdGt0a3Nhdm9odHl6YXJyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUyMDU0NjMsImV4cCI6MjEwMDc4MTQ2M30.vLBkYxdhxma9tnWcrqSvPVwHR3pAhPBI4AxuAIP3JII";
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+// --- SUPABASE CONFIGURATION ---
+// REPLACE THESE WITH YOUR ACTUAL SUPABASE CREDENTIALS IF CONNECTING TO LIVE DATABASE
+const SUPABASE_URL = "https://your-supabase-url.supabase.co";
+const SUPABASE_ANON_KEY = "your-anon-key";
 
-/* GLOBAL VARIABLES */
+let supabase = null;
+try {
+    if (SUPABASE_URL !== "https://your-supabase-url.supabase.co") {
+        supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    }
+} catch (e) {
+    console.warn("Supabase initialized in local storage mock mode");
+}
+
+// --- LOCAL STORAGE MOCK DATABASE (Fallback if Supabase is not connected) ---
+const LocalDB = {
+    get(key) {
+        return JSON.parse(localStorage.getItem('sys51_' + key) || '[]');
+    },
+    set(key, val) {
+        localStorage.setItem('sys51_' + key, JSON.stringify(val));
+    },
+    initDefault() {
+        if (!localStorage.getItem('sys51_students')) {
+            this.set('students', [
+                { id: '1001', name: 'นายสมชาย ใจดี', email: '1001', classroom: 'ม.5/1', gpa: 3.50 },
+                { id: '1002', name: 'นางสาวสมหญิง รักเรียน', email: '1002', classroom: 'ม.5/1', gpa: 3.85 },
+                { id: '1003', name: 'นายกิตติศักดิ์ มีสุข', email: '1003', classroom: 'ม.5/1', gpa: 2.10 }
+            ]);
+        }
+        if (!localStorage.getItem('sys51_grades')) {
+            this.set('grades', [
+                { student_id: '1001', subject: 'คณิตศาสตร์', score: 85, status: 'ปกติ' },
+                { student_id: '1001', subject: 'ภาษาไทย', score: 72, status: 'ปกติ' },
+                { student_id: '1002', subject: 'คณิตศาสตร์', score: 95, status: 'ปกติ' },
+                { student_id: '1003', subject: 'คณิตศาสตร์', score: 42, status: '0' }
+            ]);
+        }
+        if (!localStorage.getItem('sys51_attendance')) {
+            const today = new Date().toISOString().split('T')[0];
+            this.set('attendance', [
+                { student_id: '1001', date: today, status: 'มา', time: '07:45' },
+                { student_id: '1002', date: today, status: 'มา', time: '07:50' },
+                { student_id: '1003', date: today, status: 'ขาด', time: '-' }
+            ]);
+        }
+        if (!localStorage.getItem('sys51_lessons')) {
+            this.set('lessons', [
+                { id: 1, subject: 'คณิตศาสตร์', title: 'บทที่ 1 ฟังก์ชันกําลังสอง', content: 'ฟังก์ชันกำลังสอง คือ ฟังก์ชันที่อยู่ในรูป y = ax^2 + bx + c เมื่อ a, b, c เป็นจำนวนจริง และ a ≠ 0' }
+            ]);
+        }
+        if (!localStorage.getItem('sys51_assignments')) {
+            this.set('assignments', [
+                { id: 1, subject: 'คณิตศาสตร์', title: 'แบบฝึกหัด 1.1', desc: 'ทำแบบฝึกหัดหน้า 15 ข้อ 1-5', due: '2026-08-31' }
+            ]);
+        }
+        if (!localStorage.getItem('sys51_submissions')) {
+            this.set('submissions', []);
+        }
+        if (!localStorage.getItem('sys51_quizzes')) {
+            this.set('quizzes', [
+                { id: 1, subject: 'คณิตศาสตร์', title: 'แบบทดสอบย่อย 1', question: 'พาราโบลาหงายหรือคว่ำขึ้นอยู่กับค่าใด?', answer: 'ค่า a (ถ้า a > 0 จะหงาย, ถ้า a < 0 จะคว่ำ)' }
+            ]);
+        }
+        if (!localStorage.getItem('sys51_questions')) {
+            this.set('questions', []);
+        }
+    }
+};
+
+LocalDB.initDefault();
+
+// --- STATE SYSTEM ---
 let currentUser = null;
-let currentStudent = null;
-let studentsCache = [];
-let statusStudentsCache = [];
-let attendanceData = [];
-let teacherChart = null;
+let currentRole = null;
+let chartInstance = null;
 
-let lessonsData = [];
-let quizzesData = [];
-
-/* ==================================================== */
-/* 🧮 GPA CALCULATION FUNCTION (เพิ่มฟังก์ชันคำนวณ GPA) */
-/* ==================================================== */
-async function calculateAndUpdateGPA(studentId) {
-    if(!studentId) return null;
-
-    // ดึงข้อมูลเกรดของนักเรียนคนนี้ทุกวิชา
-    const { data: grades, error } = await supabaseClient
-        .from("grades")
-        .select("grade")
-        .eq("student_id", studentId);
-
-    if (error || !grades || grades.length === 0) return null;
-
-    let totalPoints = 0;
-    let validSubjectCount = 0;
-
-    grades.forEach(g => {
-        if (g.grade !== null && g.grade !== undefined && g.grade !== "" && g.grade !== "-") {
-            const numGrade = parseFloat(g.grade);
-            if (!isNaN(numGrade)) {
-                totalPoints += numGrade;
-                validSubjectCount++;
-            }
-        }
-    });
-
-    if (validSubjectCount === 0) return null;
-
-    // คำนวณเกรดเฉลี่ยแบบ ทศนิยม 2 ตำแหน่ง
-    const calculatedGPA = parseFloat((totalPoints / validSubjectCount).toFixed(2));
-
-    // อัปเดตลงในตารางนักเรียน (students.gpa)
-    await supabaseClient
-        .from("students")
-        .update({ gpa: calculatedGPA })
-        .eq("student_id", studentId);
-
-    return calculatedGPA;
+// UI CONTROL
+function togglePassword() {
+    const passInput = document.getElementById('password');
+    passInput.type = passInput.type === 'password' ? 'text' : 'password';
 }
 
-// ฟังก์ชันกดคำนวณ GPA ของนักเรียนทุกคนในระบบ
-async function recalculateAllGPA() {
-    const { data: students } = await supabaseClient.from("students").select("student_id");
-    if(!students || !students.length) return alert("ไม่พบข้อมูลนักเรียน");
+function showSection(sectionId) {
+    document.querySelectorAll('.page-section').forEach(sec => sec.classList.remove('active'));
+    const target = document.getElementById(sectionId);
+    if (target) target.classList.add('active');
 
-    let updatedCount = 0;
-    for(const s of students) {
-        const res = await calculateAndUpdateGPA(s.student_id);
-        if(res !== null) updatedCount++;
-    }
-
-    alert(`✅ อัปเดต GPA เรียบร้อยแล้ว (${updatedCount} คน)`);
-    loadStudents();
+    // Section Specific Loaders
+    if (sectionId === 'teacherDashboard') renderTeacherDashboard();
+    if (sectionId === 'teacherStudents') loadStudentsTable();
+    if (sectionId === 'teacherStatus') loadTeacherStatusTable();
+    if (sectionId === 'teacherLessons') loadTeacherLessonsData();
+    if (sectionId === 'teacherAssignments') loadTeacherAssignmentsData();
+    if (sectionId === 'teacherReport') loadAttendanceReport();
+    if (sectionId === 'studentDashboard') loadStudentDashboard();
+    if (sectionId === 'studentGrades') loadStudentGrades();
+    if (sectionId === 'studentAttendance') loadStudentAttendance();
+    if (sectionId === 'studentStatus') loadStudentStatus();
+    if (sectionId === 'studentLessons') loadStudentLessonsView();
+    if (sectionId === 'studentAssignments') loadStudentAssignmentsView();
+    if (sectionId === 'studentQuizzes') loadStudentQuizzesView();
 }
 
-/* LOGIN */
-async function login(){
-    const loginValue = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const selectedRole = document.getElementById("role").value;
-    const message = document.getElementById("loginMessage");
-    message.textContent = "";
+// LOGIN / LOGOUT
+function login() {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    const role = document.getElementById('role').value;
+    const msg = document.getElementById('loginMessage');
 
-    if(!loginValue || !password){
-        message.textContent = "กรุณากรอกบัญชีผู้ใช้และรหัสผ่าน";
+    if (!email) {
+        msg.innerText = 'กรุณากรอกบัญชีผู้ใช้';
         return;
     }
 
-    try {
-        let email = loginValue;
-        if(!loginValue.includes("@")){
-            const { data, error } = await supabaseClient
-                .from("students")
-                .select("email")
-                .eq("student_id", loginValue)
-                .maybeSingle();
-
-            if(error) console.error(error);
-            if(data && data.email) email = data.email;
-        }
-
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email: email,
-            password: password
-        });
-
-        if(error){
-            console.error(error);
-            message.textContent = "บัญชีผู้ใช้หรือรหัสผ่านไม่ถูกต้อง";
-            return;
-        }
-
-        currentUser = data.user;
-        let realRole = selectedRole;
-        if(currentUser.user_metadata && currentUser.user_metadata.role){
-            realRole = currentUser.user_metadata.role;
-        }
-
-        localStorage.setItem("userRole", realRole);
-        localStorage.setItem("userEmail", currentUser.email || email);
-        openSystem(realRole);
-    } catch(error){
-        console.error(error);
-        message.textContent = "เกิดข้อผิดพลาดในการเข้าสู่ระบบ";
-    }
-}
-
-/* OPEN SYSTEM */
-async function openSystem(role){
-    document.getElementById("loginPage").style.display = "none";
-    document.getElementById("systemPage").style.display = "block";
-    document.getElementById("teacherMenu").style.display = "none";
-    document.getElementById("studentMenu").style.display = "none";
-
-    hideAllSections();
-
-    if(role === "teacher"){
-        document.getElementById("teacherMenu").style.display = "block";
-        document.getElementById("sidebarUser").textContent = "👨‍🏫 ระบบครู";
-        showSection("teacherDashboard");
-        await loadTeacherDashboard();
-    } else {
-        document.getElementById("studentMenu").style.display = "block";
-        document.getElementById("sidebarUser").textContent = "👨‍🎓 ระบบนักเรียน";
-        showSection("studentDashboard");
-        await loadCurrentStudent();
-    }
-}
-
-/* SHOW SECTION */
-function showSection(sectionId){
-    hideAllSections();
-    const section = document.getElementById(sectionId);
-    if(section) section.classList.add("active");
-
-    if(sectionId === "teacherStudents") loadStudents();
-    if(sectionId === "teacherStatus") loadStatusStudents();
-    if(sectionId === "teacherLessons") {
-        loadLessonsFromDB();
-        loadTeacherQuestions();
-    }
-    if(sectionId === "teacherAssignments"){
-        loadTeacherAssignments();
-        loadTeacherSubmissions();
-    }
-    if(sectionId === "teacherReport"){
-        setTodayReportDate();
-        loadAttendanceReport();
-    }
-    if(sectionId === "studentGrades") loadStudentGrades();
-    if(sectionId === "studentAttendance") loadStudentAttendance();
-    if(sectionId === "studentStatus") loadStudentStatuses();
-    if(sectionId === "studentLessons") {
-        loadStudentLessonsOptions();
-        loadStudentQuestions();
-    }
-    if(sectionId === "studentAssignments") loadStudentAssignments();
-    if(sectionId === "studentQuizzes") loadStudentQuizzes();
-}
-
-function hideAllSections(){
-    document.querySelectorAll(".page-section").forEach(s => s.classList.remove("active"));
-}
-
-/* LOGOUT */
-async function logout(){
-    await supabaseClient.auth.signOut();
-    currentUser = null;
-    currentStudent = null;
-    localStorage.removeItem("userRole");
-    localStorage.removeItem("userEmail");
-    document.getElementById("systemPage").style.display = "none";
-    document.getElementById("loginPage").style.display = "flex";
-    document.getElementById("password").value = "";
-}
-
-function togglePassword(){
-    const pwd = document.getElementById("password");
-    pwd.type = (pwd.type === "password") ? "text" : "password";
-}
-
-/* TEACHER DASHBOARD */
-async function loadTeacherDashboard(){
-    const { data: students, error } = await supabaseClient.from("students").select("*");
-    if(error) return console.error(error);
-
-    const total = students ? students.length : 0;
-    document.getElementById("teacherTotalStudents").textContent = total;
-
-    let present = 0, absent = 0, problem = 0;
-    const today = getToday();
-
-    const { data: attendance } = await supabaseClient.from("attendance").select("*").eq("date", today);
-    (attendance || []).forEach(r => {
-        if(r.status === "มา") present++;
-        if(r.status === "ขาด") absent++;
-    });
-
-    const { data: grades } = await supabaseClient.from("grades").select("*");
-    const problemStudents = new Set();
-    (grades || []).forEach(g => {
-        if(["0","ร","มส.","มผ."].includes(String(g.status))) problemStudents.add(g.student_id);
-    });
-
-    problem = problemStudents.size;
-    document.getElementById("teacherPresent").textContent = present;
-    document.getElementById("teacherAbsent").textContent = absent;
-    document.getElementById("teacherProblem").textContent = problem;
-
-    createTeacherChart(present, absent, problem);
-}
-
-function createTeacherChart(present, absent, problem){
-    const canvas = document.getElementById("teacherChart");
-    if(!canvas) return;
-    if(teacherChart) teacherChart.destroy();
-
-    teacherChart = new Chart(canvas, {
-        type: "bar",
-        data: {
-            labels: ["มาเรียน", "ขาดเรียน", "ติด 0/ร/มส./มผ."],
-            datasets: [{ label: "จำนวน", data: [present, absent, problem], backgroundColor: ['#16a34a', '#dc2626', '#d97706'] }]
-        },
-        options: { responsive: true, maintainAspectRatio: true }
-    });
-}
-
-/* STUDENTS */
-async function loadStudents(){
-    const { data, error } = await supabaseClient.from("students").select("*").order("student_id", { ascending: true });
-    if(error) return alert("โหลดข้อมูลนักเรียนไม่สำเร็จ\n" + error.message);
-
-    studentsCache = data || [];
-    renderStudents(studentsCache);
-}
-
-function renderStudents(students){
-    const table = document.getElementById("studentTable");
-    table.innerHTML = "";
-    if(!students.length){
-        table.innerHTML = `<tr><td colspan="7" class="empty">ยังไม่มีข้อมูลนักเรียน</td></tr>`;
-        return;
-    }
-    students.forEach((student, index) => {
-        const formattedGPA = (student.gpa !== null && student.gpa !== undefined) ? Number(student.gpa).toFixed(2) : "-";
-        table.innerHTML += `
-            <tr>
-                <td>${index + 1}</td>
-                <td>${escapeHTML(student.student_id)}</td>
-                <td>${escapeHTML(student.fullname)}</td>
-                <td>${escapeHTML(student.email || "-")}</td>
-                <td>${escapeHTML(student.class || "-")}</td>
-                <td><strong>${formattedGPA}</strong></td>
-                <td><button class="btn btn-danger" onclick="deleteStudent('${student.id}')">ลบ</button></td>
-            </tr>
-        `;
-    });
-}
-
-function filterStudents(){
-    const kw = document.getElementById("studentSearch").value.toLowerCase();
-    const res = studentsCache.filter(s => 
-        String(s.student_id).toLowerCase().includes(kw) || String(s.fullname).toLowerCase().includes(kw)
-    );
-    renderStudents(res);
-}
-
-async function addStudent(){
-    const studentId = document.getElementById("student_id").value.trim();
-    const fullname = document.getElementById("fullname").value.trim();
-    const email = document.getElementById("student_email").value.trim();
-    const classroom = document.getElementById("classroom").value.trim();
-    const gpaValue = document.getElementById("student_gpa").value;
-
-    if(!studentId || !fullname || !email) return alert("กรุณากรอกรหัส ชื่อ และอีเมลนักเรียน");
-
-    const { error } = await supabaseClient.from("students").insert([{
-        student_id: studentId,
-        fullname: fullname,
-        email: email,
-        class: classroom,
-        gpa: gpaValue ? Number(gpaValue) : null
-    }]);
-
-    if(error) return alert("เพิ่มข้อมูลไม่สำเร็จ\n" + error.message);
-
-    alert("เพิ่มนักเรียนสำเร็จ");
-    document.getElementById("student_id").value = "";
-    document.getElementById("fullname").value = "";
-    document.getElementById("student_email").value = "";
-    document.getElementById("classroom").value = "";
-    document.getElementById("student_gpa").value = "";
-
-    loadStudents();
-    loadTeacherDashboard();
-}
-
-async function deleteStudent(id){
-    if(!confirm("ต้องการลบนักเรียนคนนี้หรือไม่?")) return;
-    const { error } = await supabaseClient.from("students").delete().eq("id", id);
-    if(error) return alert("ลบข้อมูลไม่สำเร็จ\n" + error.message);
-
-    alert("ลบข้อมูลสำเร็จ");
-    loadStudents();
-    loadTeacherDashboard();
-}
-
-/* TEACHER GRADE SHEET */
-async function loadGradeSheet(){
-    const subject = document.getElementById("gradeSubjectInput").value.trim();
-    if(!subject) return alert("กรุณาระบุชื่อวิชาก่อน");
-
-    const { data: students, error } = await supabaseClient.from("students").select("*").order("student_id", { ascending: true });
-    if(error) return alert("โหลดข้อมูลนักเรียนไม่สำเร็จ");
-
-    const { data: existingGrades } = await supabaseClient.from("grades").select("*").eq("subject", subject);
-    const gradeMap = {};
-    (existingGrades || []).forEach(g => { gradeMap[g.student_id] = g; });
-
-    const table = document.getElementById("gradeSheetTable");
-    table.innerHTML = "";
-
-    students.forEach((student, index) => {
-        const existing = gradeMap[student.student_id];
-        const scoreVal = existing && existing.score !== null ? existing.score : "";
-        const gradeVal = existing && existing.grade ? existing.grade : "-";
-
-        table.innerHTML += `
-            <tr>
-                <td>${index + 1}</td>
-                <td>${escapeHTML(student.student_id)}</td>
-                <td>${escapeHTML(student.fullname)}</td>
-                <td>${escapeHTML(student.class || "-")}</td>
-                <td><input type="number" id="sheet_score_${student.student_id}" class="form-control" placeholder="คะแนนเต็ม 100" value="${scoreVal}"></td>
-                <td><span id="sheet_grade_${student.student_id}">${gradeVal}</span></td>
-            </tr>
-        `;
-    });
-}
-
-async function saveGradeSheet(){
-    const subject = document.getElementById("gradeSubjectInput").value.trim();
-    if(!subject) return alert("กรุณาระบุชื่อวิชา");
-
-    const { data: students } = await supabaseClient.from("students").select("*");
-    for(const student of (students || [])){
-        const scoreElem = document.getElementById(`sheet_score_${student.student_id}`);
-        if(scoreElem && scoreElem.value !== ""){
-            const score = Number(scoreElem.value);
-            let grade = "0";
-            if(score >= 80) grade = "4";
-            else if(score >= 75) grade = "3.5";
-            else if(score >= 70) grade = "3";
-            else if(score >= 65) grade = "2.5";
-            else if(score >= 60) grade = "2";
-            else if(score >= 55) grade = "1.5";
-            else if(score >= 50) grade = "1";
-
-            await supabaseClient.from("grades").upsert([{
-                student_id: student.student_id,
-                subject: subject,
-                score: score,
-                grade: grade,
-                status: score < 50 ? "0" : null
-            }], { onConflict: "student_id,subject" });
-
-            // คำนวณและอัปเดต GPA นักเรียนแต่ละคน
-            await calculateAndUpdateGPA(student.student_id);
-        }
-    }
-    alert("บันทึกคะแนนและคำนวณ เกรดเฉลี่ยสะสม (GPA) เรียบร้อยแล้ว");
-    loadGradeSheet();
-}
-
-/* STATUS MANAGEMENT */
-async function loadStatusStudents(){
-    const { data: students } = await supabaseClient.from("students").select("*").order("student_id", { ascending: true });
-    const { data: grades } = await supabaseClient.from("grades").select("*");
-
-    statusStudentsCache = students || [];
-    renderStatusTable(students || [], grades || []);
-}
-
-function renderStatusTable(students, grades){
-    const table = document.getElementById("statusTable");
-    table.innerHTML = "";
-    let number = 0;
-
-    students.forEach(student => {
-        const studentGrades = grades.filter(g => String(g.student_id) === String(student.student_id));
-        if(!studentGrades.length){
-            number++;
-            table.innerHTML += createStatusRow(student, null, number);
+    if (role === 'teacher') {
+        if (email === 'admin' || email === 'teacher@school.ac.th' || email === 'teacher') {
+            currentUser = { name: 'คุณครูผู้ดูแลระบบ', role: 'teacher' };
+            currentRole = 'teacher';
+            startSystem();
         } else {
-            studentGrades.forEach(grade => {
-                number++;
-                table.innerHTML += createStatusRow(student, grade, number);
+            msg.innerText = 'ไม่พบบัญชีครู (ใช้ teacher หรือ admin)';
+        }
+    } else {
+        const students = LocalDB.get('students');
+        const student = students.find(s => s.id === email || s.email === email);
+        if (student) {
+            currentUser = student;
+            currentRole = 'student';
+            startSystem();
+        } else {
+            msg.innerText = 'ไม่พบรหัสนักเรียนหรืออีเมลนี้ในระบบ';
+        }
+    }
+}
+
+function startSystem() {
+    document.getElementById('loginPage').style.display = 'none';
+    document.getElementById('systemPage').style.display = 'block';
+    document.getElementById('sidebarUser').innerText = currentUser.name + ` (${currentRole === 'teacher' ? 'ครู' : 'นักเรียน'})`;
+
+    if (currentRole === 'teacher') {
+        document.getElementById('teacherMenu').style.display = 'block';
+        document.getElementById('studentMenu').style.display = 'none';
+        showSection('teacherDashboard');
+    } else {
+        document.getElementById('studentMenu').style.display = 'block';
+        document.getElementById('teacherMenu').style.display = 'none';
+        showSection('studentDashboard');
+    }
+}
+
+function logout() {
+    currentUser = null;
+    currentRole = null;
+    document.getElementById('systemPage').style.display = 'none';
+    document.getElementById('loginPage').style.display = 'flex';
+    document.getElementById('loginMessage').innerText = '';
+}
+
+// --- TEACHER FUNCTIONS ---
+function renderTeacherDashboard() {
+    const students = LocalDB.get('students');
+    const attendance = LocalDB.get('attendance');
+    const grades = LocalDB.get('grades');
+
+    const today = new Date().toISOString().split('T')[0];
+    const todayAtt = attendance.filter(a => a.date === today);
+
+    const present = todayAtt.filter(a => a.status === 'มา').length;
+    const absent = todayAtt.filter(a => a.status === 'ขาด').length;
+    const problems = grades.filter(g => ['0', 'ร', 'มส', 'มผ'].includes(g.status)).length;
+
+    document.getElementById('teacherTotalStudents').innerText = students.length;
+    document.getElementById('teacherPresent').innerText = present;
+    document.getElementById('teacherAbsent').innerText = absent;
+    document.getElementById('teacherProblem').innerText = problems;
+
+    // Render Chart
+    const ctx = document.getElementById('teacherChart').getContext('2d');
+    if (chartInstance) chartInstance.destroy();
+
+    chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['นักเรียนทั้งหมด', 'มาเรียนวันนี้', 'ขาดเรียนวันนี้', 'ติดปัญหาผลการเรียน'],
+            datasets: [{
+                label: 'จำนวน (คน)',
+                data: [students.length, present, absent, problems],
+                backgroundColor: ['#1565c0', '#16a34a', '#dc2626', '#d97706']
+            }]
+        },
+        options: { responsive: true }
+    });
+}
+
+function loadStudentsTable() {
+    const students = LocalDB.get('students');
+    renderStudentRows(students);
+}
+
+function filterStudents() {
+    const q = document.getElementById('studentSearch').value.toLowerCase();
+    const students = LocalDB.get('students');
+    const filtered = students.filter(s => s.id.toLowerCase().includes(q) || s.name.toLowerCase().includes(q));
+    renderStudentRows(filtered);
+}
+
+function renderStudentRows(list) {
+    const tbody = document.getElementById('studentTable');
+    if (list.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="empty">ไม่พบข้อมูลนักเรียน</td></tr>';
+        return;
+    }
+    tbody.innerHTML = list.map((s, idx) => `
+        <tr>
+            <td>${idx + 1}</td>
+            <td>${s.id}</td>
+            <td>${s.name}</td>
+            <td>${s.email}</td>
+            <td>${s.classroom}</td>
+            <td><strong>${s.gpa || '0.00'}</strong></td>
+            <td>
+                <button class="btn btn-danger" style="padding:4px 8px;" onclick="deleteStudent('${s.id}')">🗑️ ลบ</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function addStudent() {
+    const id = document.getElementById('student_id').value.trim();
+    const name = document.getElementById('fullname').value.trim();
+    const email = document.getElementById('student_email').value.trim();
+    const classroom = document.getElementById('classroom').value.trim();
+    const gpa = parseFloat(document.getElementById('student_gpa').value) || 0.00;
+
+    if (!id || !name) {
+        alert('กรุณากรอกรหัสและชื่อนักเรียน');
+        return;
+    }
+
+    const students = LocalDB.get('students');
+    if (students.find(s => s.id === id)) {
+        alert('รหัสนักเรียนนี้มีในระบบแล้ว');
+        return;
+    }
+
+    students.push({ id, name, email: email || id, classroom: classroom || 'ม.5/1', gpa });
+    LocalDB.set('students', students);
+    alert('เพิ่มนักเรียนเรียบร้อย');
+    loadStudentsTable();
+
+    document.getElementById('student_id').value = '';
+    document.getElementById('fullname').value = '';
+    document.getElementById('student_email').value = '';
+    document.getElementById('classroom').value = '';
+    document.getElementById('student_gpa').value = '';
+}
+
+function deleteStudent(id) {
+    if (!confirm('ยืนยันลบนีกเรียนรหัส ' + id)) return;
+    let students = LocalDB.get('students');
+    students = students.filter(s => s.id !== id);
+    LocalDB.set('students', students);
+    loadStudentsTable();
+}
+
+function calculateGradeFromScore(score) {
+    if (score >= 80) return { grade: '4', status: 'ปกติ' };
+    if (score >= 75) return { grade: '3.5', status: 'ปกติ' };
+    if (score >= 70) return { grade: '3', status: 'ปกติ' };
+    if (score >= 65) return { grade: '2.5', status: 'ปกติ' };
+    if (score >= 60) return { grade: '2', status: 'ปกติ' };
+    if (score >= 55) return { grade: '1.5', status: 'ปกติ' };
+    if (score >= 50) return { grade: '1', status: 'ปกติ' };
+    return { grade: '0', status: '0' };
+}
+
+function recalculateAllGPA() {
+    const students = LocalDB.get('students');
+    const grades = LocalDB.get('grades');
+
+    students.forEach(s => {
+        const myGrades = grades.filter(g => g.student_id === s.id);
+        if (myGrades.length > 0) {
+            let totalPoint = 0;
+            myGrades.forEach(g => {
+                const res = calculateGradeFromScore(g.score);
+                totalPoint += parseFloat(res.grade);
             });
+            s.gpa = (totalPoint / myGrades.length).toFixed(2);
         }
     });
+
+    LocalDB.set('students', students);
+    alert('คำนวณ GPA เรียบร้อยแล้ว');
+    loadStudentsTable();
 }
 
-function createStatusRow(student, grade, number){
-    const gradeId = grade ? grade.id : "";
-    const subject = grade ? grade.subject : "";
-    const score = grade ? grade.score : "";
-    const status = grade ? (grade.status || grade.grade || "") : "";
+// GRADE SHEET
+function loadGradeSheet() {
+    const subject = document.getElementById('gradeSubjectInput').value.trim();
+    if (!subject) {
+        alert('กรุณาระบุชื่อวิชา');
+        return;
+    }
 
-    return `
-        <tr>
-            <td>${number}</td>
-            <td>${escapeHTML(student.student_id)}</td>
-            <td>${escapeHTML(student.fullname)}</td>
-            <td>${escapeHTML(student.class || "-")}</td>
-            <td><input class="form-control" id="subject_${student.student_id}_${gradeId}" value="${escapeAttribute(subject)}" placeholder="ชื่อวิชา"></td>
-            <td><input class="form-control" type="number" id="score_${student.student_id}_${gradeId}" value="${score ?? ""}" placeholder="คะแนน"></td>
-            <td>
-                <select class="status-select" id="status_${student.student_id}_${gradeId}">
-                    <option value="" ${status === "" ? "selected" : ""}>ปกติ</option>
-                    <option value="4" ${status === "4" ? "selected" : ""}>4</option>
-                    <option value="3.5" ${status === "3.5" ? "selected" : ""}>3.5</option>
-                    <option value="3" ${status === "3" ? "selected" : ""}>3</option>
-                    <option value="2.5" ${status === "2.5" ? "selected" : ""}>2.5</option>
-                    <option value="2" ${status === "2" ? "selected" : ""}>2</option>
-                    <option value="1.5" ${status === "1.5" ? "selected" : ""}>1.5</option>
-                    <option value="1" ${status === "1" ? "selected" : ""}>1</option>
-                    <option value="0" ${status === "0" ? "selected" : ""}>0</option>
-                    <option value="ร" ${status === "ร" ? "selected" : ""}>ร</option>
-                    <option value="มส." ${status === "มส." ? "selected" : ""}>มส.</option>
-                    <option value="มผ." ${status === "มผ." ? "selected" : ""}>มผ.</option>
-                </select>
-            </td>
-            <td><button class="btn btn-success" onclick="saveGrade('${student.student_id}', '${gradeId}')">💾 บันทึก</button></td>
-        </tr>
-    `;
-}
+    const students = LocalDB.get('students');
+    const grades = LocalDB.get('grades');
+    const tbody = document.getElementById('gradeSheetTable');
 
-async function saveGrade(studentId, gradeId){
-    const subject = document.getElementById(`subject_${studentId}_${gradeId}`).value.trim();
-    const score = document.getElementById(`score_${studentId}_${gradeId}`).value;
-    const status = document.getElementById(`status_${studentId}_${gradeId}`).value;
-
-    if(!subject) return alert("กรุณากรอกชื่อวิชา");
-
-    const isGrade = ["4", "3.5", "3", "2.5", "2", "1.5", "1"].includes(status);
-
-    const payload = {
-        student_id: studentId,
-        subject: subject,
-        score: score ? Number(score) : null,
-        grade: isGrade ? status : (status === "0" ? "0" : null),
-        status: isGrade ? null : (status || null)
-    };
-
-    let result = gradeId ? 
-        await supabaseClient.from("grades").update(payload).eq("id", gradeId) :
-        await supabaseClient.from("grades").insert([payload]);
-
-    if(result.error) return alert("บันทึกไม่สำเร็จ\n" + result.error.message);
-
-    // คำนวณ GPA อัตโนมัติทันทีที่มีการเปลี่ยนเกรด
-    await calculateAndUpdateGPA(studentId);
-
-    alert("บันทึกผลการเรียนและอัปเดต GPA สำเร็จ");
-    loadStatusStudents();
-    loadTeacherDashboard();
-}
-
-function filterStatusStudents(){
-    const kw = document.getElementById("statusSearch").value.toLowerCase();
-    const filtered = statusStudentsCache.filter(s => 
-        String(s.student_id).toLowerCase().includes(kw) || String(s.fullname).toLowerCase().includes(kw)
-    );
-    supabaseClient.from("grades").select("*").then(res => {
-        renderStatusTable(filtered, res.data || []);
-    });
-}
-
-/* ATTENDANCE */
-async function loadAttendanceStudents(){
-    const date = document.getElementById("attendanceDate").value;
-    if(!date) return alert("กรุณาเลือกวันที่");
-
-    const { data: students } = await supabaseClient.from("students").select("*").order("student_id", { ascending: true });
-    const { data: existing } = await supabaseClient.from("attendance").select("*").eq("date", date);
-
-    const map = {};
-    (existing || []).forEach(r => { map[r.student_id] = r; });
-
-    const table = document.getElementById("attendanceTable");
-    table.innerHTML = "";
-    attendanceData = [];
-
-    (students || []).forEach((student, index) => {
-        const old = map[student.student_id];
-        const oldStatus = old ? old.status : "มา";
-        const oldTime = old ? (old.check_in_time || "") : "";
-
-        attendanceData.push(student);
-        table.innerHTML += `
+    tbody.innerHTML = students.map((s, idx) => {
+        const g = grades.find(x => x.student_id === s.id && x.subject === subject) || { score: 0 };
+        const res = calculateGradeFromScore(g.score);
+        return `
             <tr>
-                <td>${index + 1}</td>
-                <td>${escapeHTML(student.student_id)}</td>
-                <td>${escapeHTML(student.fullname)}</td>
-                <td>${escapeHTML(student.class || "-")}</td>
-                <td><input type="time" id="time_${student.student_id}" class="form-control" value="${oldTime}"></td>
+                <td>${idx + 1}</td>
+                <td>${s.id}</td>
+                <td>${s.name}</td>
+                <td>${s.classroom}</td>
+                <td><input type="number" class="form-control score-input" data-id="${s.id}" value="${g.score}"></td>
+                <td><strong class="grade-calc">${res.grade}</strong></td>
+            </tr>
+        `;
+    }).join('');
+}
+
+function saveGradeSheet() {
+    const subject = document.getElementById('gradeSubjectInput').value.trim();
+    if (!subject) return;
+
+    let grades = LocalDB.get('grades');
+    const inputs = document.querySelectorAll('.score-input');
+
+    inputs.forEach(inp => {
+        const studentId = inp.getAttribute('data-id');
+        const score = parseFloat(inp.value) || 0;
+        const res = calculateGradeFromScore(score);
+
+        const idx = grades.findIndex(g => g.student_id === studentId && g.subject === subject);
+        if (idx >= 0) {
+            grades[idx].score = score;
+            grades[idx].status = res.status;
+        } else {
+            grades.push({ student_id: studentId, subject, score, status: res.status });
+        }
+    });
+
+    LocalDB.set('grades', grades);
+    recalculateAllGPA();
+    alert('บันทึกคะแนนเรียบร้อยแล้ว');
+}
+
+// ATTENDANCE
+function loadAttendanceStudents() {
+    const dateVal = document.getElementById('attendanceDate').value || new Date().toISOString().split('T')[0];
+    document.getElementById('attendanceDate').value = dateVal;
+
+    const students = LocalDB.get('students');
+    const attendance = LocalDB.get('attendance');
+    const tbody = document.getElementById('attendanceTable');
+
+    tbody.innerHTML = students.map((s, idx) => {
+        const att = attendance.find(a => a.student_id === s.id && a.date === dateVal) || { status: 'มา', time: '08:00' };
+        return `
+            <tr>
+                <td>${idx + 1}</td>
+                <td>${s.id}</td>
+                <td>${s.name}</td>
+                <td>${s.classroom}</td>
+                <td><input type="time" class="form-control time-input" data-id="${s.id}" value="${att.time}"></td>
                 <td>
-                    <select id="status_${student.student_id}" class="status-select">
-                        <option value="มา" ${oldStatus === "มา" ? "selected" : ""}>🟢 มา</option>
-                        <option value="สาย" ${oldStatus === "สาย" ? "selected" : ""}>🟡 สาย</option>
-                        <option value="ขาด" ${oldStatus === "ขาด" ? "selected" : ""}>🔴 ขาด</option>
-                        <option value="ลา" ${oldStatus === "ลา" ? "selected" : ""}>🔵 ลา</option>
+                    <select class="form-control status-select-att" data-id="${s.id}">
+                        <option value="มา" ${att.status === 'มา' ? 'selected' : ''}>🟢 มา</option>
+                        <option value="สาย" ${att.status === 'สาย' ? 'selected' : ''}>🟡 สาย</option>
+                        <option value="ขาด" ${att.status === 'ขาด' ? 'selected' : ''}>🔴 ขาด</option>
+                        <option value="ลา" ${att.status === 'ลา' ? 'selected' : ''}>🔵 ลา</option>
                     </select>
                 </td>
             </tr>
         `;
-    });
+    }).join('');
 }
 
-async function saveAttendance(){
-    const date = document.getElementById("attendanceDate").value;
-    if(!date) return alert("กรุณาเลือกวันที่");
-    if(!attendanceData.length) return alert("กรุณาโหลดรายชื่อนักเรียนก่อน");
+function saveAttendance() {
+    const dateVal = document.getElementById('attendanceDate').value;
+    if (!dateVal) return;
 
-    for(const student of attendanceData){
-        const status = document.getElementById("status_" + student.student_id).value;
-        const time = document.getElementById("time_" + student.student_id).value;
+    let attendance = LocalDB.get('attendance');
+    const selects = document.querySelectorAll('.status-select-att');
 
-        await supabaseClient.from("attendance").upsert([{
-            student_id: student.student_id,
-            date: date,
-            check_in_time: time || null,
-            status: status
-        }], { onConflict: "student_id,date" });
+    selects.forEach(sel => {
+        const studentId = sel.getAttribute('data-id');
+        const status = sel.value;
+        const timeInput = document.querySelector(`.time-input[data-id="${studentId}"]`);
+        const time = timeInput ? timeInput.value : '08:00';
+
+        const idx = attendance.findIndex(a => a.student_id === studentId && a.date === dateVal);
+        if (idx >= 0) {
+            attendance[idx].status = status;
+            attendance[idx].time = time;
+        } else {
+            attendance.push({ student_id: studentId, date: dateVal, status, time });
+        }
+    });
+
+    LocalDB.set('attendance', attendance);
+    alert('บันทึกการเข้าเรียนเรียบร้อย');
+}
+
+// STATUS MANAGEMENT (0/ร/มส/มผ)
+function loadTeacherStatusTable() {
+    const grades = LocalDB.get('grades');
+    const students = LocalDB.get('students');
+    renderStatusRows(grades, students);
+}
+
+function filterStatusStudents() {
+    const q = document.getElementById('statusSearch').value.toLowerCase();
+    const grades = LocalDB.get('grades');
+    const students = LocalDB.get('students');
+    const filteredStudents = students.filter(s => s.id.toLowerCase().includes(q) || s.name.toLowerCase().includes(q)).map(s => s.id);
+    const filteredGrades = grades.filter(g => filteredStudents.includes(g.student_id));
+    renderStatusRows(filteredGrades, students);
+}
+
+function renderStatusRows(grades, students) {
+    const tbody = document.getElementById('statusTable');
+    if (grades.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="empty">ไม่พบข้อมูล</td></tr>';
+        return;
     }
 
-    alert("✅ บันทึกการเข้าเรียนเรียบร้อยแล้ว");
-    loadTeacherDashboard();
+    tbody.innerHTML = grades.map((g, idx) => {
+        const s = students.find(x => x.id === g.student_id) || { name: '-', classroom: '-' };
+        return `
+            <tr>
+                <td>${idx + 1}</td>
+                <td>${g.student_id}</td>
+                <td>${s.name}</td>
+                <td>${s.classroom}</td>
+                <td>${g.subject}</td>
+                <td>${g.score}</td>
+                <td>
+                    <select id="st_${g.student_id}_${g.subject}" class="status-select">
+                        <option value="ปกติ" ${g.status === 'ปกติ' ? 'selected' : ''}>ปกติ</option>
+                        <option value="0" ${g.status === '0' ? 'selected' : ''}>0</option>
+                        <option value="ร" ${g.status === 'ร' ? 'selected' : ''}>ร</option>
+                        <option value="มส" ${g.status === 'มส' ? 'selected' : ''}>มส.</option>
+                        <option value="มผ" ${g.status === 'มผ' ? 'selected' : ''}>มผ.</option>
+                    </select>
+                </td>
+                <td>
+                    <button class="btn btn-success" style="padding:4px 8px;" onclick="updateStudentStatus('${g.student_id}', '${g.subject}')">💾 บันทึก</button>
+                </td>
+            </tr>
+        `;
+    }).join('');
 }
 
-/* LESSONS & QUIZZES */
-async function saveLesson() {
-    const subject = document.getElementById("lessonSubject")?.value.trim();
-    const title = document.getElementById("lessonTitle")?.value.trim();
-    const content = document.getElementById("lessonContent")?.value.trim();
+function updateStudentStatus(studentId, subject) {
+    const sel = document.getElementById(`st_${studentId}_${subject}`);
+    if (!sel) return;
+
+    let grades = LocalDB.get('grades');
+    const idx = grades.findIndex(g => g.student_id === studentId && g.subject === subject);
+    if (idx >= 0) {
+        grades[idx].status = sel.value;
+        LocalDB.set('grades', grades);
+        alert('อัปเดตสถานะสำเร็จ');
+    }
+}
+
+// LESSONS & QUIZZES
+function saveLesson() {
+    const subject = document.getElementById('lessonSubject').value.trim();
+    const title = document.getElementById('lessonTitle').value.trim();
+    const content = document.getElementById('lessonContent').value.trim();
 
     if (!subject || !title || !content) {
-        return alert("กรุณากรอกข้อมูลบทเรียนให้ครบทุกช่อง");
-    }
-
-    const { error } = await supabaseClient.from("lessons").insert([{
-        subject: subject,
-        title: title,
-        content: content,
-        created_at: new Date().toISOString()
-    }]);
-
-    if (error) return alert("บันทึกบทเรียนไม่สำเร็จ: " + error.message);
-
-    alert("✅ บันทึกบทเรียนเรียบร้อยแล้ว!");
-    document.getElementById("lessonSubject").value = "";
-    document.getElementById("lessonTitle").value = "";
-    document.getElementById("lessonContent").value = "";
-
-    loadLessonsFromDB();
-}
-
-async function saveQuiz(){
-    const subject = document.getElementById("quizSubject").value.trim();
-    const title = document.getElementById("quizTitle").value.trim();
-    const question = document.getElementById("quizQuestion").value.trim();
-    const answer = document.getElementById("quizAnswer").value.trim();
-
-    if(!subject || !title || !question || !answer) return alert("กรุณากรอกข้อมูลแนวข้อสอบให้ครบทุกช่อง");
-
-    const { error } = await supabaseClient.from("quizzes").insert([{ 
-        subject, title, question, answer, created_at: new Date().toISOString() 
-    }]);
-    
-    if(error){
-        const fallback = await supabaseClient.from("lesson_questions").insert([{ subject, title, question, answer }]);
-        if(fallback.error) return alert("เพิ่มแนวข้อสอบไม่สำเร็จ: " + error.message);
-    }
-
-    alert("✅ เพิ่มแนวข้อสอบเรียบร้อยแล้ว!");
-    document.getElementById("quizSubject").value = "";
-    document.getElementById("quizTitle").value = "";
-    document.getElementById("quizQuestion").value = "";
-    document.getElementById("quizAnswer").value = "";
-}
-
-async function loadLessonsFromDB(){
-    const { data } = await supabaseClient.from("lessons").select("*").order("created_at", { ascending: false });
-    if(data) lessonsData = data;
-}
-
-/* TEACHER QUESTIONS LIST */
-async function loadTeacherQuestions() {
-    const tableBody = document.getElementById("teacherQuestionsTable");
-    if (!tableBody) return;
-
-    const { data, error } = await supabaseClient
-        .from("lesson_questions")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-    if (error) {
-        console.error("Error loading student questions:", error.message);
-        tableBody.innerHTML = `<tr><td colspan="3" class="empty">เกิดข้อผิดพลาดในการโหลดข้อมูลคำถาม</td></tr>`;
+        alert('กรุณากรอกข้อมูลให้ครบ');
         return;
     }
 
-    if (!data || data.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="3" class="empty">ยังไม่มีคำถามจากนักเรียนในขณะนี้</td></tr>`;
+    const lessons = LocalDB.get('lessons');
+    lessons.push({ id: Date.now(), subject, title, content });
+    LocalDB.set('lessons', lessons);
+    alert('บันทึกบทเรียนเรียบร้อย');
+
+    document.getElementById('lessonSubject').value = '';
+    document.getElementById('lessonTitle').value = '';
+    document.getElementById('lessonContent').value = '';
+}
+
+function saveQuiz() {
+    const subject = document.getElementById('quizSubject').value.trim();
+    const title = document.getElementById('quizTitle').value.trim();
+    const question = document.getElementById('quizQuestion').value.trim();
+    const answer = document.getElementById('quizAnswer').value.trim();
+
+    if (!subject || !title || !question) {
+        alert('กรุณากรอกข้อมูลให้ครบ');
         return;
     }
 
-    tableBody.innerHTML = data.map(q => `
+    const quizzes = LocalDB.get('quizzes');
+    quizzes.push({ id: Date.now(), subject, title, question, answer });
+    LocalDB.set('quizzes', quizzes);
+    alert('เพิ่มแนวข้อสอบเรียบร้อย');
+
+    document.getElementById('quizSubject').value = '';
+    document.getElementById('quizTitle').value = '';
+    document.getElementById('quizQuestion').value = '';
+    document.getElementById('quizAnswer').value = '';
+}
+
+function loadTeacherLessonsData() {
+    const qList = LocalDB.get('questions');
+    const tbody = document.getElementById('teacherQuestionsTable');
+
+    if (qList.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="empty">ยังไม่มีคำถามจากนักเรียน</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = qList.map(q => `
         <tr>
-            <td>${q.created_at ? new Date(q.created_at).toLocaleString('th-TH') : '-'}</td>
-            <td><strong>${escapeHTML(q.student_name || q.student_id || 'นักเรียน')}</strong><br><small>${escapeHTML(q.title || 'คำถามทั่วไป')}</small></td>
-            <td>${escapeHTML(q.question)}</td>
+            <td>${q.datetime}</td>
+            <td><strong>${q.student_name}</strong><br><small>${q.subject}</small></td>
+            <td>${q.question}</td>
         </tr>
-    `).join("");
+    `).join('');
 }
 
-/* TEACHER ASSIGNMENTS & SUBMISSIONS */
-async function createAssignment() {
-    const subject = document.getElementById("assignSubject").value.trim();
-    const title = document.getElementById("assignTitle").value.trim();
-    const dueDate = document.getElementById("assignDueDate").value;
-    const desc = document.getElementById("assignDesc").value.trim();
+// ASSIGNMENTS
+function createAssignment() {
+    const subject = document.getElementById('assignSubject').value.trim();
+    const title = document.getElementById('assignTitle').value.trim();
+    const due = document.getElementById('assignDueDate').value;
+    const desc = document.getElementById('assignDesc').value.trim();
 
-    if (!subject || !title || !dueDate) return alert("กรุณากรอกวิชา หัวข้องาน และวันกำหนดส่ง");
-
-    const { error } = await supabaseClient.from("assignments").insert([{
-        subject: subject,
-        title: title,
-        due_date: dueDate,
-        description: desc
-    }]);
-
-    if (error) return alert("สร้างงานไม่สำเร็จ: " + error.message);
-
-    alert("มอบหมายงานเรียบร้อยแล้ว!");
-    document.getElementById("assignSubject").value = "";
-    document.getElementById("assignTitle").value = "";
-    document.getElementById("assignDueDate").value = "";
-    document.getElementById("assignDesc").value = "";
-    loadTeacherAssignments();
-}
-
-async function loadTeacherAssignments() {
-    const { data, error } = await supabaseClient.from("assignments").select("*").order("created_at", { ascending: false });
-    const table = document.getElementById("teacherAssignmentList");
-    
-    if (error || !data || data.length === 0) {
-        table.innerHTML = `<tr><td colspan="3" class="empty">ยังไม่มีงานที่มอบหมาย</td></tr>`;
+    if (!subject || !title) {
+        alert('กรุณาระบุวิชาและหัวข้องาน');
         return;
     }
 
-    table.innerHTML = "";
-    data.forEach(item => {
-        table.innerHTML += `
-            <tr>
-                <td>${escapeHTML(item.subject)}</td>
-                <td><strong>${escapeHTML(item.title)}</strong><br><small>${escapeHTML(item.description || "")}</small></td>
-                <td>${item.due_date}</td>
-            </tr>
-        `;
-    });
+    const assignments = LocalDB.get('assignments');
+    assignments.push({ id: Date.now(), subject, title, due, desc });
+    LocalDB.set('assignments', assignments);
+    alert('มอบหมายงานเรียบร้อย');
+    loadTeacherAssignmentsData();
+
+    document.getElementById('assignSubject').value = '';
+    document.getElementById('assignTitle').value = '';
+    document.getElementById('assignDueDate').value = '';
+    document.getElementById('assignDesc').value = '';
 }
 
-async function loadTeacherSubmissions() {
-    const table = document.getElementById("teacherSubmissionsList");
-    
-    const { data: subs, error } = await supabaseClient
-        .from("submissions")
-        .select("*")
-        .order("submitted_at", { ascending: false });
-        
-    const { data: assigns } = await supabaseClient.from("assignments").select("*");
-    const { data: students } = await supabaseClient.from("students").select("*");
+function loadTeacherAssignmentsData() {
+    const assignments = LocalDB.get('assignments');
+    const listBody = document.getElementById('teacherAssignmentList');
 
-    if (error || !subs || subs.length === 0) {
-        table.innerHTML = `<tr><td colspan="5" class="empty">ยังไม่มีการส่งงานจากนักเรียน</td></tr>`;
+    listBody.innerHTML = assignments.map(a => `
+        <tr>
+            <td>${a.subject}</td>
+            <td>${a.title}</td>
+            <td>${a.due || '-'}</td>
+        </tr>
+    `).join('');
+
+    const submissions = LocalDB.get('submissions');
+    const subBody = document.getElementById('teacherSubmissionsList');
+    if (submissions.length === 0) {
+        subBody.innerHTML = '<tr><td colspan="5" class="empty">ยังไม่มีการส่งงาน</td></tr>';
         return;
     }
 
-    const assignMap = {};
-    (assigns || []).forEach(a => { assignMap[a.id] = a; });
+    subBody.innerHTML = submissions.map(s => `
+        <tr>
+            <td>${s.student_id}</td>
+            <td>${s.student_name}</td>
+            <td>${s.subject} - ${s.title}</td>
+            <td><a href="${s.link}" target="_blank">🔗 ตรวจงาน</a></td>
+            <td><span class="badge badge-ok">ส่งแล้ว</span></td>
+        </tr>
+    `).join('');
+}
 
-    const studentMap = {};
-    (students || []).forEach(s => { studentMap[s.student_id] = s.fullname; });
+// REPORT
+function loadAttendanceReport() {
+    const dateVal = document.getElementById('reportDate').value || new Date().toISOString().split('T')[0];
+    document.getElementById('reportDate').value = dateVal;
 
-    table.innerHTML = "";
-    subs.forEach(s => {
-        const assign = assignMap[s.assignment_id];
-        const assignInfo = assign ? `[${escapeHTML(assign.subject)}] ${escapeHTML(assign.title)}` : "งานที่ไม่ทราบชื่อ";
-        const linkUrl = s.file_url || s.work_url;
-        const url = linkUrl ? `<a href="${escapeAttribute(linkUrl)}" target="_blank" style="color:#1565c0; font-weight:bold;">🔗 เปิดดูผลงาน</a>` : "-";
-        const studentName = studentMap[s.student_id] || "-";
+    const students = LocalDB.get('students');
+    const attendance = LocalDB.get('attendance');
+    const dayAtt = attendance.filter(a => a.date === dateVal);
 
-        table.innerHTML += `
+    const present = dayAtt.filter(a => a.status === 'มา').length;
+    const late = dayAtt.filter(a => a.status === 'สาย').length;
+    const absent = dayAtt.filter(a => a.status === 'ขาด').length;
+    const leave = dayAtt.filter(a => a.status === 'ลา').length;
+
+    document.getElementById('reportTotalStudents').innerText = students.length;
+    document.getElementById('reportPresent').innerText = present;
+    document.getElementById('reportLate').innerText = late;
+    document.getElementById('reportAbsent').innerText = absent;
+    document.getElementById('reportLeave').innerText = leave;
+
+    const tbody = document.getElementById('attendanceReportTable');
+    tbody.innerHTML = students.map((s, idx) => {
+        const att = dayAtt.find(a => a.student_id === s.id) || { status: 'ยังไม่เช็ก', time: '-' };
+        return `
             <tr>
-                <td>${escapeHTML(s.student_id)}</td>
-                <td>${escapeHTML(studentName)}</td>
-                <td>${assignInfo}</td>
-                <td>${url}</td>
-                <td><span class="badge badge-ok">${escapeHTML(s.status || "ส่งแล้ว")}</span></td>
+                <td>${idx + 1}</td>
+                <td>${s.id}</td>
+                <td>${s.name}</td>
+                <td>${s.classroom}</td>
+                <td>${att.time}</td>
+                <td>${att.status}</td>
             </tr>
         `;
-    });
+    }).join('');
 }
 
-/* REPORT */
-function setTodayReportDate(){
-    const date = document.getElementById("reportDate");
-    if(date) date.value = getToday();
-}
-
-async function loadAttendanceReport(){
-    const date = document.getElementById("reportDate").value;
-    if(!date) return alert("กรุณาเลือกวันที่");
-
-    const { data: students } = await supabaseClient.from("students").select("*").order("student_id", { ascending: true });
-    const { data: attendance } = await supabaseClient.from("attendance").select("*").eq("date", date);
-
-    const map = {};
-    (attendance || []).forEach(r => { map[r.student_id] = r; });
-
-    let present = 0, late = 0, absent = 0, leave = 0;
-    const table = document.getElementById("attendanceReportTable");
-    table.innerHTML = "";
-
-    (students || []).forEach((student, index) => {
-        const record = map[student.student_id];
-        const status = record ? record.status : "ยังไม่เช็ก";
-        const time = record ? (record.check_in_time || "-") : "-";
-
-        if(status === "มา") present++;
-        if(status === "สาย") late++;
-        if(status === "ขาด") absent++;
-        if(status === "ลา") leave++;
-
-        table.innerHTML += `
-            <tr>
-                <td>${index + 1}</td>
-                <td>${escapeHTML(student.student_id)}</td>
-                <td>${escapeHTML(student.fullname)}</td>
-                <td>${escapeHTML(student.class || "-")}</td>
-                <td>${time}</td>
-                <td>${formatAttendanceStatus(status)}</td>
-            </tr>
-        `;
-    });
-
-    document.getElementById("reportTotalStudents").textContent = students ? students.length : 0;
-    document.getElementById("reportPresent").textContent = present;
-    document.getElementById("reportLate").textContent = late;
-    document.getElementById("reportAbsent").textContent = absent;
-    document.getElementById("reportLeave").textContent = leave;
-}
-
-/* CURRENT STUDENT LOADER */
-async function loadCurrentStudent(){
-    if(!currentUser) return;
-
-    const { data } = await supabaseClient.from("students").select("*").eq("email", currentUser.email).maybeSingle();
-    if(data){
-        currentStudent = data;
-    } else {
-        const studentId = currentUser.user_metadata ? currentUser.user_metadata.student_id : null;
-        if(studentId){
-            const res = await supabaseClient.from("students").select("*").eq("student_id", studentId).maybeSingle();
-            currentStudent = res.data;
-        }
-    }
-
-    if(!currentStudent) return alert("ไม่พบข้อมูลนักเรียนที่ผูกกับบัญชีนี้");
-
-    // อัปเดต GPA สดจากผลการเรียนจริง
-    await calculateAndUpdateGPA(currentStudent.student_id);
-
-    renderStudentProfile();
-    loadStudentGrades();
-    loadStudentAttendance();
-    loadStudentStatuses();
-}
-
-function renderStudentProfile(){
-    const s = currentStudent;
-    const displayGPA = (s.gpa !== null && s.gpa !== undefined) ? Number(s.gpa).toFixed(2) : "-";
-    document.getElementById("studentProfile").innerHTML = `
-        <div class="profile-item"><small>รหัสนักเรียน</small><strong>${escapeHTML(s.student_id)}</strong></div>
-        <div class="profile-item"><small>ชื่อ-นามสกุล</small><strong>${escapeHTML(s.fullname)}</strong></div>
-        <div class="profile-item"><small>ห้อง</small><strong>${escapeHTML(s.class || "-")}</strong></div>
-        <div class="profile-item"><small>GPA เกรดเฉลี่ย</small><strong>${displayGPA}</strong></div>
+// --- STUDENT FUNCTIONS ---
+function loadStudentDashboard() {
+    const p = document.getElementById('studentProfile');
+    p.innerHTML = `
+        <div class="profile-item"><small>รหัสนักเรียน</small><strong>${currentUser.id}</strong></div>
+        <div class="profile-item"><small>ชื่อ-นามสกุล</small><strong>${currentUser.name}</strong></div>
+        <div class="profile-item"><small>ห้องเรียน</small><strong>${currentUser.classroom || 'ม.5/1'}</strong></div>
+        <div class="profile-item"><small>อีเมล</small><strong>${currentUser.email || '-'}</strong></div>
     `;
-    document.getElementById("myGPA").textContent = displayGPA;
+
+    document.getElementById('myGPA').innerText = currentUser.gpa || '0.00';
+
+    const grades = LocalDB.get('grades').filter(g => g.student_id === currentUser.id);
+    document.getElementById('myZero').innerText = grades.filter(g => g.status === '0').length;
+    document.getElementById('myR').innerText = grades.filter(g => g.status === 'ร').length;
+    document.getElementById('myMS').innerText = grades.filter(g => g.status === 'มส').length;
+    document.getElementById('myMP').innerText = grades.filter(g => g.status === 'มผ').length;
 }
 
-async function loadStudentGrades(){
-    if(!currentStudent) return;
-    const { data } = await supabaseClient.from("grades").select("*").eq("student_id", currentStudent.student_id).order("subject", { ascending: true });
+function loadStudentGrades() {
+    const grades = LocalDB.get('grades').filter(g => g.student_id === currentUser.id);
+    const tbody = document.getElementById('myGradesTable');
 
-    const table = document.getElementById("myGradesTable");
-    table.innerHTML = "";
-    if(!data || !data.length){
-        table.innerHTML = `<tr><td colspan="5" class="empty">ยังไม่มีข้อมูลผลการเรียน</td></tr>`;
+    if (grades.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty">ยังไม่มีข้อมูลผลการเรียน</td></tr>';
         return;
     }
 
-    data.forEach((grade, index) => {
-        table.innerHTML += `
+    tbody.innerHTML = grades.map((g, idx) => {
+        const res = calculateGradeFromScore(g.score);
+        return `
             <tr>
-                <td>${index + 1}</td>
-                <td>${escapeHTML(grade.subject)}</td>
-                <td>${grade.score ?? "-"}</td>
-                <td><strong>${grade.grade ?? "-"}</strong></td>
-                <td>${grade.status ? formatGradeStatus(grade.status) : '<span class="badge badge-ok">ปกติ</span>'}</td>
+                <td>${idx + 1}</td>
+                <td>${g.subject}</td>
+                <td>${g.score}</td>
+                <td><strong>${res.grade}</strong></td>
+                <td><span class="badge ${g.status === 'ปกติ' ? 'badge-ok' : 'badge-zero'}">${g.status}</span></td>
             </tr>
         `;
-    });
+    }).join('');
 }
 
-async function loadStudentAttendance(){
-    if(!currentStudent) return;
-    const { data } = await supabaseClient.from("attendance").select("*").eq("student_id", currentStudent.student_id).order("date", { ascending: false });
+function loadStudentAttendance() {
+    const attendance = LocalDB.get('attendance').filter(a => a.student_id === currentUser.id);
 
-    let present = 0, late = 0, absent = 0, leave = 0;
-    const table = document.getElementById("myAttendanceTable");
-    table.innerHTML = "";
+    document.getElementById('myPresent').innerText = attendance.filter(a => a.status === 'มา').length;
+    document.getElementById('myLate').innerText = attendance.filter(a => a.status === 'สาย').length;
+    document.getElementById('myAbsent').innerText = attendance.filter(a => a.status === 'ขาด').length;
+    document.getElementById('myLeave').innerText = attendance.filter(a => a.status === 'ลา').length;
 
-    (data || []).forEach(record => {
-        if(record.status === "มา") present++;
-        if(record.status === "สาย") late++;
-        if(record.status === "ขาด") absent++;
-        if(record.status === "ลา") leave++;
-
-        table.innerHTML += `
-            <tr>
-                <td>${record.date}</td>
-                <td>${record.check_in_time || "-"}</td>
-                <td>${formatAttendanceStatus(record.status)}</td>
-            </tr>
-        `;
-    });
-
-    document.getElementById("myPresent").textContent = present;
-    document.getElementById("myLate").textContent = late;
-    document.getElementById("myAbsent").textContent = absent;
-    document.getElementById("myLeave").textContent = leave;
-}
-
-async function loadStudentStatuses(){
-    if(!currentStudent) return;
-    const { data } = await supabaseClient.from("grades").select("*").eq("student_id", currentStudent.student_id);
-
-    let zero = 0, r = 0, ms = 0, mp = 0;
-    const table = document.getElementById("myStatusTable");
-    table.innerHTML = "";
-
-    (data || []).forEach(grade => {
-        if(String(grade.status) === "0") zero++;
-        if(String(grade.status) === "ร") r++;
-        if(String(grade.status) === "มส.") ms++;
-        if(String(grade.status) === "มผ.") mp++;
-
-        if(grade.status){
-            table.innerHTML += `
-                <tr>
-                    <td>${escapeHTML(grade.subject)}</td>
-                    <td>${grade.score ?? "-"}</td>
-                    <td>${formatGradeStatus(grade.status)}</td>
-                </tr>
-            `;
-        }
-    });
-
-    document.getElementById("myZero").textContent = zero;
-    document.getElementById("myR").textContent = r;
-    document.getElementById("myMS").textContent = ms;
-    document.getElementById("myMP").textContent = mp;
-    document.getElementById("studentStatusZero").textContent = zero;
-    document.getElementById("studentStatusR").textContent = r;
-    document.getElementById("studentStatusMS").textContent = ms;
-    document.getElementById("studentStatusMP").textContent = mp;
-}
-
-/* STUDENT LESSONS & QUESTION BOX */
-async function loadStudentLessonsOptions(){
-    const { data } = await supabaseClient.from("lessons").select("*").order("created_at", { ascending: false });
-    if (data) lessonsData = data;
-
-    const select = document.getElementById("studentLessonSelect");
-    if (!select) return;
-
-    select.innerHTML = '<option value="">-- เลือกบทเรียน --</option>';
-    
-    if (lessonsData && lessonsData.length > 0) {
-        lessonsData.forEach(l => {
-            select.innerHTML += `<option value="${l.id}">[${escapeHTML(l.subject)}] ${escapeHTML(l.title)}</option>`;
-        });
-    } else {
-        select.innerHTML = '<option value="">-- ยังไม่มีบทเรียนในระบบ --</option>';
-    }     
-}
-
-function displayLessonContent(){
-    const id = document.getElementById("studentLessonSelect").value;
-    const area = document.getElementById("lessonDisplayArea");
-    const lesson = lessonsData.find(l => String(l.id) === String(id));
-
-    if(lesson){
-        area.innerHTML = `<h4>${escapeHTML(lesson.title)} (${escapeHTML(lesson.subject)})</h4><br><p>${escapeHTML(lesson.content)}</p>`;
-    } else {
-        area.innerHTML = "กรุณาเลือกบทเรียนเพื่ออ่านเนื้อหา...";
-    }
-}
-
-async function submitStudentQuestion() {
-    const lessonId = document.getElementById("studentLessonSelect").value;
-    const questionText = document.getElementById("studentQuestionText").value.trim();
-    const msgBox = document.getElementById("questionStatusMsg");
-
-    if (!currentStudent) return alert("ไม่พบข้อมูลนักเรียน กรุณาล็อกอินใหม่อีกครั้ง");
-    if (!questionText) return alert("กรุณากรอกข้อความคำถามก่อนกดส่ง");
-
-    if (msgBox) {
-        msgBox.style.color = "#1565c0";
-        msgBox.textContent = "กำลังส่งคำถาม...";
-    }
-
-    const lesson = lessonsData.find(l => String(l.id) === String(lessonId));
-
-    const { error } = await supabaseClient
-        .from("lesson_questions")
-        .insert([{
-            student_id: currentStudent.student_id,
-            student_name: currentStudent.fullname,
-            lesson_id: lessonId ? Number(lessonId) : null,
-            title: lesson ? lesson.title : "คำถามทั่วไป",
-            question: questionText,
-            status: "รอการตอบ",
-            created_at: new Date().toISOString()
-        }]);
-
-    if (error) {
-        if (msgBox) {
-            msgBox.style.color = "#dc2626";
-            msgBox.textContent = "เกิดข้อผิดพลาด: " + error.message;
-        } else {
-            alert("เกิดข้อผิดพลาด: " + error.message);
-        }
+    const tbody = document.getElementById('myAttendanceTable');
+    if (attendance.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="empty">ยังไม่มีประวัติการเข้าเรียน</td></tr>';
         return;
     }
 
-    if (msgBox) {
-        msgBox.style.color = "#16a34a";
-        msgBox.textContent = "✅ ส่งคำถามเรียบร้อยแล้ว!";
-    } else {
-        alert("✅ ส่งคำถามเรียบร้อยแล้ว!");
-    }
-
-    document.getElementById("studentQuestionText").value = "";
-    loadStudentQuestions();
-}
-
-async function loadStudentQuestions() {
-    if (!currentStudent) return;
-
-    const { data, error } = await supabaseClient
-        .from("lesson_questions")
-        .select("*")
-        .eq("student_id", currentStudent.student_id)
-        .order("created_at", { ascending: false });
-
-    const table = document.getElementById("myQuestionsTable");
-    if (error || !data || data.length === 0) {
-        table.innerHTML = `<tr><td colspan="4" class="empty">ยังไม่มีประวัติการส่งคำถาม</td></tr>`;
-        return;
-    }
-
-    table.innerHTML = "";
-    data.forEach(q => {
-        const lesson = lessonsData.find(l => String(l.id) === String(q.lesson_id));
-        const lessonTitle = lesson ? lesson.title : (q.title || "คำถามทั่วไป");
-        const answerText = q.answer ? escapeHTML(q.answer) : "<i>รอคุณครูมาตอบ...</i>";
-        const statusBadge = q.status === "ตอบแล้ว" 
-            ? `<span class="badge badge-ok">ตอบแล้ว</span>` 
-            : `<span class="badge badge-r">รอการตอบ</span>`;
-
-        table.innerHTML += `
-            <tr>
-                <td>${escapeHTML(lessonTitle)}</td>
-                <td>${escapeHTML(q.question)}</td>
-                <td>${answerText}</td>
-                <td>${statusBadge}</td>
-            </tr>
-        `;
-    });
-}
-
-/* STUDENT ASSIGNMENTS */
-async function loadStudentAssignments() {
-    if (!currentStudent) return;
-
-    const { data: assignments } = await supabaseClient.from("assignments").select("*").order("due_date", { ascending: true });
-    const { data: submissions } = await supabaseClient.from("submissions").select("*").eq("student_id", currentStudent.student_id);
-
-    const subMap = {};
-    (submissions || []).forEach(sub => { subMap[sub.assignment_id] = sub; });
-
-    const table = document.getElementById("studentAssignmentList");
-    if (!assignments || assignments.length === 0) {
-        table.innerHTML = `<tr><td colspan="5" class="empty">ไม่มีงานที่ต้องส่งในขณะนี้</td></tr>`;
-        return;
-    }
-
-    table.innerHTML = "";
-    assignments.forEach(assign => {
-        const sub = subMap[assign.id];
-        const isSubmitted = !!sub;
-        const workUrl = sub ? (sub.file_url || sub.work_url || "") : "";
-        const statusBadge = isSubmitted 
-            ? `<span class="badge badge-ok">ส่งแล้ว</span>` 
-            : `<span class="badge badge-zero">ยังไม่ส่ง</span>`;
-
-        table.innerHTML += `
-            <tr>
-                <td>${escapeHTML(assign.subject)}</td>
-                <td><strong>${escapeHTML(assign.title)}</strong><br><small>${escapeHTML(assign.description || "")}</small></td>
-                <td>${assign.due_date}</td>
-                <td>
-                    <input id="work_url_${assign.id}" class="form-control" placeholder="https://..." value="${escapeAttribute(workUrl)}">
-                    <br>
-                    <button class="btn btn-success" onclick="submitWork('${assign.id}')">💾 ${isSubmitted ? 'ส่งแก้ไข' : 'ส่งงาน'}</button>
-                </td>
-                <td>${statusBadge}</td>
-            </tr>
-        `;
-    });
-}
-
-async function submitWork(assignmentId) {
-    const urlInput = document.getElementById(`work_url_${assignmentId}`).value.trim();
-    if (!urlInput) return alert("กรุณากรอกลิงก์งานก่อนกดส่ง");
-    if (!currentStudent) return alert("ไม่พบข้อมูลนักเรียน");
-
-    const { error } = await supabaseClient.from("submissions").upsert([{
-        assignment_id: assignmentId,
-        student_id: currentStudent.student_id,
-        file_url: urlInput,
-        work_url: urlInput,
-        status: "ส่งแล้ว",
-        submitted_at: new Date().toISOString()
-    }], { onConflict: "assignment_id,student_id" });
-
-    if (error) return alert("ส่งงานไม่สำเร็จ: " + error.message);
-
-    alert("✅ ส่งงานเรียบร้อยแล้ว!");
-    loadStudentAssignments();
-}
-
-/* STUDENT QUIZZES */
-async function loadStudentQuizzes() {
-    const tableBody = document.getElementById("studentQuizTable");
-    if (!tableBody) return;
-
-    let { data, error } = await supabaseClient.from("quizzes").select("*").order("created_at", { ascending: false });
-
-    if (error || !data || data.length === 0) {
-        const fallback = await supabaseClient.from("lesson_questions").select("*").not("subject", "is", null);
-        if (fallback.data && fallback.data.length > 0) {
-            data = fallback.data;
-        }
-    }
-
-    if (!data || data.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="4" class="empty">ยังไม่มีข้อมูลแนวข้อสอบ</td></tr>`;
-        return;
-    }
-
-    tableBody.innerHTML = data.map(q => `
+    tbody.innerHTML = attendance.map(a => `
         <tr>
-            <td>${escapeHTML(q.subject || '-')}</td>
-            <td>${escapeHTML(q.title || '-')}</td>
-            <td>${escapeHTML(q.question || '-')}</td>
-            <td><details style="cursor:pointer;"><summary style="color:#1565c0; font-weight:bold;">คลิกเพื่อเฉลย</summary><div style="margin-top:5px; padding:8px; background:#f1f5f9; border-radius:6px;">${escapeHTML(q.answer || '-')}</div></details></td>
+            <td>${a.date}</td>
+            <td>${a.time}</td>
+            <td>${a.status}</td>
         </tr>
-    `).join("");
+    `).join('');
 }
 
-/* FORMATTERS & UTILS */
-function formatGradeStatus(status){
-    if(status === "0") return `<span class="badge badge-zero">ติด 0</span>`;
-    if(status === "ร") return `<span class="badge badge-r">ติด ร</span>`;
-    if(status === "มส.") return `<span class="badge badge-ms">ติด มส.</span>`;
-    if(status === "มผ.") return `<span class="badge badge-mp">ติด มผ.</span>`;
-    return `<span class="badge badge-ok">ปกติ</span>`;
-}
+function loadStudentStatus() {
+    const grades = LocalDB.get('grades').filter(g => g.student_id === currentUser.id);
 
-function formatAttendanceStatus(status){
-    if(status === "มา") return "🟢 มา";
-    if(status === "สาย") return "🟡 สาย";
-    if(status === "ขาด") return "🔴 ขาด";
-    if(status === "ลา") return "🔵 ลา";
-    return "⚪ " + status;
-}
+    const cZero = grades.filter(g => g.status === '0').length;
+    const cR = grades.filter(g => g.status === 'ร').length;
+    const cMS = grades.filter(g => g.status === 'มส').length;
+    const cMP = grades.filter(g => g.status === 'มผ').length;
 
-function getToday(){
-    const d = new Date();
-    return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2,"0") + "-" + String(d.getDate()).padStart(2,"0");
-}
+    document.getElementById('studentStatusZero').innerText = cZero;
+    document.getElementById('studentStatusR').innerText = cR;
+    document.getElementById('studentStatusMS').innerText = cMS;
+    document.getElementById('studentStatusMP').innerText = cMP;
 
-function escapeHTML(value){
-    if(value === null || value === undefined) return "";
-    return String(value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
-function escapeAttribute(value){ return escapeHTML(value); }
-
-/* AUTO LOGIN & INITIALIZATION */
-window.addEventListener("load", async function(){
-    const { data } = await supabaseClient.auth.getSession();
-    if(data && data.session && data.session.user){
-        currentUser = data.session.user;
-        const role = localStorage.getItem("userRole") || "student";
-        openSystem(role);
+    const tbody = document.getElementById('myStatusTable');
+    if (grades.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" class="empty">ไม่มีข้อมูลผลการเรียน</td></tr>';
+        return;
     }
 
-    const attDate = document.getElementById("attendanceDate");
-    if(attDate) attDate.value = getToday();
+    tbody.innerHTML = grades.map(g => `
+        <tr>
+            <td>${g.subject}</td>
+            <td>${g.score}</td>
+            <td><span class="badge ${g.status === 'ปกติ' ? 'badge-ok' : 'badge-zero'}">${g.status}</span></td>
+        </tr>
+    `).join('');
+}
 
-    const repDate = document.getElementById("reportDate");
-    if(repDate) repDate.value = getToday();
-});
+function loadStudentLessonsView() {
+    const lessons = LocalDB.get('lessons');
+    const sel = document.getElementById('studentLessonSelect');
+    sel.innerHTML = '<option value="">-- เลือกบทเรียน --</option>' + lessons.map(l => `<option value="${l.id}">${l.subject} - ${l.title}</option>`).join('');
+}
 
-supabaseClient.auth.onAuthStateChange((event, session) => {
-    if(event === "SIGNED_OUT") currentUser = null;
-});
+function displayLessonContent() {
+    const id = document.getElementById('studentLessonSelect').value;
+    const lessons = LocalDB.get('lessons');
+    const lesson = lessons.find(l => l.id == id);
+    const viewer = document.getElementById('lessonViewer');
+
+    if (lesson) {
+        viewer.innerHTML = `<h3>${lesson.title} (${lesson.subject})</h3><br><p>${lesson.content}</p>`;
+    } else {
+        viewer.innerHTML = 'กรุณาเลือกบทเรียนเพื่ออ่านรายละเอียด';
+    }
+}
+
+function sendStudentQuestion() {
+    const text = document.getElementById('studentQuestionInput').value.trim();
+    if (!text) {
+        alert('กรุณากรอกข้อความคำถาม');
+        return;
+    }
+
+    const qList = LocalDB.get('questions');
+    qList.push({
+        student_name: currentUser.name,
+        subject: 'สอบถามทั่วไป',
+        question: text,
+        datetime: new Date().toLocaleString('th-TH')
+    });
+
+    LocalDB.set('questions', qList);
+    alert('ส่งคำถามถึงคุณครูเรียบร้อยแล้ว');
+    document.getElementById('studentQuestionInput').value = '';
+}
+
+function loadStudentAssignmentsView() {
+    const assignments = LocalDB.get('assignments');
+    const tbody = document.getElementById('studentAssignmentList');
+
+    if (assignments.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty">ไม่มีงานที่ได้รับมอบหมาย</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = assignments.map(a => `
+        <tr>
+            <td>${a.subject}</td>
+            <td>${a.title}</td>
+            <td>${a.desc}</td>
+            <td>${a.due || '-'}</td>
+            <td>
+                <button class="btn btn-success" style="padding:4px 8px;" onclick="submitAssignment('${a.subject}', '${a.title}')">📤 ส่งงาน</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+function submitAssignment(subject, title) {
+    const link = prompt('กรุณาแปะลิงก์งานของคุณ (เช่น Google Docs, Canva, Drive):');
+    if (!link) return;
+
+    const submissions = LocalDB.get('submissions');
+    submissions.push({
+        student_id: currentUser.id,
+        student_name: currentUser.name,
+        subject,
+        title,
+        link
+    });
+
+    LocalDB.set('submissions', submissions);
+    alert('ส่งงานเรียบร้อยแล้ว');
+}
+
+function loadStudentQuizzesView() {
+    const quizzes = LocalDB.get('quizzes');
+    const tbody = document.getElementById('studentQuizList');
+
+    if (quizzes.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty">ยังไม่มีแบบทดสอบ</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = quizzes.map(q => `
+        <tr>
+            <td>${q.subject}</td>
+            <td>${q.title}</td>
+            <td>${q.question}</td>
+            <td><details><summary>เฉลย</summary><p style="margin-top:5px;">${q.answer}</p></details></td>
+        </tr>
+    `).join('');
+}
 </script>
+
 </body>
 </html>
