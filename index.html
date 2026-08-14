@@ -341,6 +341,7 @@ button, input, select, textarea {
 .btn-success { background: #16a34a; }
 .btn-success:hover { background: #15803d; }
 .btn-warning { background: #d97706; }
+.btn-warning:hover { background: #b45309; }
 
 .table-wrapper {
     width: 100%;
@@ -501,7 +502,7 @@ tr:nth-child(even) {
                 <label>บัญชีผู้ใช้</label>
                 <div class="input-box">
                     <span class="input-icon">👤</span>
-                    <input id="email" type="text" placeholder="อีเมลหรือบัญชีผู้ใช้">
+                    <input id="email" type="text" placeholder="อีเมลหรือรหัสนักเรียน">
                 </div>
             </div>
 
@@ -599,14 +600,17 @@ tr:nth-child(even) {
                     <input id="fullname" class="form-control" placeholder="ชื่อ-นามสกุล">
                     <input id="student_email" class="form-control" placeholder="อีเมลนักเรียน (สำหรับ Login)">
                     <input id="classroom" class="form-control" placeholder="ห้อง เช่น ม.5/1">
-                    <input id="student_gpa" class="form-control" type="number" step="0.01" placeholder="GPA">
+                    <input id="student_gpa" class="form-control" type="number" step="0.01" placeholder="GPA (คำนวณให้อัตโนมัติ)">
                 </div>
                 <br>
                 <button class="btn btn-success" onclick="addStudent()">➕ เพิ่มนักเรียน</button>
             </div>
             <br>
             <div class="card">
-                <h3>รายชื่อนักเรียน</h3>
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                    <h3>รายชื่อนักเรียน</h3>
+                    <button class="btn btn-warning" onclick="recalculateAllGPA()">🧮 คำนวณ GPA นักเรียนทุกคนใหม่</button>
+                </div>
                 <br>
                 <input id="studentSearch" class="form-control" placeholder="🔎 ค้นหารหัสหรือชื่อ..." oninput="filterStudents()">
                 <br>
@@ -668,7 +672,7 @@ tr:nth-child(even) {
                     </table>
                 </div>
                 <br>
-                <button class="btn btn-success" onclick="saveGradeSheet()">💾 บันทึกคะแนนทั้งหมด</button>
+                <button class="btn btn-success" onclick="saveGradeSheet()">💾 บันทึกคะแนนทั้งหมด & คำนวณ GPA</button>
             </div>
         </div>
 
@@ -764,28 +768,26 @@ tr:nth-child(even) {
                 <br>
                 <button class="btn btn-success" onclick="saveQuiz()">➕ เพิ่มแนวข้อสอบ</button>
             </div>
+            <br>
+            <div class="card">
+                <h3>❓ คำถามจากนักเรียนถึงคุณครู</h3>
+                <br>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>วันที่/เวลา</th>
+                                <th>นักเรียน / บทเรียน</th>
+                                <th>คำถามจากนักเรียน</th>
+                            </tr>
+                        </thead>
+                        <tbody id="teacherQuestionsTable">
+                            <tr><td colspan="3" class="empty">กำลังโหลดข้อมูลคำถาม...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <!-- การ์ดแสดงคำถามจากนักเรียน -->
-<div class="card" style="margin-top: 20px; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-    <h3 style="color: #0284c7; margin-bottom: 15px;">❓ คำถามจากนักเรียนถึงคุณครู</h3>
-    <div style="overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; text-align: left;">
-            <thead>
-                <tr style="background-color: #f1f5f9; border-bottom: 2px solid #cbd5e1;">
-                    <th style="padding: 10px;">วันที่/เวลา</th>
-                    <th style="padding: 10px;">บทเรียน</th>
-                    <th style="padding: 10px;">คำถามจากนักเรียน</th>
-                </tr>
-            </thead>
-            <tbody id="teacherQuestionsTable">
-                <tr>
-                    <td colspan="3" style="text-align: center; padding: 15px; color: #64748b;">กำลังโหลดข้อมูลคำถาม...</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
 
         <!-- TEACHER ASSIGNMENTS -->
         <div id="teacherAssignments" class="page-section">
@@ -909,7 +911,7 @@ tr:nth-child(even) {
             <br>
             <div class="cards">
                 <div class="card">
-                    <h3>📚 GPA</h3>
+                    <h3>📚 GPA เฉลี่ย</h3>
                     <div id="myGPA" class="card-number">-</div>
                 </div>
                 <div class="card">
@@ -1147,6 +1149,62 @@ let teacherChart = null;
 let lessonsData = [];
 let quizzesData = [];
 
+/* ==================================================== */
+/* 🧮 GPA CALCULATION FUNCTION (เพิ่มฟังก์ชันคำนวณ GPA) */
+/* ==================================================== */
+async function calculateAndUpdateGPA(studentId) {
+    if(!studentId) return null;
+
+    // ดึงข้อมูลเกรดของนักเรียนคนนี้ทุกวิชา
+    const { data: grades, error } = await supabaseClient
+        .from("grades")
+        .select("grade")
+        .eq("student_id", studentId);
+
+    if (error || !grades || grades.length === 0) return null;
+
+    let totalPoints = 0;
+    let validSubjectCount = 0;
+
+    grades.forEach(g => {
+        if (g.grade !== null && g.grade !== undefined && g.grade !== "" && g.grade !== "-") {
+            const numGrade = parseFloat(g.grade);
+            if (!isNaN(numGrade)) {
+                totalPoints += numGrade;
+                validSubjectCount++;
+            }
+        }
+    });
+
+    if (validSubjectCount === 0) return null;
+
+    // คำนวณเกรดเฉลี่ยแบบ ทศนิยม 2 ตำแหน่ง
+    const calculatedGPA = parseFloat((totalPoints / validSubjectCount).toFixed(2));
+
+    // อัปเดตลงในตารางนักเรียน (students.gpa)
+    await supabaseClient
+        .from("students")
+        .update({ gpa: calculatedGPA })
+        .eq("student_id", studentId);
+
+    return calculatedGPA;
+}
+
+// ฟังก์ชันกดคำนวณ GPA ของนักเรียนทุกคนในระบบ
+async function recalculateAllGPA() {
+    const { data: students } = await supabaseClient.from("students").select("student_id");
+    if(!students || !students.length) return alert("ไม่พบข้อมูลนักเรียน");
+
+    let updatedCount = 0;
+    for(const s of students) {
+        const res = await calculateAndUpdateGPA(s.student_id);
+        if(res !== null) updatedCount++;
+    }
+
+    alert(`✅ อัปเดต GPA เรียบร้อยแล้ว (${updatedCount} คน)`);
+    loadStudents();
+}
+
 /* LOGIN */
 async function login(){
     const loginValue = document.getElementById("email").value.trim();
@@ -1229,6 +1287,10 @@ function showSection(sectionId){
 
     if(sectionId === "teacherStudents") loadStudents();
     if(sectionId === "teacherStatus") loadStatusStudents();
+    if(sectionId === "teacherLessons") {
+        loadLessonsFromDB();
+        loadTeacherQuestions();
+    }
     if(sectionId === "teacherAssignments"){
         loadTeacherAssignments();
         loadTeacherSubmissions();
@@ -1309,7 +1371,7 @@ function createTeacherChart(present, absent, problem){
         type: "bar",
         data: {
             labels: ["มาเรียน", "ขาดเรียน", "ติด 0/ร/มส./มผ."],
-            datasets: [{ label: "จำนวน", data: [present, absent, problem] }]
+            datasets: [{ label: "จำนวน", data: [present, absent, problem], backgroundColor: ['#16a34a', '#dc2626', '#d97706'] }]
         },
         options: { responsive: true, maintainAspectRatio: true }
     });
@@ -1332,6 +1394,7 @@ function renderStudents(students){
         return;
     }
     students.forEach((student, index) => {
+        const formattedGPA = (student.gpa !== null && student.gpa !== undefined) ? Number(student.gpa).toFixed(2) : "-";
         table.innerHTML += `
             <tr>
                 <td>${index + 1}</td>
@@ -1339,7 +1402,7 @@ function renderStudents(students){
                 <td>${escapeHTML(student.fullname)}</td>
                 <td>${escapeHTML(student.email || "-")}</td>
                 <td>${escapeHTML(student.class || "-")}</td>
-                <td>${student.gpa ?? "-"}</td>
+                <td><strong>${formattedGPA}</strong></td>
                 <td><button class="btn btn-danger" onclick="deleteStudent('${student.id}')">ลบ</button></td>
             </tr>
         `;
@@ -1452,9 +1515,12 @@ async function saveGradeSheet(){
                 grade: grade,
                 status: score < 50 ? "0" : null
             }], { onConflict: "student_id,subject" });
+
+            // คำนวณและอัปเดต GPA นักเรียนแต่ละคน
+            await calculateAndUpdateGPA(student.student_id);
         }
     }
-    alert("บันทึกคะแนนเรียบร้อยแล้ว");
+    alert("บันทึกคะแนนและคำนวณ เกรดเฉลี่ยสะสม (GPA) เรียบร้อยแล้ว");
     loadGradeSheet();
 }
 
@@ -1490,7 +1556,7 @@ function createStatusRow(student, grade, number){
     const gradeId = grade ? grade.id : "";
     const subject = grade ? grade.subject : "";
     const score = grade ? grade.score : "";
-    const status = grade ? grade.status : "";
+    const status = grade ? (grade.status || grade.grade || "") : "";
 
     return `
         <tr>
@@ -1502,7 +1568,7 @@ function createStatusRow(student, grade, number){
             <td><input class="form-control" type="number" id="score_${student.student_id}_${gradeId}" value="${score ?? ""}" placeholder="คะแนน"></td>
             <td>
                 <select class="status-select" id="status_${student.student_id}_${gradeId}">
-                                        <option value="" ${status === "" ? "selected" : ""}>ปกติ</option>
+                    <option value="" ${status === "" ? "selected" : ""}>ปกติ</option>
                     <option value="4" ${status === "4" ? "selected" : ""}>4</option>
                     <option value="3.5" ${status === "3.5" ? "selected" : ""}>3.5</option>
                     <option value="3" ${status === "3" ? "selected" : ""}>3</option>
@@ -1514,7 +1580,6 @@ function createStatusRow(student, grade, number){
                     <option value="ร" ${status === "ร" ? "selected" : ""}>ร</option>
                     <option value="มส." ${status === "มส." ? "selected" : ""}>มส.</option>
                     <option value="มผ." ${status === "มผ." ? "selected" : ""}>มผ.</option>
-
                 </select>
             </td>
             <td><button class="btn btn-success" onclick="saveGrade('${student.student_id}', '${gradeId}')">💾 บันทึก</button></td>
@@ -1531,14 +1596,13 @@ async function saveGrade(studentId, gradeId){
 
     const isGrade = ["4", "3.5", "3", "2.5", "2", "1.5", "1"].includes(status);
 
-const payload = {
-    student_id: studentId,
-    subject: subject,
-    score: score ? Number(score) : null,
-    grade: isGrade ? status : (status === "0" ? "0" : null),
-    status: isGrade ? null : (status || null)
-};
-
+    const payload = {
+        student_id: studentId,
+        subject: subject,
+        score: score ? Number(score) : null,
+        grade: isGrade ? status : (status === "0" ? "0" : null),
+        status: isGrade ? null : (status || null)
+    };
 
     let result = gradeId ? 
         await supabaseClient.from("grades").update(payload).eq("id", gradeId) :
@@ -1546,7 +1610,10 @@ const payload = {
 
     if(result.error) return alert("บันทึกไม่สำเร็จ\n" + result.error.message);
 
-    alert("บันทึกผลการเรียนสำเร็จ");
+    // คำนวณ GPA อัตโนมัติทันทีที่มีการเปลี่ยนเกรด
+    await calculateAndUpdateGPA(studentId);
+
+    alert("บันทึกผลการเรียนและอัปเดต GPA สำเร็จ");
     loadStatusStudents();
     loadTeacherDashboard();
 }
@@ -1630,35 +1697,25 @@ async function saveLesson() {
     const content = document.getElementById("lessonContent")?.value.trim();
 
     if (!subject || !title || !content) {
-        return alert("กรุณากรอกข้อมูลบทเรียนให้ครบทุกช่อง (ชื่อวิชา, ชื่อบทเรียน, เนื้อหา)");
+        return alert("กรุณากรอกข้อมูลบทเรียนให้ครบทุกช่อง");
     }
 
-    // ส่งข้อมูลเข้าตาราง lessons ใน Supabase
-    const { data, error } = await supabaseClient
-        .from("lessons")
-        .insert([{
-            subject: subject,
-            title: title,
-            content: content,
-            created_at: new Date().toISOString()
-        }]);
+    const { error } = await supabaseClient.from("lessons").insert([{
+        subject: subject,
+        title: title,
+        content: content,
+        created_at: new Date().toISOString()
+    }]);
 
-    if (error) {
-        return alert("บันทึกบทเรียนไม่สำเร็จ: " + error.message);
-    }
+    if (error) return alert("บันทึกบทเรียนไม่สำเร็จ: " + error.message);
 
     alert("✅ บันทึกบทเรียนเรียบร้อยแล้ว!");
-
-    // ล้างค่าในช่องกรอก
     document.getElementById("lessonSubject").value = "";
     document.getElementById("lessonTitle").value = "";
     document.getElementById("lessonContent").value = "";
 
-    // โหลดข้อมูลบทเรียนใหม่
-    if (typeof loadLessonsFromDB === "function") loadLessonsFromDB();
-    if (typeof loadStudentLessonsOptions === "function") loadStudentLessonsOptions();
+    loadLessonsFromDB();
 }
-
 
 async function saveQuiz(){
     const subject = document.getElementById("quizSubject").value.trim();
@@ -1666,16 +1723,18 @@ async function saveQuiz(){
     const question = document.getElementById("quizQuestion").value.trim();
     const answer = document.getElementById("quizAnswer").value.trim();
 
-    if(!subject || !title || !question || !answer) return alert("กรุณากรอกข้อมูลแนวข้อสอบให้ครบ");
+    if(!subject || !title || !question || !answer) return alert("กรุณากรอกข้อมูลแนวข้อสอบให้ครบทุกช่อง");
 
-    const { error } = await supabaseClient.from("lesson_questions").insert([{ subject, title, question, answer }]);
+    const { error } = await supabaseClient.from("quizzes").insert([{ 
+        subject, title, question, answer, created_at: new Date().toISOString() 
+    }]);
+    
     if(error){
-        quizzesData.push({ id: Date.now(), subject, title, question, answer });
-    } else {
-        await loadQuizzesFromDB();
+        const fallback = await supabaseClient.from("lesson_questions").insert([{ subject, title, question, answer }]);
+        if(fallback.error) return alert("เพิ่มแนวข้อสอบไม่สำเร็จ: " + error.message);
     }
 
-    alert("เพิ่มแนวข้อสอบเรียบร้อยแล้ว!");
+    alert("✅ เพิ่มแนวข้อสอบเรียบร้อยแล้ว!");
     document.getElementById("quizSubject").value = "";
     document.getElementById("quizTitle").value = "";
     document.getElementById("quizQuestion").value = "";
@@ -1684,12 +1743,37 @@ async function saveQuiz(){
 
 async function loadLessonsFromDB(){
     const { data } = await supabaseClient.from("lessons").select("*").order("created_at", { ascending: false });
-    if(data && data.length) lessonsData = data;
+    if(data) lessonsData = data;
 }
 
-async function loadQuizzesFromDB(){
-    const { data } = await supabaseClient.from("quizzes").select("*").order("created_at", { ascending: false });
-    if(data && data.length) quizzesData = data;
+/* TEACHER QUESTIONS LIST */
+async function loadTeacherQuestions() {
+    const tableBody = document.getElementById("teacherQuestionsTable");
+    if (!tableBody) return;
+
+    const { data, error } = await supabaseClient
+        .from("lesson_questions")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+    if (error) {
+        console.error("Error loading student questions:", error.message);
+        tableBody.innerHTML = `<tr><td colspan="3" class="empty">เกิดข้อผิดพลาดในการโหลดข้อมูลคำถาม</td></tr>`;
+        return;
+    }
+
+    if (!data || data.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="3" class="empty">ยังไม่มีคำถามจากนักเรียนในขณะนี้</td></tr>`;
+        return;
+    }
+
+    tableBody.innerHTML = data.map(q => `
+        <tr>
+            <td>${q.created_at ? new Date(q.created_at).toLocaleString('th-TH') : '-'}</td>
+            <td><strong>${escapeHTML(q.student_name || q.student_id || 'นักเรียน')}</strong><br><small>${escapeHTML(q.title || 'คำถามทั่วไป')}</small></td>
+            <td>${escapeHTML(q.question)}</td>
+        </tr>
+    `).join("");
 }
 
 /* TEACHER ASSIGNMENTS & SUBMISSIONS */
@@ -1742,7 +1826,6 @@ async function loadTeacherAssignments() {
 async function loadTeacherSubmissions() {
     const table = document.getElementById("teacherSubmissionsList");
     
-    // ดึงข้อมูลส่งงานเรียงตามเวลา submitted_at
     const { data: subs, error } = await supabaseClient
         .from("submissions")
         .select("*")
@@ -1766,11 +1849,8 @@ async function loadTeacherSubmissions() {
     subs.forEach(s => {
         const assign = assignMap[s.assignment_id];
         const assignInfo = assign ? `[${escapeHTML(assign.subject)}] ${escapeHTML(assign.title)}` : "งานที่ไม่ทราบชื่อ";
-        
-        // รองรับทั้ง file_url และ work_url
         const linkUrl = s.file_url || s.work_url;
         const url = linkUrl ? `<a href="${escapeAttribute(linkUrl)}" target="_blank" style="color:#1565c0; font-weight:bold;">🔗 เปิดดูผลงาน</a>` : "-";
-        
         const studentName = studentMap[s.student_id] || "-";
 
         table.innerHTML += `
@@ -1851,6 +1931,9 @@ async function loadCurrentStudent(){
 
     if(!currentStudent) return alert("ไม่พบข้อมูลนักเรียนที่ผูกกับบัญชีนี้");
 
+    // อัปเดต GPA สดจากผลการเรียนจริง
+    await calculateAndUpdateGPA(currentStudent.student_id);
+
     renderStudentProfile();
     loadStudentGrades();
     loadStudentAttendance();
@@ -1859,13 +1942,14 @@ async function loadCurrentStudent(){
 
 function renderStudentProfile(){
     const s = currentStudent;
+    const displayGPA = (s.gpa !== null && s.gpa !== undefined) ? Number(s.gpa).toFixed(2) : "-";
     document.getElementById("studentProfile").innerHTML = `
         <div class="profile-item"><small>รหัสนักเรียน</small><strong>${escapeHTML(s.student_id)}</strong></div>
         <div class="profile-item"><small>ชื่อ-นามสกุล</small><strong>${escapeHTML(s.fullname)}</strong></div>
         <div class="profile-item"><small>ห้อง</small><strong>${escapeHTML(s.class || "-")}</strong></div>
-        <div class="profile-item"><small>GPA</small><strong>${s.gpa ?? "-"}</strong></div>
+        <div class="profile-item"><small>GPA เกรดเฉลี่ย</small><strong>${displayGPA}</strong></div>
     `;
-    document.getElementById("myGPA").textContent = s.gpa ?? "-";
+    document.getElementById("myGPA").textContent = displayGPA;
 }
 
 async function loadStudentGrades(){
@@ -1885,7 +1969,7 @@ async function loadStudentGrades(){
                 <td>${index + 1}</td>
                 <td>${escapeHTML(grade.subject)}</td>
                 <td>${grade.score ?? "-"}</td>
-                <td>${grade.grade ?? "-"}</td>
+                <td><strong>${grade.grade ?? "-"}</strong></td>
                 <td>${grade.status ? formatGradeStatus(grade.status) : '<span class="badge badge-ok">ปกติ</span>'}</td>
             </tr>
         `;
@@ -1958,15 +2042,8 @@ async function loadStudentStatuses(){
 
 /* STUDENT LESSONS & QUESTION BOX */
 async function loadStudentLessonsOptions(){
-    // ดึงข้อมูลบทเรียนทั้งหมดจากตาราง lessons ใน Supabase
-    const { data, error } = await supabaseClient
-        .from("lessons")
-        .select("*")
-        .order("created_at", { ascending: false });
-
-    if (!error && data) {
-        lessonsData = data;
-    }
+    const { data } = await supabaseClient.from("lessons").select("*").order("created_at", { ascending: false });
+    if (data) lessonsData = data;
 
     const select = document.getElementById("studentLessonSelect");
     if (!select) return;
@@ -1979,11 +2056,8 @@ async function loadStudentLessonsOptions(){
         });
     } else {
         select.innerHTML = '<option value="">-- ยังไม่มีบทเรียนในระบบ --</option>';
-            
     }     
-    if (typeof loadStudentQuizzes === "function") loadStudentQuizzes();
 }
-
 
 function displayLessonContent(){
     const id = document.getElementById("studentLessonSelect").value;
@@ -2010,15 +2084,18 @@ async function submitStudentQuestion() {
         msgBox.textContent = "กำลังส่งคำถาม...";
     }
 
-    // บันทึกคำถามลงตาราง lesson_questions ใน Supabase
+    const lesson = lessonsData.find(l => String(l.id) === String(lessonId));
+
     const { error } = await supabaseClient
         .from("lesson_questions")
         .insert([{
             student_id: currentStudent.student_id,
             student_name: currentStudent.fullname,
             lesson_id: lessonId ? Number(lessonId) : null,
+            title: lesson ? lesson.title : "คำถามทั่วไป",
             question: questionText,
-            status: "รอการตอบ"
+            status: "รอการตอบ",
+            created_at: new Date().toISOString()
         }]);
 
     if (error) {
@@ -2042,7 +2119,6 @@ async function submitStudentQuestion() {
     loadStudentQuestions();
 }
 
-
 async function loadStudentQuestions() {
     if (!currentStudent) return;
 
@@ -2061,7 +2137,7 @@ async function loadStudentQuestions() {
     table.innerHTML = "";
     data.forEach(q => {
         const lesson = lessonsData.find(l => String(l.id) === String(q.lesson_id));
-        const lessonTitle = lesson ? lesson.title : "คำถามทั่วไป";
+        const lessonTitle = lesson ? lesson.title : (q.title || "คำถามทั่วไป");
         const answerText = q.answer ? escapeHTML(q.answer) : "<i>รอคุณครูมาตอบ...</i>";
         const statusBadge = q.status === "ตอบแล้ว" 
             ? `<span class="badge badge-ok">ตอบแล้ว</span>` 
@@ -2098,7 +2174,7 @@ async function loadStudentAssignments() {
     assignments.forEach(assign => {
         const sub = subMap[assign.id];
         const isSubmitted = !!sub;
-        const workUrl = sub ? sub.work_url : "";
+        const workUrl = sub ? (sub.file_url || sub.work_url || "") : "";
         const statusBadge = isSubmitted 
             ? `<span class="badge badge-ok">ส่งแล้ว</span>` 
             : `<span class="badge badge-zero">ยังไม่ส่ง</span>`;
@@ -2124,11 +2200,11 @@ async function submitWork(assignmentId) {
     if (!urlInput) return alert("กรุณากรอกลิงก์งานก่อนกดส่ง");
     if (!currentStudent) return alert("ไม่พบข้อมูลนักเรียน");
 
-    // บันทึกลงคอลัมน์ file_url และ submitted_at ให้ตรงกับ Supabase
     const { error } = await supabaseClient.from("submissions").upsert([{
         assignment_id: assignmentId,
         student_id: currentStudent.student_id,
         file_url: urlInput,
+        work_url: urlInput,
         status: "ส่งแล้ว",
         submitted_at: new Date().toISOString()
     }], { onConflict: "assignment_id,student_id" });
@@ -2139,40 +2215,34 @@ async function submitWork(assignmentId) {
     loadStudentAssignments();
 }
 
-
 /* STUDENT QUIZZES */
 async function loadStudentQuizzes() {
     const tableBody = document.getElementById("studentQuizTable");
     if (!tableBody) return;
 
-    // ดึงข้อมูลแนวข้อสอบจากตาราง quizzes ใน Supabase
-    const { data, error } = await supabaseClient
-        .from("lesson_questions")
-        .select("*");
-        
+    let { data, error } = await supabaseClient.from("quizzes").select("*").order("created_at", { ascending: false });
 
-    if (error) {
-        console.error("Error loading quizzes:", error.message);
-        tableBody.innerHTML = `<tr><td colspan="4" style="text-align:center; color:red;">เกิดข้อผิดพลาดในการโหลดข้อมูล</td></tr>`;
-        return;
+    if (error || !data || data.length === 0) {
+        const fallback = await supabaseClient.from("lesson_questions").select("*").not("subject", "is", null);
+        if (fallback.data && fallback.data.length > 0) {
+            data = fallback.data;
+        }
     }
 
     if (!data || data.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="4" class="empty" style="text-align:center;">ยังไม่มีข้อมูลแนวข้อสอบ</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="4" class="empty">ยังไม่มีข้อมูลแนวข้อสอบ</td></tr>`;
         return;
     }
 
-    // นำข้อมูลแนวข้อสอบมาสร้างเป็นแถวในตาราง
     tableBody.innerHTML = data.map(q => `
         <tr>
             <td>${escapeHTML(q.subject || '-')}</td>
             <td>${escapeHTML(q.title || '-')}</td>
             <td>${escapeHTML(q.question || '-')}</td>
-            <td><details><summary>คลิกเพื่อเฉลย</summary>${escapeHTML(q.answer || '-')}</details></td>
+            <td><details style="cursor:pointer;"><summary style="color:#1565c0; font-weight:bold;">คลิกเพื่อเฉลย</summary><div style="margin-top:5px; padding:8px; background:#f1f5f9; border-radius:6px;">${escapeHTML(q.answer || '-')}</div></details></td>
         </tr>
     `).join("");
 }
-
 
 /* FORMATTERS & UTILS */
 function formatGradeStatus(status){
@@ -2216,56 +2286,17 @@ window.addEventListener("load", async function(){
         const role = localStorage.getItem("userRole") || "student";
         openSystem(role);
     }
-});
 
-supabaseClient.auth.onAuthStateChange((event, session) => {
-    if(event === "SIGNED_OUT") currentUser = null;
-});
-
-document.addEventListener("DOMContentLoaded", function(){
     const attDate = document.getElementById("attendanceDate");
     if(attDate) attDate.value = getToday();
 
     const repDate = document.getElementById("reportDate");
     if(repDate) repDate.value = getToday();
 });
-    // ฟังก์ชันดึงคำถามจากนักเรียนมาแสดงฝั่งครู
-async function loadTeacherQuestions() {
-    const tableBody = document.getElementById("teacherQuestionsTable");
-    if (!tableBody) return;
 
-    const { data, error } = await supabaseClient
-        .from("lesson_questions")
-        .select("*");
-
-    if (error) {
-        console.error("Error loading student questions:", error.message);
-        tableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:red; padding:10px;">เกิดข้อผิดพลาดในการโหลดข้อมูลคำถาม</td></tr>`;
-        return;
-    }
-
-    // กรองเอาเฉพาะรายการที่เป็นคำถามจากนักเรียน (ไม่มีตัววิชา)
-    const questions = data ? data.filter(q => q.question && !q.subject) : [];
-
-    if (questions.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="3" style="text-align:center; color:#64748b; padding:15px;">ยังไม่มีคำถามจากนักเรียนในขณะนี้</td></tr>`;
-        return;
-    }
-
-    tableBody.innerHTML = questions.map(q => `
-        <tr style="border-bottom: 1px solid #e2e8f0;">
-            <td style="padding: 10px; font-size: 14px; color: #64748b;">${q.created_at ? new Date(q.created_at).toLocaleString('th-TH') : '-'}</td>
-            <td style="padding: 10px; font-weight: bold;">${escapeHTML(q.title || 'คำถามทั่วไป')}</td>
-            <td style="padding: 10px; color: #1e293b;">${escapeHTML(q.question)}</td>
-        </tr>
-    `).join("");
-}
-
-// เรียกทำงานฟังก์ชันเมื่อโหลดหน้าเว็บ
-document.addEventListener("DOMContentLoaded", () => {
-    if (typeof loadTeacherQuestions === "function") loadTeacherQuestions();
+supabaseClient.auth.onAuthStateChange((event, session) => {
+    if(event === "SIGNED_OUT") currentUser = null;
 });
-
 </script>
 </body>
 </html>
