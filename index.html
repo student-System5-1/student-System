@@ -463,6 +463,9 @@ tr:nth-child(even) {
     .login-card { padding: 25px 18px; }
 }
 </style>
+    <!-- โหลด Library PeerJS สำหรับ Video Call -->
+<script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    
 </head>
 <body>
 
@@ -543,6 +546,7 @@ tr:nth-child(even) {
             <li onclick="showSection('teacherLessons')">📚 บทเรียน & แบบทดสอบ</li>
             <li onclick="showSection('teacherAssignments')">📂 สั่งงาน & ตรวจงาน</li>
             <li onclick="showSection('teacherReport')">📊 รายงาน</li>
+               <li onclick="showSection('videoCallSection')">📹 ห้องเรียนออนไลน์</li>
             <li onclick="logout()">🚪 ออกจากระบบ</li>
         </ul>
 
@@ -555,6 +559,7 @@ tr:nth-child(even) {
             <li onclick="showSection('studentLessons')">💡 บทเรียน/ถามคำถาม</li>
             <li onclick="showSection('studentAssignments')">📥 ส่งงาน / การบ้าน</li>
             <li onclick="showSection('studentQuizzes')">✍️ แบบทดสอบ/ข้อสอบ</li>
+            <li onclick="showSection('videoCallSection')">📹 ห้องเรียนออนไลน์</li>
             <li onclick="logout()">🚪 ออกจากระบบ</li>
         </ul>
     </div>
@@ -632,6 +637,37 @@ tr:nth-child(even) {
                 </div>
             </div>
         </div>
+<!-- VIDEO CALL SECTION (Google Meet Clone) -->
+<div id="videoCallSection" class="page-section" style="display:none;">
+    <h1 class="page-title">📹 ห้องเรียนออนไลน์ (Video Call)</h1>
+    <div class="card" style="background: #202124; color: white;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3>ถ่ายทอดสดห้องเรียน</h3>
+            <div style="background: #3c4043; padding: 6px 12px; border-radius: 8px; font-size: 14px;">
+                ID ของคุณ: <strong id="my-id" style="color: #8dd9ee;">กำลังโหลด...</strong>
+            </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-bottom: 15px;">
+            <div style="background: #000; border-radius: 12px; height: 320px; position: relative; overflow: hidden;">
+                <video id="local-video" autoplay muted playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+                <span style="position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.6); padding: 3px 8px; border-radius: 4px; font-size: 12px;">คุณ (Local)</span>
+            </div>
+            <div style="background: #000; border-radius: 12px; height: 320px; position: relative; overflow: hidden;">
+                <video id="remote-video" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+                <span style="position: absolute; bottom: 8px; left: 8px; background: rgba(0,0,0,0.6); padding: 3px 8px; border-radius: 4px; font-size: 12px;">คู่สนทนา (Remote)</span>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center;">
+            <input type="text" id="peer-id-input" class="form-control" style="max-width: 250px; background: #3c4043; color: white; border: none;" placeholder="กรอก ID เพื่อเข้าร่วม">
+            <button class="btn" style="background: #1a73e8;" onclick="makeCall()">📞 โทรออก / เข้าร่วม</button>
+            <button id="mic-btn" class="btn btn-warning" onclick="toggleMic()">🎤 เปิดไมค์</button>
+            <button id="cam-btn" class="btn btn-warning" onclick="toggleCam()">📷 เปิดกล้อง</button>
+            <button class="btn btn-danger" onclick="endCall()">❌ วางสาย</button>
+        </div>
+    </div>
+</div>
 
         <!-- TEACHER GRADES -->
         <div id="teacherGrades" class="page-section">
@@ -1284,7 +1320,10 @@ function showSection(sectionId){
     hideAllSections();
     const section = document.getElementById(sectionId);
     if(section) section.classList.add("active");
-
+        
+    if (sectionId === 'videoCallSection') {
+        initVideoCall();
+    }
     if(sectionId === "teacherStudents") loadStudents();
     if(sectionId === "teacherStatus") loadStatusStudents();
     if(sectionId === "teacherLessons") {
@@ -2297,6 +2336,73 @@ window.addEventListener("load", async function(){
 supabaseClient.auth.onAuthStateChange((event, session) => {
     if(event === "SIGNED_OUT") currentUser = null;
 });
+    // --- SYSTEM VIDEO CALL (WebRTC / PeerJS) ---
+let localStream;
+let currentCall;
+let peer;
+
+async function initVideoCall() {
+    if (localStream) return;
+    try {
+        localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        document.getElementById('local-video').srcObject = localStream;
+        
+        peer = new Peer();
+        
+        peer.on('open', (id) => {
+            document.getElementById('my-id').innerText = id;
+        });
+
+        peer.on('call', (call) => {
+            currentCall = call;
+            call.answer(localStream);
+            call.on('stream', (remoteStream) => {
+                document.getElementById('remote-video').srcObject = remoteStream;
+            });
+        });
+    } catch (err) {
+        console.error("Video Call Error:", err);
+        alert("ไม่สามารถเปิดกล้อง/ไมโครโฟนได้ กรุณาตรวจสอบการอนุญาตสิทธิ์บนเบราว์เซอร์");
+    }
+}
+
+function makeCall() {
+    const remoteId = document.getElementById('peer-id-input').value.trim();
+    if (!remoteId) return alert("กรุณากรอก ID ปลายทาง");
+
+    currentCall = peer.call(remoteId, localStream);
+    currentCall.on('stream', (remoteStream) => {
+        document.getElementById('remote-video').srcObject = remoteStream;
+    });
+}
+
+function toggleMic() {
+    if (!localStream) return;
+    const audioTrack = localStream.getAudioTracks()[0];
+    if (audioTrack) {
+        audioTrack.enabled = !audioTrack.enabled;
+        const btn = document.getElementById('mic-btn');
+        btn.innerText = audioTrack.enabled ? "🎤 เปิดไมค์" : "🔇 ปิดไมค์";
+        btn.className = audioTrack.enabled ? "btn btn-warning" : "btn btn-danger";
+    }
+}
+
+function toggleCam() {
+    if (!localStream) return;
+    const videoTrack = localStream.getVideoTracks()[0];
+    if (videoTrack) {
+        videoTrack.enabled = !videoTrack.enabled;
+        const btn = document.getElementById('cam-btn');
+        btn.innerText = videoTrack.enabled ? "📷 เปิดกล้อง" : "🚫 ปิดกล้อง";
+        btn.className = videoTrack.enabled ? "btn btn-warning" : "btn btn-danger";
+    }
+}
+
+function endCall() {
+    if (currentCall) currentCall.close();
+    document.getElementById('remote-video').srcObject = null;
+}
+
 </script>
 </body>
 </html>
