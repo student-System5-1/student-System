@@ -870,6 +870,7 @@ tr:nth-child(even) {
                                 <th>ชื่อ-นามสกุล</th>
                                 <th>วิชา / หัวข้องาน</th>
                                 <th>ลิงก์งานที่ส่ง</th>
+                                <th>คะแนน</th>
                                 <th>สถานะ</th>
                             </tr>
                         </thead>
@@ -1874,7 +1875,7 @@ async function loadTeacherSubmissions() {
     const { data: students } = await supabaseClient.from("students").select("*");
 
     if (error || !subs || subs.length === 0) {
-        table.innerHTML = `<tr><td colspan="5" class="empty">ยังไม่มีการส่งงานจากนักเรียน</td></tr>`;
+        table.innerHTML = `<tr><td colspan="6" class="empty">ยังไม่มีการส่งงานจากนักเรียน</td></tr>`;
         return;
     }
 
@@ -1891,6 +1892,7 @@ async function loadTeacherSubmissions() {
         const linkUrl = s.file_url || s.work_url;
         const url = linkUrl ? `<a href="${escapeAttribute(linkUrl)}" target="_blank" style="color:#1565c0; font-weight:bold;">🔗 เปิดดูผลงาน</a>` : "-";
         const studentName = studentMap[s.student_id] || "-";
+        const scoreVal = s.score !== null && s.score !== undefined ? s.score : "";
 
         table.innerHTML += `
             <tr>
@@ -1898,11 +1900,33 @@ async function loadTeacherSubmissions() {
                 <td>${escapeHTML(studentName)}</td>
                 <td>${assignInfo}</td>
                 <td>${url}</td>
+                <td>
+                    <div style="display:flex; gap:5px; align-items:center;">
+                        <input type="number" id="score_sub_${s.id}" class="form-control" style="width:70px; padding:6px;" value="${scoreVal}" placeholder="คะแนน">
+                        <button class="btn btn-success" style="padding:6px 10px; font-size:12px;" onclick="saveSubmissionScore('${s.id}')">บันทึก</button>
+                    </div>
+                </td>
                 <td><span class="badge badge-ok">${escapeHTML(s.status || "ส่งแล้ว")}</span></td>
             </tr>
         `;
     });
 }
+
+async function saveSubmissionScore(submissionId) {
+    const scoreVal = document.getElementById(`score_sub_${submissionId}`).value;
+    if (scoreVal === "") return alert("กรุณากรอกคะแนนก่อนบันทึก");
+
+    const { error } = await supabaseClient
+        .from("submissions")
+        .update({ score: Number(scoreVal), status: "ตรวจแล้ว" })
+        .eq("id", submissionId);
+
+    if (error) return alert("บันทึกคะแนนไม่สำเร็จ: " + error.message);
+
+    alert("✅ บันทึกคะแนนเรียบร้อยแล้ว");
+    loadTeacherSubmissions();
+}
+
 
 /* REPORT */
 function setTodayReportDate(){
