@@ -1913,19 +1913,74 @@ async function loadTeacherSubmissions() {
 }
 
 async function saveSubmissionScore(submissionId) {
-    const scoreVal = document.getElementById(`score_sub_${submissionId}`).value;
-    if (scoreVal === "") return alert("กรุณากรอกคะแนนก่อนบันทึก");
+    const scoreInput = document.getElementById(`score_sub_${submissionId}`);
+    if (!scoreInput || scoreInput.value === "") return alert("กรุณากรอกคะแนนก่อนบันทึก");
 
-    const { error } = await supabaseClient
-        .from("submissions")
-        .update({ score: Number(scoreVal), status: "ตรวจแล้ว" })
-        .eq("id", submissionId);
+    const newScore = Number(scoreInput.value);
 
-    if (error) return alert("บันทึกคะแนนไม่สำเร็จ: " + error.message);
+    try {
+        // 1. ดึงข้อมูลการส่งงานเพื่อดู student_id และ assignment_id
+        const { data: sub, error: subErr } = await supabaseClient
+            .from("submissions")
+            .select("student_id, assignment_id")
+            .eq("id", submissionId)
+            .single();
 
-    alert("✅ บันทึกคะแนนเรียบร้อยแล้ว");
-    loadTeacherSubmissions();
+        if (subErr || !sub) return alert("ไม่พบข้อมูลการส่งงาน: " + (subErr?.message || ""));
+
+        // 2. อัปเดตคะแนนและสถานะในตาราง submissions
+        const { error: updateSubErr } = await supabaseClient
+            .from("submissions")
+            .update({ score: newScore, status: "ตรวจแล้ว" })
+            .eq("id", submissionId);
+
+        if (updateSubErr) return alert("บันทึกคะแนนงานไม่สำเร็จ: " + updateSubErr.message);
+
+        // 3. ดึงชื่อวิชาจากตาราง assignments
+        const { data: assign, error: assignErr } = await supabaseClient
+            .from("assignments")
+            .select("subject")
+            .eq("id", sub.assignment_id)
+            .single();
+
+        if (assign && assign.subject) {
+            const subjectName = assign.subject;
+            const studentId = sub.student_id;
+
+            // 4. คำนวณเกรดอัตโนมัติจากคะแนน (อ้างอิงเกณฑ์คะแนนเต็ม 100)
+            let calculatedGrade = "0";
+            if (newScore >= 80) calculatedGrade = "4";
+            else if (newScore >= 75) calculatedGrade = "3.5";
+            else if (newScore >= 70) calculatedGrade = "3";
+            else if (newScore >= 65) calculatedGrade = "2.5";
+            else if (newScore >= 60) calculatedGrade = "2";
+            else if (newScore >= 55) calculatedGrade = "1.5";
+            else if (newScore >= 50) calculatedGrade = "1";
+
+            // 5. บันทึก/อัปเดต ลงในตาราง grades โดยตรง (ตัดเกรดให้เลย)
+            await supabaseClient.from("grades").upsert([{
+                student_id: studentId,
+                subject: subjectName,
+                score: newScore,
+                grade: calculatedGrade,
+                status: newScore < 50 ? "0" : null
+            }], { onConflict: "student_id,subject" });
+
+            // 6. คำนวณ GPA เฉลี่ยสะสมใหม่ให้นักเรียนทันที
+            if (typeof calculateAndUpdateGPA === "function") {
+                await calculateAndUpdateGPA(studentId);
+            }
+        }
+
+        alert("✅ บันทึกคะแนน ตัดเกรด และคำนวณ GPA เรียบร้อยแล้ว");
+        loadTeacherSubmissions();
+
+    } catch (err) {
+        console.error(err);
+        alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+    }
 }
+
 
 
 /* REPORT */
