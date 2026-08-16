@@ -1685,8 +1685,13 @@ async function loadAttendanceStudents(){
 
     (students || []).forEach((student, index) => {
         const old = map[student.student_id];
-        const oldStatus = old ? old.status : "มา";
-        const oldTime = old ? (old.check_in_time || "") : "";
+        // ดึงเวลาปัจจุบัน (HH:mm)
+const now = new Date();
+const currentTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+
+const oldStatus = old ? old.status : "มา";
+const oldTime = old ? (old.check_in_time || currentTime) : currentTime;
+
 
         attendanceData.push(student);
         table.innerHTML += `
