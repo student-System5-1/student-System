@@ -1695,7 +1695,7 @@ const minutes = String(now.getMinutes()).padStart(2, '0');
 const currentDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
 
 const oldStatus = old ? old.status : "มา";
-const oldTime = old ? (old.check_in_time || currentTime) : currentTime;
+const oldTime = old ? (old.check_in_time || currentDateTime) : currentDateTime;
 
 
         attendanceData.push(student);
